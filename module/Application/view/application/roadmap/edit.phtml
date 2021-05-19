@@ -1,0 +1,105 @@
+<?php
+$title = $this->translate('Edit Roadmap');
+$this->pageBreadcrumbs()->setTitle($title);
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Roadmap')=>$this->url('roadmap'),
+            $this->translate('Edit')=>$this->url('roadmap', ['action'=>'edit']),
+            ]);
+$this->mainMenu()->setActiveItemId('roadmap');
+$form->get('week')->setAttributes(['class'=>'form-control','placeholder'=>'Week']);
+$form->get('market_segment')->setAttributes(['class'=>'form-control','placeholder'=>'Market Segment']);
+$form->get('prospect_name')->setAttributes(['class'=>'form-control','placeholder'=>'Prospect Name']);
+$form->get('prospect_city')->setAttributes(['class'=>'form-control','placeholder'=>'Prospect City']);
+$form->get('propspect_machine')->setAttributes(['class'=>'form-control','placeholder'=>'Propspect Machine']);
+$form->get('product_series')->setAttributes(['class'=>'form-control','placeholder'=>'Product Series']);
+$form->get('product_model')->setAttributes(['class'=>'form-control','placeholder'=>'Product Model']);
+$form->get('product')->setAttributes(['class'=>'form-control','placeholder'=>'Product']);
+$form->get('next_action')->setAttributes(['class'=>'form-control','placeholder'=>'Next Action']);
+$form->get('expected_quanitity')->setAttributes(['class'=>'form-control','placeholder'=>'Expected Quanitity']);
+$form->get('expected_potential_order_value')->setAttributes(['class'=>'form-control','placeholder'=>'Expected Potential Order Value']);
+
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update Roadmap'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Back to Roadmap','url'=>$this->url('roadmap'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Edit Roadmap</h4>
+		</div>
+		<?= $this->form()->openTag($form); ?>
+		<div class="card-body row">
+		<div class="col-md-6">
+			<div class="form-group">
+            <?= $this->formLabel($form->get('week')); ?>
+            <?= $this->formElement($form->get('week')); ?>
+            <?= $this->formElementErrors($form->get('week')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('market_segment')); ?>
+            <?= $this->formElement($form->get('market_segment')); ?>
+            <?= $this->formElementErrors($form->get('market_segment')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('prospect_name')); ?>
+            <?= $this->formElement($form->get('prospect_name')); ?>
+            <?= $this->formElementErrors($form->get('prospect_name')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('prospect_city')); ?>
+            <?= $this->formElement($form->get('prospect_city')); ?>
+            <?= $this->formElementErrors($form->get('prospect_city')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('propspect_machine')); ?>
+            <?= $this->formElement($form->get('propspect_machine')); ?>
+            <?= $this->formElementErrors($form->get('propspect_machine')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('product_series')); ?>
+            <?= $this->formElement($form->get('product_series')); ?>
+            <?= $this->formElementErrors($form->get('product_series')); ?>
+        </div>
+		<div class="form-group">
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
+</div>
+<div class="col-md-6">
+<div class="form-group">
+            <?= $this->formLabel($form->get('product_model')); ?>
+            <?= $this->formElement($form->get('product_model')); ?>
+            <?= $this->formElementErrors($form->get('product_model')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('product')); ?>
+            <?= $this->formElement($form->get('product')); ?>
+            <?= $this->formElementErrors($form->get('product')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('next_action')); ?>
+            <?= $this->formElement($form->get('next_action')); ?>
+            <?= $this->formElementErrors($form->get('next_action')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('expected_quanitity')); ?>
+            <?= $this->formElement($form->get('expected_quanitity')); ?>
+            <?= $this->formElementErrors($form->get('expected_quanitity')); ?>
+        </div>
+<div class="form-group">
+            <?= $this->formLabel($form->get('expected_potential_order_value')); ?>
+            <?= $this->formElement($form->get('expected_potential_order_value')); ?>
+            <?= $this->formElementErrors($form->get('expected_potential_order_value')); ?>
+        </div>
+
+			</div>
+
+   
+		</div>
+		<?= $this->form()->closeTag(); ?>
+	</div>
+	</div>
+</div>

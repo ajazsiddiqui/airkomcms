@@ -1,0 +1,82 @@
+<?php
+$title = $this->translate('Roadmap');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('roadmap');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Roadmap')=>$this->url('roadmap'),
+            $this->translate('Listings')=>$this->url('roadmap'),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add Roadmap','url'=>$this->url('roadmap', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Roadmap</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+<th><strong><?= $this->translate('ID') ?></strong></th>
+<!-- <th><strong><?= $this->translate('Week') ?></strong></th> -->
+<th><strong><?= $this->translate('Market Segment') ?></strong></th>
+<th><strong><?= $this->translate('Prospect Name') ?></strong></th>
+<!-- <th><strong><?= $this->translate('Prospect City') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Propspect Machine') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Product Series') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Product Model') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Product') ?></strong></th> -->
+<th><strong><?= $this->translate('Next Action') ?></strong></th>
+<th><strong><?= $this->translate('Expected Quantity') ?></strong></th>
+<th><strong><?= $this->translate('Potential Value') ?></strong></th>
+
+
+
+	<!-- <th><strong><?= $this->translate('Date Created') ?></strong></th> -->
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($roadmap as $r) : ?>
+<tr>
+<td><?= $r->getID();?></td>
+<!-- <td><?= $r->getWeek();?></td> -->
+<td><?= $this->MasterDetails()->getMarketSegmentName($r->getMarketSegment());?></td>
+<td><?= $r->getProspectName();?></td>
+<!-- <td><?= $r->getProspectCity();?></td> -->
+<!-- <td><?= $r->getPropspectMachine();?></td> -->
+<!-- <td><?= $r->getProductSeries();?></td> -->
+<!-- <td><?= $r->getProductModel();?></td> -->
+<!-- <td><?= $r->getProduct();?></td> -->
+<td><?= $this->MasterDetails()->getNextActionName($r->getNextAction());?></td>
+<td><?= $r->getExpectedQuanitity();?></td>
+<td><?= $r->getExpectedPotentialOrderValue();?></td>
+
+
+	<!-- <td><?= $r->getDateCreated();?></td> -->
+	<td>
+	<a href="<?= $this->url('roadmap',[ 'action'=>'edit','id' => $r->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+    </td>
+	<td>
+		<a href="<?= $this->url('roadmap',[ 'action'=>'delete','id' => $r->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

@@ -1,0 +1,101 @@
+<?php
+$title = $this->translate('DCR');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('dcr');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate(' DCR')=>$this->url('dcr'),
+            $this->translate('Listings')=>$this->url('dcr'),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add DCR','url'=>$this->url('dcr', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">DCR</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+	<th><strong><?= $this->translate('ID') ?></strong></th>
+	<!-- <th><strong><?= $this->translate('Start Period') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('End Period') ?></strong></th> -->
+	<th><strong><?= $this->translate('Dcr No') ?></strong></th>
+	<!-- <th><strong><?= $this->translate('Travel Type') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Call Type') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Call Count') ?></strong></th> -->
+	<th><strong><?= $this->translate('Contact') ?></strong></th>
+	<!-- <th><strong><?= $this->translate('Product Series') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Product Model') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Product Id') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Quanitity') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Order Value') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Sales Stage') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Next Action') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Remarks') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Bike Km_reading_start') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Bike Km_reading_end') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Distance Travelled') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Amount One') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Travel Mode') ?></strong></th> -->
+	<th><strong><?= $this->translate('Visit Date') ?></strong></th>
+	<th><strong><?= $this->translate('Amount') ?></strong></th>
+
+	<!-- <th><strong><?= $this->translate('Date Created') ?></strong></th> -->
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($dcr as $d) : ?>
+<tr>
+<td><?= $d->getID();?></td>
+<!-- <td><?= $d->getStartperiod()->format('d-m-Y');?></td> -->
+<!-- <td><?= $d->getEndperiod()->format('d-m-Y');?></td> -->
+<td><?= $d->getDcrno();?></td>
+<!-- <td><?= $d->getTraveltype();?></td> -->
+<!-- <td><?= $d->getCalltype();?></td> -->
+<!-- <td><?= $d->getCallcount();?></td> -->
+<td><?= $this->MasterDetails()->getContactName($d->getContactid());?></td>
+<!-- <td><?= $d->getProductseries();?></td> -->
+<!-- <td><?= $d->getProductmodel();?></td> -->
+<!-- <td><?= $d->getProductid();?></td> -->
+<!-- <td><?= $d->getQuanitity();?></td> -->
+<!-- <td><?= $d->getOrdervalue();?></td> -->
+<!-- <td><?= $d->getSalesstage();?></td> -->
+<!-- <td><?= $d->getNextaction();?></td> -->
+<!-- <td><?= $d->getRemarks();?></td> -->
+<!-- <td><?= $d->getBikeKmReadingStart();?></td> -->
+<!-- <td><?= $d->getBikekmReadingEnd();?></td> -->
+<!-- <td><?= $d->getDistancetravelled();?></td> -->
+<!-- <td><?= $d->getAmountone();?></td> -->
+<!-- <td><?= $d->getTravelmode();?></td> -->
+<td><?= $d->getVisitdate()->format('d-m-Y');?></td>
+<td><?= $d->getAmounttwo();?></td>
+
+	<!-- <td><?= $d->getDateCreated();?></td> -->
+	<td>
+	<a href="<?= $this->url('dcr',[ 'action'=>'edit','id' => $d->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+    </td>
+	<td>
+		<a href="<?= $this->url('dcr',[ 'action'=>'delete','id' => $d->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

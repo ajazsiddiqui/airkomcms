@@ -1,0 +1,59 @@
+<?php
+$title = $this->translate('Sales Stage');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('masters');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate(' Sales Stage')=>$this->url('sales-stage'),
+            $this->translate('Listings')=>$this->url('sales-stage', ['action'=>'index']),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add Sales Stage','url'=>$this->url('sales-stage', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Sales Stage</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+	<th><strong><?= $this->translate('Id') ?></strong></th>
+	<th><strong><?= $this->translate('Name') ?></strong></th>
+	<th><strong><?= $this->translate('Status') ?></strong></th>
+	<th><strong><?= $this->translate('Date Created') ?></strong></th>
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($sales_stage as $stage) : ?>
+<tr>
+<td><?= $stage->getID();?></td>
+    <td><a href="<?= $this->url('sales-stage',['action'=>'edit','id' => $stage->getId()]); ?>" class="tx-semibold"><?= $stage->getName();?></a></td>
+  <td><a class="tx-semibold" href="<?= $this->url('sales-stage', ['action'=>'setstatus','id' => $stage->getId()]); ?>"><?= ($stage->getStatus()==1?'Active':'Deactivated');?></a></td>
+	<td><?= $stage->getDateCreated();?></td>
+	<td>
+	<a href="<?= $this->url('sales-stage',[ 'action'=>'edit','id' => $stage->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i>Edit</a>
+    </td>
+		<td>
+		<a href="<?= $this->url('sales-stage',[ 'action'=>'delete','id' => $stage->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

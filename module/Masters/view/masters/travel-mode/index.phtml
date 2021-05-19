@@ -1,0 +1,59 @@
+<?php
+$title = $this->translate('Travel Mode');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('masters');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate(' Travel Mode')=>$this->url('travel-mode'),
+            $this->translate('Listings')=>$this->url('travel-mode', ['action'=>'index']),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add Travel Mode','url'=>$this->url('travel-mode', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Travel Mode</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+	<th><strong><?= $this->translate('Id') ?></strong></th>
+	<th><strong><?= $this->translate('Name') ?></strong></th>
+	<th><strong><?= $this->translate('Status') ?></strong></th>
+	<th><strong><?= $this->translate('Date Created') ?></strong></th>
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($travel_mode as $mode) : ?>
+<tr>
+<td><?= $mode->getID();?></td>
+    <td><a href="<?= $this->url('travel-mode',['action'=>'edit','id' => $mode->getId()]); ?>" class="tx-semibold"><?= $mode->getName();?></a></td>
+  <td><a class="tx-semibold" href="<?= $this->url('travel-mode', ['action'=>'setstatus','id' => $mode->getId()]); ?>"><?= ($mode->getStatus()==1?'Active':'Deactivated');?></a></td>
+	<td><?= $mode->getDateCreated();?></td>
+	<td>
+	<a href="<?= $this->url('travel-mode',[ 'action'=>'edit','id' => $mode->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i>Edit</a>
+    </td>
+		<td>
+		<a href="<?= $this->url('travel-mode',[ 'action'=>'delete','id' => $mode->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

@@ -1,0 +1,66 @@
+<div class="table-responsive">
+	<table class="table table-responsive-md">
+		<thead>
+			<tr>
+				<th><strong><?= $this->translate('ID') ?></strong></th>
+				<th><strong><?= $this->translate('Photo') ?></strong></th>
+				<th><strong><?= $this->translate('Name') ?></strong></th>
+				<!-- <th><strong><?= $this->translate('Email') ?></strong></th> -->
+				<th><strong><?= $this->translate('Contact') ?></strong></th>
+				<th><strong><?= $this->translate('Usertype') ?></strong></th>
+				<!-- <th><strong><?= $this->translate('Date Created') ?></strong></th> -->
+				<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php if(!is_object($users)) { ?>
+			<?php foreach ($users as $user): ?>
+				<tr>
+					<td><strong><?= $this->escapeHtml($user->getId()); ?></strong></td>
+					<td><div class="profile-photo">
+					<img src="<?= $this->basePath(); ?>/uploads/profile_pics/<?= empty($user->getProfilePic())?'user.jpg':$user->getProfilePic(); ?>" class="img-fluid rounded-circle" alt="" width="70" height="70">
+				</div></td>
+					<td><a class="tx-semibold" href="<?= $this->url('users', ['action'=>'edit', 'id'=>$user->getId()]); ?>"><?= $this->escapeHtml($user->getFullName()); ?></a></td>
+					<!-- <td><?= $user->getEmail(); ?></td> -->
+					<td><?= $user->getContactNo(); ?></td>
+					<td><?= $this->escapeHtml($user->getRolesAsString()); ?></td>
+					<!-- <td><?= $this->escapeHtml($user->getDateCreated()); ?></td> -->
+					<td colspan="2">
+				
+					<a class="btn btn-light mr-2" href="<?= $this->url('users', ['action'=>'setstatus','id' => $user->getId()]); ?>"><?= ($user->getStatus()==1?'Active':'Deactivated');?>
+					</td>
+					<td>
+					<a href="<?= $this->url('users',
+								['action'=>'change-password', 'id'=>$user->getId()]); ?>" class="btn btn-primary ">
+							<i class="fa fa-key"></i> Change Password
+						</a>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+		<?php }else{ 
+		$user = $users;
+		?>
+			<tr>
+					<td><strong><?= $this->escapeHtml($user->getId()); ?></strong></td>
+					<td><div class="profile-photo">
+					<img src="<?= $this->basePath(); ?>/uploads/profile_pics/<?= empty($user->getProfilePic())?'user.jpg':$user->getProfilePic(); ?>" class="img-fluid rounded-circle" alt="" width="70" height="70">
+				</div></td>
+					<td><a class="tx-semibold" href="<?= $this->url('users', ['action'=>'edit', 'id'=>$user->getId()]); ?>"><?= $this->escapeHtml($user->getFullName()); ?></a></td>
+					<!-- <td><?= $user->getEmail(); ?></td> -->
+					<td><?= $user->getContactNo(); ?></td>
+					<td><?= $this->escapeHtml($user->getRolesAsString()); ?></td>
+					<!-- <td><?= $this->escapeHtml($user->getDateCreated()); ?></td> -->
+					<td>
+					<a class="btn btn-light mr-2" href="<?= $this->url('users', ['action'=>'setstatus','id' => $user->getId()]); ?>"><?= ($user->getStatus()==1?'Active':'Deactivated');?>
+					</td>
+<td>
+<a href="<?= $this->url('users',
+								['action'=>'change-password', 'id'=>$user->getId()]); ?>" class="btn btn-primary ">
+							<i class="fa fa-key"></i> Change Password
+						</a>					
+					</td>
+				</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+</div>

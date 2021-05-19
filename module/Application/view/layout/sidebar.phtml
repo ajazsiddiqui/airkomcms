@@ -1,0 +1,14 @@
+<div class="deznav">
+	<div class="deznav-scroll">
+		<?php
+			if (isset($activeMenuItemId)) {
+			$this->mainMenu()->setActiveItemId($activeMenuItemId);
+			}
+			echo $this->mainMenu()->renderMenu();
+		?>		
+		<div class="copyright">
+			<p><strong>Airkom</strong> © 2021 All Rights Reserved</p>
+			<p>Made with <span class="heart"></span> by Websolite</p>
+		</div>
+	</div>
+</div>

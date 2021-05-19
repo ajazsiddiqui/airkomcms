@@ -1,0 +1,59 @@
+<?php
+$title = $this->translate('Edit Role');
+$this->pageBreadcrumbs()->setTitle($title);
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+            $this->translate('Manage Roles')=>$this->url('roles'),
+            $this->translate('Edit Role')=>$this->url('roles', ['action'=>'edit'])
+            ]);
+$form->get('name')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter name'
+    ]);
+$form->get('description')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter description'
+    ]);
+$form->get('inherit_roles[]')->setAttributes([
+    'class'=>'form-control' ,
+    ]);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Save'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Back to Roles','url'=>$this->url('roles'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+  <div class="col-6">
+
+	<div class="card">
+	  <div class="card-header">
+		<h4 class="card-title">Edit Role</h4>
+	</div>
+	 <div class="card-body row">
+	<?= $this->form()->openTag($form); ?>
+			<div class="form-group form-group-default">
+				<?= $this->formLabel($form->get('name')); ?>
+				<?= $this->formElement($form->get('name')); ?>
+				<?= $this->formElementErrors($form->get('name')); ?>
+			</div>
+			<div class="form-group form-group-default">
+				<?= $this->formLabel($form->get('description')); ?>
+				<?= $this->formElement($form->get('description')); ?>
+				<?= $this->formElementErrors($form->get('description')); ?>
+			</div>
+			<div class="form-group form-group-default">
+				<?= $this->formLabel($form->get('inherit_roles[]')); ?>
+				<?= $this->formElement($form->get('inherit_roles[]')); ?>
+				<?= $this->formElementErrors($form->get('inherit_roles[]')); ?>
+			</div>
+			<?= $this->formElement($form->get('csrf')); ?>
+			<?= $this->formElement($form->get('submit')); ?>
+	<?= $this->form()->closeTag(); ?>
+    </div>
+</div>
+</div>
+</div>

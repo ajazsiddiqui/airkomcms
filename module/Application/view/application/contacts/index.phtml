@@ -1,0 +1,71 @@
+<?php
+$title = $this->translate('Contacts');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('contacts');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate(' Contacts')=>$this->url('contacts'),
+            $this->translate('Listings')=>$this->url('contacts', ['action'=>'index']),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add Contacts','url'=>$this->url('contacts', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Contacts</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+	<th><strong><?= $this->translate('ID') ?></strong></th>
+	<th><strong><?= $this->translate('Name') ?></strong></th>
+	<!-- <th><strong><?= $this->translate('Designation') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Company') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('City') ?></strong></th> -->
+	<!-- <th><strong><?= $this->translate('Address') ?></strong></th> -->
+	<th><strong><?= $this->translate('Telephone') ?></strong></th>
+	<th><strong><?= $this->translate('Email') ?></strong></th>
+	<!-- <th><strong><?= $this->translate('Website') ?></strong></th> -->
+	<th><strong><?= $this->translate('Date Created') ?></strong></th>
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($contacts as $contact) : ?>
+<tr>
+<td><?= $contact->getID();?></td>
+<td><?= $contact->getName();?></td>
+<!-- <td><?= $contact->getDesignation();?></td> -->
+<!-- <td><?= $contact->getCompany();?></td> -->
+<!-- <td><?= $contact->getCity();?></td> -->
+<!-- <td><?= $contact->getAddress();?></td> -->
+<td><?= $contact->getTelephone();?></td>
+<td><?= $contact->getEmail();?></td>
+<!-- <td><?= $contact->getWebsite();?></td> -->
+	<td><?= $contact->getDateCreated();?></td>
+	<td>
+	<a href="<?= $this->url('contacts',[ 'action'=>'edit','id' => $contact->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+    </td>
+	<td>
+		<a href="<?= $this->url('contacts',[ 'action'=>'delete','id' => $contact->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

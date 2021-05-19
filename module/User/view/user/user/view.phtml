@@ -1,0 +1,27 @@
+<?php
+$title = $this->translate('View User');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Users') =>$this->url('users'),
+           $this->translate('View User')=>$this->url('users', ['action'=>'view', 'id'=>$user->getId()])
+            ]);
+?>
+<?php if ($this->UserDetail()->getUserType()=='administrator') { 
+			$this->PageActions()->setItems([['label'=>'Back to Users','url'=>$this->url('users'),'icon'=>'arrow-left','class'=>'btn-primary']]);	
+			} ?>
+<div class="row main-content">
+<div class="col-12 p-0">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">View User</h4>
+			</div>
+			<div class="card-body">
+	<?= $this->partial('application/partial/usercard', ['users'=>$user]); ?>
+	</div>
+	</div>
+	
+</div>
+</div>

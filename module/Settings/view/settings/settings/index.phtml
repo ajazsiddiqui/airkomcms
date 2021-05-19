@@ -1,0 +1,112 @@
+<?php
+$title = $this->translate('Settings');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Settings')=>$this->url('settings'),
+            ]);
+$this->pageBreadcrumbs()->setTitle($title);			
+$this->mainMenu()->setActiveItemId('settings');
+$form->get('company_name')->setAttributes(['class'=>'form-control', 'placeholder'=>'Company Name']);
+$form->get('company_brief')->setAttributes(['class'=>'form-control', 'placeholder'=>'Company Brief']);
+$form->get('contact')->setAttributes(['class'=>'form-control', 'placeholder'=>'Corporate Contact']);
+$form->get('email')->setAttributes(['class'=>'form-control', 'placeholder'=>'Corporate Email']);
+$form->get('page_title')->setAttributes(['class'=>'form-control', 'placeholder'=>'Page Title']);
+$form->get('page_keywords')->setAttributes(['class'=>'form-control', 'placeholder'=>'Page Keywords']);
+$form->get('page_description')->setAttributes(['class'=>'form-control', 'placeholder'=>'Page Description']);
+$form->get('distance_travel_percentage')->setAttributes(['class'=>'form-control','placeholder'=>'Distance Travel Percentage']);
+$form->get('name_emailer')->setAttributes(['class'=>'form-control', 'placeholder'=>'Name of the Emailer']);
+$form->get('email_emailer')->setAttributes(['class'=>'form-control', 'placeholder'=>'Email ID of the Emailer']);
+$form->get('sms_enabled')->setAttributes(['class'=>'form-control', 'placeholder'=>'SMS enabled']);
+$form->get('sms_api')->setAttributes(['class'=>'form-control', 'placeholder'=>'SMS API']);
+$form->get('sendgrid_api')->setAttributes(['class'=>'form-control', 'placeholder'=>'SendGrid API']);
+$form->get('submit')
+        ->setAttributes(['id'=>'submit','class'=>'btn btn-primary']);
+$form->prepare();
+
+?>
+<div class="row">
+<div class="col-md-8">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Settings</h4>
+			</div>
+			<div class="card-body">
+			<?= $this->form()->openTag($form); ?>
+
+
+			<div class="form-group ">
+			  <?= $this->formLabel($form->get('company_name')); ?>
+			  <?= $this->formElement($form->get('company_name')); ?>
+			  <?= $this->formElementErrors($form->get('company_name')); ?>
+		  </div>
+		  <div class="form-group ">
+			  <?= $this->formLabel($form->get('contact')); ?>
+			  <?= $this->formElement($form->get('contact')); ?>
+			  <?= $this->formElementErrors($form->get('contact')); ?>
+		  </div>
+		  <div class="form-group ">
+			  <?= $this->formLabel($form->get('email')); ?>
+			  <?= $this->formElement($form->get('email')); ?>
+			  <?= $this->formElementErrors($form->get('email')); ?>
+		  </div>
+
+	  <div class="form-group ">
+			  <?= $this->formLabel($form->get('name_emailer')); ?>
+			  <?= $this->formElement($form->get('name_emailer')); ?>
+			  <?= $this->formElementErrors($form->get('name_emailer')); ?>
+		  </div>
+	  <div class="form-group ">
+			  <?= $this->formLabel($form->get('email_emailer')); ?>
+			  <?= $this->formElement($form->get('email_emailer')); ?>
+			  <?= $this->formElementErrors($form->get('email_emailer')); ?>
+		  </div>
+		  <div class="form-group ">
+			  <?= $this->formLabel($form->get('company_brief')); ?>
+			  <?= $this->formElement($form->get('company_brief')); ?>
+			  <?= $this->formElementErrors($form->get('company_brief')); ?>
+		  </div>
+  		<div class="form-group ">
+		  <?= $this->formLabel($form->get('page_title')); ?>
+		  <?= $this->formElement($form->get('page_title')); ?>
+		  <?= $this->formElementErrors($form->get('page_title')); ?>
+		</div>
+		<div class="form-group ">
+		  <?= $this->formLabel($form->get('page_keywords')); ?>
+		  <?= $this->formElement($form->get('page_keywords')); ?>
+		  <?= $this->formElementErrors($form->get('page_keywords')); ?>
+		</div>
+		<div class="form-group ">
+		  <?= $this->formLabel($form->get('page_description')); ?>
+		  <?= $this->formElement($form->get('page_description')); ?>
+		  <?= $this->formElementErrors($form->get('page_description')); ?>
+		</div>
+		<div class="form-group ">
+		  <?= $this->formLabel($form->get('distance_travel_percentage')); ?>
+		  <?= $this->formElement($form->get('distance_travel_percentage')); ?>
+		  <?= $this->formElementErrors($form->get('distance_travel_percentage')); ?>
+		</div>
+	  <div class="form-group ">
+			  <?= $this->formLabel($form->get('sms_enabled')); ?>
+			  <?= $this->formElement($form->get('sms_enabled')); ?>
+			  <?= $this->formElementErrors($form->get('sms_enabled')); ?>
+		  </div>
+		<div class="form-group ">
+			  <?= $this->formLabel($form->get('sms_api')); ?>
+			  <?= $this->formElement($form->get('sms_api')); ?>
+			  <?= $this->formElementErrors($form->get('sms_api')); ?>
+		  </div>
+	  <div class="form-group ">
+			  <?= $this->formLabel($form->get('sendgrid_api')); ?>
+			  <?= $this->formElement($form->get('sendgrid_api')); ?>
+			  <?= $this->formElementErrors($form->get('sendgrid_api')); ?>
+		  </div>
+	 
+    <?= $this->formElement($form->get('submit')); ?>
+
+
+			<?= $this->form()->closeTag(); ?>
+			</div>
+			</div>
+</div>
+</div>

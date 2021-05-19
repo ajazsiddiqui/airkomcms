@@ -1,0 +1,88 @@
+<?php
+$title = $this->translate('Tax');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Settings')=>$this->url('settings'),
+			$this->translate('Tax')=>$this->url('tax'),
+            ]);
+$form->setAttribute('action', $this->url('tax', array('action' => 'add')));
+$form->get('amount_upto')->setAttributes(['class'=>'form-control', 'placeholder'=>'Amount Upto']);
+$form->get('tax_percentage')->setAttributes(['id'=>'is_primary','class'=>'form-control', 'placeholder'=>'Tax Percentage']);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Save'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Add New Tax','url'=>$this->url('tax',['action'=>'add']),'icon'=>'plus','class'=>'btn-primary','data-toggle'=>'modal','data-target'=>'#crmmodal'],
+            ]);
+?>
+<div class="row main-content">
+  <div class="col-12">
+	<div class="table-responsive">
+		<table class="table table-hover mg-t-30 mg-b-30 mg-md-t-0">
+		<thead>
+		<tr>
+		<th><?= $this->translate('Id') ?></th>
+		<th><?= $this->translate('Amount Upto') ?></th>
+		<th><?= $this->translate('Tax Percentage') ?></th>
+		<th><?= $this->translate('Date Created') ?></th>
+		<th class="fit-width"><?= $this->translate('Actions') ?></th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($taxes as $tax) : ?>
+		<tr>
+		<td><?= $tax->getID();?></td>
+		<td class="tx-semibold"><?= $tax->getAmountUpto();?></a></td>
+		<td><?= $tax->getTaxPercentage();?> %</a></td>
+		<td><?= $tax->getDateCreated();?></td>
+		<td>
+			<div class=" pull-right">
+			<a href="<?= $this->url('tax', array('controller' => 'tax', 'action'=>'edit','id' => $tax->getId())); ?>" class="btn btn-light"><i data-feather="edit"></i> Edit</a>
+			<a href="#" data-link="<?= $this->url('tax', array('controller' => 'tax', 'action'=>'delete','id' => $tax->getId())); ?>" class="btn btn-danger " data-msg="Do you really want to delete the tax <?= $tax->getId();?>" data-toggle="modal" data-target="#confirmDelete">Delete</a>
+		</div>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+		</tbody>
+		</table>
+	</div>
+<div class="mt-2 mb-2">
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+	</div>
+    </div>
+</div>
+<div class="modal fade" id="crmmodal" tabindex="-1" role="dialog" aria-labelledby="flat_modalLabel">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <?= $this->form()->openTag($form); ?>
+              <div class="modal-header">
+                  <h4 class="modal-title" id="myModalLabel1"><?= $this->translate('Add Tax') ?></h4>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body model_content_data">
+                  <div class="col-md-12">
+					<div class="form-group form-group-default">
+					  <?= $this->formLabel($form->get('amount_upto')); ?>
+					  <?= $this->formElement($form->get('amount_upto')); ?>
+					  <?= $this->formElementErrors($form->get('amount_upto')); ?>
+					</div>
+					<div class="form-group form-group-default">
+						<?= $this->formLabel($form->get('tax_percentage')); ?>
+						<div class="input-group">
+							<?= $this->formElement($form->get('tax_percentage')); ?>
+						<div class="input-group-append">
+						<span class="input-group-text"><i class="fa fa-percent"></i></span>
+						</div>
+						</div>
+						<?= $this->formElementErrors($form->get('tax_percentage')); ?>
+					</div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <?= $this->formElement($form->get('submit')); ?>
+                  <button type="button" class="btn btn-light" data-dismiss="modal"><?= $this->translate('Close') ?></button>
+              </div>
+              <?= $this->form()->closeTag(); ?>
+          </div>
+      </div>
+  </div>
+<?= $this->partial('application/index/delete'); ?>

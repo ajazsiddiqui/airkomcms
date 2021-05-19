@@ -1,0 +1,79 @@
+<?php
+$title = $this->translate('Logs');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Logs')=>$this->url('logs'),
+            $this->translate('Listings')=>$this->url('logs'),
+            ]);
+?>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">System Logs</h4>
+			</div>
+			<div class="card-body">
+	<form name="logs_form" method="post" action="#">
+		<div class="form-row">
+			<div class="form-group col-sm-3 d-flex">
+			 <select class="form-control" name="s_user" data-init-plugin="select2">
+				<option value="">Select User</option>
+				<?php foreach ($this->users  as $user){ ?>
+				<option <?= (isset($search_array['user'])&&($search_array['user']==$user->getEmail()))?'selected':''?> value="<?= $user->getEmail(); ?>"><?= $user->getFullName(); ?></option>
+				<?php } ?>
+     		  </select>
+			  </div>
+			 <div class="form-group col-sm-3 d-flex">
+			 <select class="form-control" name="s_action" data-init-plugin="select2">
+				<option value="">Select Action</option>
+				<?php foreach ($this->actions  as $action){ ?>
+				<option <?= (isset($search_array['action'])&&($search_array['action']==$action))?'selected':''?> name="s_action_name" value="<?= $action; ?>"><?= $action; ?></option>
+				<?php } ?>
+     		  </select>
+			  </div>
+				<div class="col-sm-4 col-md-3 mg-t-10 mg-sm-t-0 d-flex">
+					<input class="form-control input-daterange-datepicker" name="date_range" type="text" value="<?=empty($search_array['date_range'])?date("d/m/Y",strtotime("-2 days")).' - '.date("d/m/Y"):$search_array['date_range'];?>" placeholder="Select Date Range">
+				</div>
+			<div class="col-sm-4 col-md-2 mg-t-10 mg-sm-t-0">
+			  <button type="submit" class="btn btn-primary btn-block"><?= $this->translate('Filter Logs') ?></button>
+			</div>
+			<div class="col-sm-1 mg-t-10 mg-sm-t-0">
+			  <a href="<?= $this->url('logs'); ?>" class="btn btn-light btn-block"><i data-feather="refresh-cw"></i></a>
+			</div>
+		</div>
+	</form>
+  
+	 
+	<div class="table-responsive">
+	<table class="table table-responsive-md">
+	<thead>
+	<tr>
+		<th><strong><?= $this->translate('Id') ?></strong></th>
+		<th><strong><?= $this->translate('Action') ?></strong></th>
+		<th><strong><?= $this->translate('Action Name') ?></strong></th>
+		<th><strong><?= $this->translate('User') ?></strong></th>
+		<th><strong><?= $this->translate('Date Created') ?></strong></th>
+	</tr>
+	</thead>	
+	<tbody>
+	<?php foreach ($logs as $log) : ?>
+	<tr>
+	<td><?= $log->getId();?></td>
+		<td class="tx-semibold"><?= $log->getAction();?></a></td>
+		<td><?= $log->getActionName();?></a></td>
+		<td><a href="<?= $this->url('users',['action'=>'edit','id'=>$this->UserDetail()->getIdByEmail($log->getUser())]); ?>" class="tx-semibold"><?= $log->getUser();?></a></td>
+		<td><?= $log->getDateCreated();?></td>
+	</tr>
+	<?php endforeach; ?>
+	</tbody>	
+	</table>
+	</div>
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator,'search'=>base64_encode(serialize($search_array))]); ?>
+</div> 
+</div>
+</div>
+</div>
+

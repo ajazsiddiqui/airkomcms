@@ -1,0 +1,49 @@
+<?php
+$title = $this->translate('Users');
+$this->headTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setTitle('User');
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Users')=>$this->url('users'),
+            ]);
+$this->PageActions()->setItems([
+            ['label'=>'Add New User','url'=>$this->url('users', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);			
+?>
+<div class="row main-content">
+<div class="card col-md-12">
+<div class="card-header">
+	<h4 class="card-title">All Users</h4>
+</div>
+	<div class="card-body">
+		<div class="col-md-12">
+		<form id="user_filter_form" method="post" action="<?= $this->url('users'); ?>">
+			<div class="form-row">
+				<div class="form-group col-sm-4">
+				  <input class="form-control" name="s_user" type="text" placeholder="User Name" value="<?= (isset($search_array['s_user']))?$search_array['s_user']:''?>">
+				</div>
+				<div class="form-group col-sm-3">
+				  <select class="form-control" id="s_role" name="s_role">
+					<option value="">Select Role</option>
+						<?php foreach ($systemUserTypes as $systemUserType) { ?>
+							<option <?= empty($search_array)?'':($search_array['s_role']==$systemUserType->getId()?'selected':''); ?> value="<?= $systemUserType->getId(); ?>"><?= $systemUserType->getName(); ?></option>
+						<?php } ?>
+					</select>
+				  </div>
+				<div class="col-sm-3 mg-t-10 mg-sm-t-0">
+				  <button type="submit" class="btn btn-primary btn-block mg-b-10">Filter User</button>
+				</div>
+				<div class="col-sm-2 mg-t-10 mg-sm-t-0">
+					  <a href="<?= $this->url('users'); ?>" class="btn btn-light btn-block">Refresh</a>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="col-12">
+		<?= $this->partial('application/partial/usercard', ['users'=>$users]); ?>
+		<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator,'search'=>base64_encode(serialize($search_array))]); ?>
+	</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,48 @@
+<div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            <div class="dashboard_bar">
+								<div class="input-group search-area d-lg-inline-flex d-none">
+									<div class="input-group-append">
+										<button class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+									</div>
+									<input type="text" class="form-control" placeholder="Search here...">
+								</div>
+                            </div>
+                        </div>
+                        <ul class="navbar-nav header-right">
+							<?php 
+								$curl = curl_init();
+								curl_setopt_array($curl, [
+									CURLOPT_RETURNTRANSFER => 1,
+									CURLOPT_URL => 'http://api.openweathermap.org/data/2.5/weather?q=Mumbai&appid=fdf8286e2ca7c32bcc39a0b49bbcff2e&units=metric',
+									CURLOPT_USERAGENT => 'Airkom Group cURL Request',
+								]);
+								$resp = curl_exec($curl);
+								curl_close($curl);
+								$obj = json_decode($resp, true);
+							?>
+							<?php if(isset($obj)){ ?>
+							<li class="nav-item">
+								<div class="d-flex weather-detail">
+									<span>
+									<img src="<?= 
+									$icon = "http://openweathermap.org/img/w/".$obj['weather'][0]['icon'].".png"; 
+									?>" />
+									<?= $obj['main']['temp']; ?></span>
+									Mumbai, IN
+								</div>
+							</li>
+							<?php } ?>
+							
+                            <li class="nav-item dropdown header-profile">
+								<?= $this->render('layout/usermenu') ?>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>

@@ -1,0 +1,45 @@
+<?php
+$title = $this->translate('View Permission');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Permissions')=>$this->url('permissions'),
+           $this->translate('View Permission')=>$this->url('permissions', ['action'=>'view', 'id'=>$permission->getId()])
+            ]);
+$this->PageActions()->setItems([
+            ['label'=>'Back to Permissions','url'=>$this->url('permissions'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-responsive-md">
+						<thead>
+							<tr>
+								<th><strong><?= $this->translate('ID') ?></strong></th>
+								<th><strong><?= $this->translate('Name') ?></strong></th>
+								<th><strong><?= $this->translate('Description') ?></strong></th>
+								<th><strong><?= $this->translate('Date Created') ?></strong></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong><?= $this->escapeHtml($permission->getId()); ?></strong></td>
+								<td> <a class="tx-semibold" href="<?= $this->url('permissions', ['action'=>'view', 'id'=>$permission->getId()]); ?>">
+                <?= $this->escapeHtml($permission->getName()); ?>
+            </a></td>
+								<td><?= $this->escapeHtml($permission->getDescription()); ?></td>
+								<td><?= $this->escapeHtml($permission->getDateCreated()); ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,171 @@
+<?php
+$title = $this->translate('Edit DCR');
+$this->pageBreadcrumbs()->setTitle($title);
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('DCR')=>$this->url('dcr'),
+            $this->translate('Edit')=>$this->url('dcr', ['action'=>'edit']),
+            ]);
+$this->mainMenu()->setActiveItemId('dcr');
+$form->get('visit_date')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'Visit Date']);
+$form->get('start_period')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'Start Period']);
+$form->get('end_period')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'End Period']);
+$form->get('dcr_no')->setAttributes(['class'=>'form-control','placeholder'=>'Dcr No']);
+$form->get('travel_type')->setAttributes(['class'=>'form-control','placeholder'=>'Travel Type']);
+$form->get('call_type')->setAttributes(['class'=>'form-control','placeholder'=>'Call Type']);
+$form->get('call_count')->setAttributes(['class'=>'form-control','placeholder'=>'Call Count']);
+$form->get('contact_id')->setAttributes(['class'=>'form-control','placeholder'=>'Contact Id']);
+$form->get('product_series')->setAttributes(['class'=>'form-control','placeholder'=>'Product Series']);
+$form->get('product_model')->setAttributes(['class'=>'form-control','placeholder'=>'Product Model']);
+$form->get('product_id')->setAttributes(['class'=>'form-control','placeholder'=>'Product Id']);
+$form->get('quanitity')->setAttributes(['class'=>'form-control','placeholder'=>'Quanitity']);
+$form->get('order_value')->setAttributes(['class'=>'form-control','placeholder'=>'Order Value']);
+$form->get('sales_stage')->setAttributes(['class'=>'form-control','placeholder'=>'Sales Stage']);
+$form->get('next_action')->setAttributes(['class'=>'form-control','placeholder'=>'Next Action']);
+$form->get('remarks')->setAttributes(['class'=>'form-control','placeholder'=>'Remarks']);
+$form->get('Bike_km_reading_start')->setAttributes(['id'=>'bike-start','class'=>'form-control','placeholder'=>'Bike KM Reading Start']);
+$form->get('bike_km_reading_end')->setAttributes(['id'=>'bike-end','class'=>'form-control','placeholder'=>'Bike KM Reading End']);
+$form->get('distance_travelled')->setAttributes(['id'=>'distance-travelled','class'=>'form-control','placeholder'=>'Distance Travelled','readonly'=>true]);
+$form->get('amount_one')->setAttributes(['id'=>'amountone','class'=>'form-control','placeholder'=>'Amount One','readonly'=>true,'data-percentage'=>$distance_travel_percentage]);
+$form->get('travel_mode')->setAttributes(['class'=>'form-control','placeholder'=>'Travel Mode']);
+$form->get('amount_two')->setAttributes(['class'=>'form-control','placeholder'=>'Amount Two']);
+
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update DCR'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Back to DCR','url'=>$this->url('dcr'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Edit DCR</h4>
+		</div>
+		<?= $this->form()->openTag($form); ?>
+		<div class="card-body row">
+		<div class="col-md-6">
+			<div class="form-group">
+            <?= $this->formLabel($form->get('visit_date')); ?>
+            <?= $this->formElement($form->get('visit_date')); ?>
+            <?= $this->formElementErrors($form->get('visit_date')); ?>
+        </div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('start_period')); ?>
+			<?= $this->formElement($form->get('start_period')); ?>
+			<?= $this->formElementErrors($form->get('start_period')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('end_period')); ?>
+			<?= $this->formElement($form->get('end_period')); ?>
+			<?= $this->formElementErrors($form->get('end_period')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('dcr_no')); ?>
+			<?= $this->formElement($form->get('dcr_no')); ?>
+			<?= $this->formElementErrors($form->get('dcr_no')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('travel_type')); ?>
+			<?= $this->formElement($form->get('travel_type')); ?>
+			<?= $this->formElementErrors($form->get('travel_type')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('call_type')); ?>
+			<?= $this->formElement($form->get('call_type')); ?>
+			<?= $this->formElementErrors($form->get('call_type')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('call_count')); ?>
+			<?= $this->formElement($form->get('call_count')); ?>
+			<?= $this->formElementErrors($form->get('call_count')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('contact_id')); ?>
+			<?= $this->formElement($form->get('contact_id')); ?>
+			<?= $this->formElementErrors($form->get('contact_id')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('product_series')); ?>
+			<?= $this->formElement($form->get('product_series')); ?>
+			<?= $this->formElementErrors($form->get('product_series')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('product_model')); ?>
+			<?= $this->formElement($form->get('product_model')); ?>
+			<?= $this->formElementErrors($form->get('product_model')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('product_id')); ?>
+			<?= $this->formElement($form->get('product_id')); ?>
+			<?= $this->formElementErrors($form->get('product_id')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
+		</div>
+		<div class="col-md-6">
+		<div class="form-group">
+			<?= $this->formLabel($form->get('quanitity')); ?>
+			<?= $this->formElement($form->get('quanitity')); ?>
+			<?= $this->formElementErrors($form->get('quanitity')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('order_value')); ?>
+			<?= $this->formElement($form->get('order_value')); ?>
+			<?= $this->formElementErrors($form->get('order_value')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('sales_stage')); ?>
+			<?= $this->formElement($form->get('sales_stage')); ?>
+			<?= $this->formElementErrors($form->get('sales_stage')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('next_action')); ?>
+			<?= $this->formElement($form->get('next_action')); ?>
+			<?= $this->formElementErrors($form->get('next_action')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('remarks')); ?>
+			<?= $this->formElement($form->get('remarks')); ?>
+			<?= $this->formElementErrors($form->get('remarks')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('Bike_km_reading_start')); ?>
+			<?= $this->formElement($form->get('Bike_km_reading_start')); ?>
+			<?= $this->formElementErrors($form->get('Bike_km_reading_start')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('bike_km_reading_end')); ?>
+			<?= $this->formElement($form->get('bike_km_reading_end')); ?>
+			<?= $this->formElementErrors($form->get('bike_km_reading_end')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('distance_travelled')); ?>
+			<?= $this->formElement($form->get('distance_travelled')); ?>
+			<?= $this->formElementErrors($form->get('distance_travelled')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('amount_one')); ?>
+			<?= $this->formElement($form->get('amount_one')); ?>
+			<?= $this->formElementErrors($form->get('amount_one')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('travel_mode')); ?>
+			<?= $this->formElement($form->get('travel_mode')); ?>
+			<?= $this->formElementErrors($form->get('travel_mode')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('amount_two')); ?>
+			<?= $this->formElement($form->get('amount_two')); ?>
+			<?= $this->formElementErrors($form->get('amount_two')); ?>
+		</div>
+
+			</div>
+
+   
+		</div>
+		<?= $this->form()->closeTag(); ?>
+	</div>
+	</div>
+</div>

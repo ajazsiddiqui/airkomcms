@@ -1,0 +1,48 @@
+<?php
+$title = $this->translate('Edit System UserType');
+$this->pageBreadcrumbs()->setTitle($title);
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('System UserType')=>$this->url('system-usertype'),
+            $this->translate('Edit')=>$this->url('system-usertype', ['action'=>'edit']),
+            ]);
+$this->mainMenu()->setActiveItemId('masters');
+$form->get('name')->setAttributes(['class'=>'form-control','placeholder'=>'Name']);
+$form->get('status')->setAttributes(['id' => 'status']);
+$form->get('confidential')->setAttributes(['class'=>'form-control']);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Back to System Usertypes','url'=>$this->url('system-usertype'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Edit UserType</h4>
+			</div>
+			<div class="card-body">
+        <?= $this->form()->openTag($form); ?>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('confidential')); ?>
+            <?= $this->formElement($form->get('confidential')); ?>
+            <?= $this->formElementErrors($form->get('confidential')); ?>
+        </div>
+		<div class="form-group">
+			
+			  <?= $this->formElement($form->get('status')); ?>
+			  <?= $this->formLabel($form->get('status')); ?>
+			<?= $this->formElementErrors($form->get('status')); ?>
+		</div>
+        <?= $this->formElement($form->get('submit')); ?>
+        <?= $this->form()->closeTag(); ?>
+    </div>
+	</div>
+	</div>
+</div>

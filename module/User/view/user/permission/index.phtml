@@ -1,0 +1,60 @@
+<?php
+$title = $this->translate('Permissions');
+$this->headTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Home')=>$this->url('home'),
+            $this->translate('Manage Permissions')=>$this->url('permissions'),
+            ]);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->PageActions()->setItems([
+            ['label'=>'Add New Permission','url'=>$this->url('permissions', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Permissions</h4>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-responsive-md">
+						<thead>
+							<tr>
+								<th><strong><?= $this->translate('ID') ?></strong></th>
+								<th><strong><?= $this->translate('Name') ?></strong></th>
+								<th><strong><?= $this->translate('Description') ?></strong></th>
+								<th><strong><?= $this->translate('Date Created') ?></strong></th>
+								<th class="fit-width"><strong><?= $this->translate('Actions') ?></strong></th>
+							</tr>
+						</thead>
+						<tbody>
+						 <?php foreach ($permissions as $permission): ?>
+							<tr>
+								<td><strong><?= $this->escapeHtml($permission->getId()); ?></strong></td>
+								<td> <a class="tx-semibold" href="<?= $this->url('permissions', ['action'=>'view', 'id'=>$permission->getId()]); ?>">
+                <?= $this->escapeHtml($permission->getName()); ?>
+            </a></td>
+								<td><?= $this->escapeHtml($permission->getDescription()); ?></td>
+								<td><?= $this->escapeHtml($permission->getDateCreated()); ?></td>
+								<td>
+								<a class="btn btn-light" href="<?= $this->url('permissions',['action'=>'edit', 'id'=>$permission->getId()]); ?>">
+                 Edit
+            </a>
+			<a class="btn btn-danger" href="#" data-link="<?= $this->url('permissions',
+                    ['action'=>'delete', 'id'=>$permission->getId()]); ?>" data-toggle="modal" data-target="#confirmDelete">
+                Delete Permission
+            </a>
+								</td>
+							</tr>
+							 <?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?= $this->partial('application/index/delete'); ?>

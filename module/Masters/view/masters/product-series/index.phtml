@@ -1,0 +1,59 @@
+<?php
+$title = $this->translate('Product Series');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('masters');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate(' Product Series')=>$this->url('product-series'),
+            $this->translate('Listings')=>$this->url('product-series', ['action'=>'index']),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add Product Series','url'=>$this->url('product-series', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Product Series</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+	<th><strong><?= $this->translate('Id') ?></strong></th>
+	<th><strong><?= $this->translate('Name') ?></strong></th>
+	<th><strong><?= $this->translate('Status') ?></strong></th>
+	<th><strong><?= $this->translate('Date Created') ?></strong></th>
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($product_series as $series) : ?>
+<tr>
+<td><?= $series->getID();?></td>
+    <td><a href="<?= $this->url('product-series',['action'=>'edit','id' => $series->getId()]); ?>" class="tx-semibold"><?= $series->getName();?></a></td>
+  <td><a class="tx-semibold" href="<?= $this->url('product-series', ['action'=>'setstatus','id' => $series->getId()]); ?>"><?= ($series->getStatus()==1?'Active':'Deactivated');?></a></td>
+	<td><?= $series->getDateCreated();?></td>
+	<td>
+	<a href="<?= $this->url('product-series',[ 'action'=>'edit','id' => $series->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i>Edit</a>
+    </td>
+		<td>
+		<a href="<?= $this->url('product-series',[ 'action'=>'delete','id' => $series->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

@@ -1,0 +1,62 @@
+<?php
+$title = $this->translate('Sign in');
+$this->headTitle($title);
+
+$this->mainMenu()->setActiveItemId('login');
+
+$form->get('email')->setAttributes([
+    'class'=>'form-control', 
+    'placeholder'=>'Email address',
+    'required' => true,
+    'autofocus' => true
+    ]);
+
+$form->get('password')->setAttributes([
+    'class'=>'form-control', 
+    'placeholder'=>'Password',
+    'required' => true,
+    ]);
+	
+$form->get('remember_me')->setAttributes([
+    'class'=>'custom-control-input',
+	'id' => 'remember_me'
+    ]);
+?>
+<div class="row justify-content-center h-100 align-items-center">
+<div class="col-md-6">
+<div class="authincation-content">
+	<div class="row no-gutters">
+		<div class="col-xl-12">
+			<div class="auth-form">
+				<div class="text-center mb-3">
+					<a href="<?= $this->url('home') ?>"><img style="max-width:270px;" src="<?= $this->basePath('images/logo-white.png') ?>"></a>
+				</div>
+				<h4 class="text-center mb-4 text-white">Sign in your account</h4>
+				<form id="form-login" method="post">
+					<div class="form-group text-white">
+						<?= $this->formLabel($form->get('email')); ?>
+						<?= $this->formElement($form->get('email')); ?>
+					</div>
+					<div class="form-group text-white">
+						<?= $this->formLabel($form->get('password')); ?>
+						<?= $this->formElement($form->get('password')); ?>
+					</div>
+					
+					 <div class="form-group text-right">
+						<a href="<?= $this->url('reset-password') ?>" class="tx-13" style="color:#fff;"><?= $this->translate('Forgot password?') ?></a>
+					</div>
+					
+					
+					<div class="text-center">
+						<?= $this->formElement($form->get('redirect_url')); ?>
+						<?= $this->formElement($form->get('csrf')) ?>
+						<button type="submit" class="btn bg-white text-primary btn-block"><?= $this->translate('Sign in') ?></button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>					
+</div>					
+</div>					

@@ -1,0 +1,107 @@
+<?php
+$title = $this->translate('Edit User');
+$this->headTitle($title);
+
+
+$this->mainMenu()->setActiveItemId('settings');
+
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Users')=>$this->url('users'),
+           $this->translate('Edit User')=>$this->url('users', ['action'=>'edit'])
+            ]);
+
+$form->get('email')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'name@example.com'
+    ]);
+
+$form->get('profile_pic')->setAttributes([
+    'class'=>'custom-file-input',
+    ])->setLabelAttributes(['class'=>'custom-file-label']);
+
+$form->get('full_name')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Ajaz Siddiqui'
+    ]);
+
+$form->get('contact_no')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Contact No.'
+    ]);
+
+$form->get('status')->setAttributes([
+    'class'=>'custom-select',
+    ]);
+
+$form->get('submit')->setAttributes(['class'=>'d-none','id'=>'submit']);
+$form->prepare();
+
+$this->PageActions()->setItems([
+            ['label'=>'Back to Users','url'=>$this->url('users',['action'=>'view','id'=>$user->getId()]),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);	
+?>
+
+
+<div class="row main-content">
+<div class="col-12">
+<?= $this->form()->openTag($form); ?>
+<div id="wizard">
+  <h3>User Information</h3>
+  <section class="form-row">
+	  	  <div class="col-md-9 form-row">
+			<div class="form-group col-md-4">
+				<?= $this->formLabel($form->get('full_name')); ?>
+				<?= $this->formElement($form->get('full_name')); ?>
+				<?= $this->formElementErrors($form->get('full_name')); ?>
+			</div>
+
+			<div class="form-group col-md-4">
+				<?= $this->formLabel($form->get('contact_no')); ?>
+				<?= $this->formElement($form->get('contact_no')); ?>
+				<?= $this->formElementErrors($form->get('contact_no')); ?>
+			</div>
+			
+			<div class="custom-file mg-b-20 col-md-4">
+					<?= $this->formLabel($form->get('profile_pic')); ?><br/>
+					<?= $this->formElement($form->get('profile_pic')); ?>
+					<?= $this->formElementErrors($form->get('profile_pic')); ?>
+			</div>
+			<div class="form-group col-md-4">
+			<?= $this->formLabel($form->get('email')); ?>
+			<div class="input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text">
+					<i class="feather-18" data-feather="mail"></i>
+				</span>
+			</div>
+				<?= $this->formElement($form->get('email')); ?>
+			</div>
+			<?= $this->formElementErrors($form->get('email')); ?>
+			</div>
+		</div>
+		<div class="col-md-3">
+		   <div class="col-12">
+					<?php if(!empty($this->user->getProfilePic())){ ?>
+						<div class="pos-relative">
+						  <div class="marker pos-absolute t-10 l-10">Current Image</div>
+							<img class="img-fluid rounded" src="<?= $this->basePath(); ?>/uploads/profile_pics/<?= $this->user->getProfilePic(); ?>" />
+						</div>
+					<?php } ?>
+			</div>
+	  </div>
+ </section>
+  <h3>User Roles</h3>
+  <section class="form-row">
+			
+				<div class="form-group col-md-4">
+				<?= $this->formLabel($form->get('status')); ?>
+				<?= $this->formElement($form->get('status')); ?>
+				<?= $this->formElementErrors($form->get('status')); ?>
+			</div>
+    <?= $this->formElement($form->get('submit')); ?>
+  </section>
+</div>
+<?= $this->form()->closeTag(); ?>
+</div>
+</div>

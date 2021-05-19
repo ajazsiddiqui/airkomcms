@@ -1,0 +1,148 @@
+<?php
+$title = $this->translate('Add User');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle('Add User');
+
+$this->mainMenu()->setActiveItemId('settings');
+
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Users')=>$this->url('users'),
+           $this->translate('Add User')=>$this->url('users', ['action'=>'add'])
+            ]);
+
+$form->get('email')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Email'
+    ]);
+
+$form->get('profile_pic')->setAttributes([
+    'class'=>'custom-file-input',
+    ])->setLabelAttributes(['class'=>'custom-file-label']);
+
+$form->get('full_name')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Full Name'
+    ]);
+
+$form->get('contact_no')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Contact No.'
+    ]);
+
+$form->get('user_type')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'User Type',
+    ]);
+
+$form->get('status')->setAttributes([
+    'class'=>'form-control',
+    ]);
+
+
+$form->get('roles')->setAttributes([
+    'id'=>'form-control',
+    'class'=>'form-control',
+    ]);
+$form->get('password')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter password',
+    ]);
+
+$form->get('confirm_password')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Retype password',
+    ]);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary','id'=>'submit', 'value'=>'Submit']);
+$form->prepare();
+
+$this->PageActions()->setItems([
+            ['label'=>'Back to Users','url'=>$this->url('users'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);	
+?>
+
+
+<div class="row">
+<div class="col-12">
+<?= $this->form()->openTag($form); ?>
+<div class="col-md-9">
+	<div class="card">
+	  <div class="card-header">
+		<h4 class="card-title">User Information</h4>
+	</div>
+	 <div class="card-body">
+			<div class="form-group">
+				<?= $this->formLabel($form->get('full_name')); ?>
+				<?= $this->formElement($form->get('full_name')); ?>
+				<?= $this->formElementErrors($form->get('full_name')); ?>
+			</div>
+
+			<div class="form-group">
+				<?= $this->formLabel($form->get('contact_no')); ?>
+				<?= $this->formElement($form->get('contact_no')); ?>
+				<?= $this->formElementErrors($form->get('contact_no')); ?>
+			</div>
+			
+			<div class="form-group">
+				<label class="text-label"><?= $this->formLabel($form->get('email')); ?></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-envelope"></i> </span>
+					</div>
+					<?= $this->formElement($form->get('email')); ?>
+					<?= $this->formElementErrors($form->get('email')); ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="text-label"><?= $this->formLabel($form->get('password')); ?></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-key"></i> </span>
+					</div>
+					<?= $this->formElement($form->get('password')); ?>
+					<?= $this->formElementErrors($form->get('password')); ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="text-label"><?= $this->formLabel($form->get('confirm_password')); ?></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-key"></i> </span>
+					</div>
+					<?= $this->formElement($form->get('confirm_password')); ?>
+					<?= $this->formElementErrors($form->get('confirm_password')); ?>
+				</div>
+			</div>
+										
+			<div class="custom-file mg-b-20">
+					<?= $this->formLabel($form->get('profile_pic')); ?><br/>
+					<?= $this->formElement($form->get('profile_pic')); ?>
+					<?= $this->formElementErrors($form->get('profile_pic')); ?>
+				</div>
+			<div class="form-group">
+				<?= $this->formLabel($form->get('user_type')); ?>
+				<?= $this->formElement($form->get('user_type')); ?>
+				<?= $this->formElementErrors($form->get('user_type')); ?>
+			</div>
+
+			<div class="form-group">
+				<?= $this->formLabel($form->get('roles')); ?>
+				<?= $this->formElement($form->get('roles')); ?>
+				<?= $this->formElementErrors($form->get('roles')); ?>
+			</div>
+			
+				<div class="form-group">
+				<?= $this->formLabel($form->get('status')); ?>
+				<?= $this->formElement($form->get('status')); ?>
+				<?= $this->formElementErrors($form->get('status')); ?>
+			</div>
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
+    
+  </div>
+</div>
+<?= $this->form()->closeTag(); ?>
+</div>
+</div>

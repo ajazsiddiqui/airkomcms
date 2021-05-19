@@ -1,0 +1,85 @@
+<?php
+$title = $this->translate('Edit Role Permissions');
+$this->headTitle($title);
+
+$this->mainMenu()->setActiveItemId('settings');
+
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Home')=>$this->url('home'),
+            $this->translate('Manage Roles')=>$this->url('roles'),
+           $this->translate('Edit Role') =>$this->url('roles', ['action'=>'edit', 'id'=>$role->getId()])
+            ]);
+
+$form->get('submit')
+        ->setAttributes(['class'=>'btn btn-primary'])
+        ->setValue($this->translate('Save'));
+
+$form->prepare();
+
+$this->PageActions()->setItems([
+            ['label'=>'Back to Roles','url'=>$this->url('roles'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+
+<div class="row">
+  <div class="col-10 p-0">
+
+<div class="card">
+  <div class="card-header">
+	<h4 class="card-title">Edit Permissions</h4>
+</div>
+ <div class="card-body row">
+    <?= $this->form()->openTag($form); ?>
+    <div class="table-responsive">
+	<table class="table table-hover mg-t-30 mg-b-30 mg-md-t-0">
+        <thead>
+		<tr>
+            <th><strong><?= $this->translate('Name') ?></strong></th>
+            <th><strong><?= $this->translate('Description') ?></strong></th>
+        </tr>
+		</thead>
+		<tbody>
+			<?php
+			$i = 1;
+			foreach ($allPermissions as $permission):
+				$element = $form->get('permissions')->get($permission->getName());
+			?>
+			<tr>
+				<td>
+
+					<div class="checkbox check-primary checkbox-circle">
+						<input id="checkbox<?= $i ?>" type="checkbox" name="<?= $this->escapeHtmlAttr($element->getName()) ?>"
+									  value="<?= $this->escapeHtmlAttr($element->getCheckedValue()) ?>"
+									  <?php if ($element->isChecked()) echo 'checked'?>
+									  <?php if ($element->getAttribute('disabled')) echo 'disabled'?>>
+						 <label for="checkbox<?= $i ?>">
+						 <?= $this->escapeHtml($element->getLabel()) ?>
+						</label>
+						<?= $this->formElementErrors($element); ?>
+					</div>
+				</td>
+				<td>
+					<?= $this->escapeHtml($permission->getDescription()) ?>
+				</td>
+			</tr>
+			<?php
+			$i++;
+			endforeach; ?>
+		</tbody>
+    </table>
+  </div>
+    <?= $this->formElement($form->get('csrf')); ?>
+
+    <?= $this->formElement($form->get('submit')); ?>
+
+    <?= $this->form()->closeTag(); ?>
+</div>
+    </div>
+</div>
+</div>
+
+<style>
+.table tbody tr td .checkbox label::after {
+    left: 3px;
+}
+</style>

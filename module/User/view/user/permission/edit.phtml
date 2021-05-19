@@ -1,0 +1,48 @@
+<?php
+$title = $this->translate('Edit Permission');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('settings');
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Permissions')=>$this->url('permissions'),
+           $this->translate('Edit Permission')=>$this->url('permissions', ['action'=>'edit'])
+            ]);
+$form->get('name')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter name'
+    ]);
+$form->get('description')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Enter description'
+    ]);
+$form->get('submit')
+        ->setAttributes(['class'=>'btn btn-primary'])
+        ->setValue($this->translate('Save'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Back to Permissions','url'=>$this->url('permissions'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-body">
+		<?= $this->form()->openTag($form); ?>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('name')); ?>
+			<?= $this->formElement($form->get('name')); ?>
+			<?= $this->formElementErrors($form->get('name')); ?>
+		</div>
+		<div class="form-group">
+			<?= $this->formLabel($form->get('description')); ?>
+			<?= $this->formElement($form->get('description')); ?>
+			<?= $this->formElementErrors($form->get('description')); ?>
+		</div>
+		<?= $this->formElement($form->get('csrf')); ?>
+		<?= $this->formElement($form->get('submit')); ?>
+		<?= $this->form()->closeTag(); ?>
+			</div>
+		</div>
+	</div>
+</div>

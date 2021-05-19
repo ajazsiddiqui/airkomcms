@@ -1,0 +1,97 @@
+<?php
+$title = $this->translate('SPT');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('spt');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('SPT')=>$this->url('spt'),
+            $this->translate('Listings')=>$this->url('spt'),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add SPT','url'=>$this->url('spt', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">SPT</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+<th><strong><?= $this->translate('ID') ?></strong></th>
+<th><strong><?= $this->translate('Stage') ?></strong></th>
+<th><strong><?= $this->translate('Propect Name') ?></strong></th>
+<th><strong><?= $this->translate('Lead Source') ?></strong></th>
+<th><strong><?= $this->translate('Executive') ?></strong></th>
+<!-- <th><strong><?= $this->translate('Offer No') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Sales Stage') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Product Series') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Product Model') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Actual Product') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Forecasted Booking_value') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Quanitity') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Expected Close_date') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Expected Month') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Close Probability') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Next Action') ?></strong></th> -->
+<th><strong><?= $this->translate('Last Contacted') ?></strong></th>
+<!-- <th><strong><?= $this->translate('Remarks') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Contacted Type') ?></strong></th> -->
+<!-- <th><strong><?= $this->translate('Contact Id') ?></strong></th> -->
+
+
+	<!-- <th><strong><?= $this->translate('Date Created') ?></strong></th> -->
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($spt as $s) : ?>
+<tr>
+<td><?= $s->getID();?></td>
+<td><?= $this->MasterDetails()->getLeadStageName($s->getStage());?></td>
+<td><?= $s->getPropectName();?></td>
+<td><?= $this->MasterDetails()->getLeadSourceName($s->getLeadSource());?></td>
+<td><?= $this->MasterDetails()->getExecutiveName($s->getExecutive());?></td>
+<!-- <td><?= $s->getOfferNo();?></td> -->
+<!-- <td><?= $s->getSalesStage();?></td> -->
+<!-- <td><?= $s->getProductSeries();?></td> -->
+<!-- <td><?= $s->getProductModel();?></td> -->
+<!-- <td><?= $s->getActualProduct();?></td> -->
+<!-- <td><?= $s->getForecastedBookingValue();?></td> -->
+<!-- <td><?= $s->getQuanitity();?></td> -->
+<!-- <td><?= $s->getExpectedCloseDate()->format('d/m/Y');?></td> -->
+<!-- <td><?= $s->getExpectedMonth();?></td> -->
+<!-- <td><?= $s->getCloseProbability();?></td> -->
+<!-- <td><?= $s->getNextAction();?></td> -->
+<td><?= $s->getLastContactedDate()->format('d/m/Y');;?></td>
+<!-- <td><?= $s->getRemarks();?></td> -->
+<!-- <td><?= $s->getContactedType();?></td> -->
+<!-- <td><?= $s->getContactId();?></td> -->
+
+
+	<!-- <td><?= $s->getDateCreated();?></td> -->
+	<td>
+	<a href="<?= $this->url('spt',[ 'action'=>'edit','id' => $s->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+    </td>
+	<td>
+		<a href="<?= $this->url('spt',[ 'action'=>'delete','id' => $s->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

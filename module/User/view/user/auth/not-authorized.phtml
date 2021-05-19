@@ -1,0 +1,27 @@
+<?php
+$title = $this->translate('Not Authorized');
+$this->headTitle($title);
+?>
+
+<div class="d-flex justify-content-center full-height full-width align-items-center">
+<div class="error-container text-center">
+<h1 class="error-number">404</h1>
+<h2 class="semi-bold"><?= $this->translate('Sorry but we couldnt find this page') ?></h2>
+<p class="p-b-10"><?= $this->translate('We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing.') ?>
+</p>
+<a href="javascript:history.back();">Go Back</a>
+</div>
+</div>
+
+
+<style>
+.error-container{
+	top: 20%;
+	position: absolute;
+}
+.error-number{
+	font-size: 150px;
+	font-weight: bold;
+}
+
+</style>

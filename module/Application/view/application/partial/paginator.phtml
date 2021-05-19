@@ -1,0 +1,50 @@
+<br/>
+<?php if ($this->paginator): ?>
+	<?php 
+	$page = $this->paginator['page'];
+	$per_page = ceil($this->paginator['count'] / $paginator['per_page']);
+	$action = empty($action)?[]:['action'=>$action];
+	?>
+<?php 
+if ($per_page > 3) {
+    $min = max($page - 5, 2);
+    $max = min($page + 5, $per_page-1);
+    $links[] = "1";
+    for ($i=$min; $i<$max+1; $i++) {
+        $links[] = "$i";
+    }
+    $links[] = "$per_page";
+} else {
+    $links = array("1", "2", "3");
+}
+
+?>
+	<?php if ($per_page > 1): ?>
+		<ul class="pagination"> 
+			<?php if ($page > $per_page - 1){ ?>
+				<li class="page-item"><a class="page-link" href="<?= $this->url($this->route, [], ['query'=>['page'=>$page - 1,'search'=>$this->search]]); ?>"><i class="fa fa-chevron-left"></i></a></li>
+			<?php } ?>
+			   
+			<?php  foreach ($links as $link) { ?>  
+				<li class="page-item <?= (($this->paginator['page'] == $link)?'active':'') ?>"><a class="page-link" href="<?= $this->url($this->route, $action, ['query'=>['page'=>$link,'search'=>$this->search]]); ?>"><?= $link ?></a></li>
+			  <?php } ?>
+			  
+			<?php if ($page <= $per_page - 1){ ?>
+				<li class="page-item"><a class="page-link" href="<?= $this->url($this->route, [], ['query'=>['page'=>$page + 1,'search'=>$this->search]]); ?>"><i class="fa fa-chevron-right"></i></a></li>
+			<?php } ?>
+		</ul> 
+	<?php endif; ?>
+<?php endif; ?>
+<style>
+.pagination::after {
+    content: '<?= $paginator['count']; ?> Rows';
+    line-height: 40px;
+    float: right;
+    display: block;
+    position: absolute;
+    right: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+</style>
