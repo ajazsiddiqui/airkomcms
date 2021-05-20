@@ -12,6 +12,7 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use User\Entity\User;
 
 class ReportsController extends AbstractActionController
 {
@@ -34,38 +35,15 @@ class ReportsController extends AbstractActionController
     public function indexAction()
     {
 		$request = $this->getRequest();
-        $search_array = $this->params()->fromQuery('search', []);
-        $search_array = empty($search_array) ? [] : unserialize(base64_decode($search_array));
 
         $post = $request->getPost()->toArray();
-        empty($post) ? $post = $search_array : '';
 
-        if (!empty($post)) {
-            $search_array['s_user'] = $post['s_user'];
-            $search_array['s_daterange'] = $post['s_daterange'];
-        }
+		$selectedUser = !empty($post['s_user'])?$post['s_user']:'';
+		$selectedDate = !empty($post['s_daterange'])?$post['s_daterange']:'';
 
-        $query = $this->entityManager->createQueryBuilder()->select('U')
-            ->from('User\Entity\User', 'U');
-			
-        if (!empty($search_array['s_user'])) {
-            $query->Where('U.id = :s_user')->setParameter('s_user',$post['s_user']);
-        }
-        if (!empty($search_array['s_role'])) {
-            $query->andWhere('U.userType = :s_role')->setParameter('s_role', $post['s_role']);
-        }
-        $paginator['page'] = $this->params()->fromQuery('page', 1);
-        $paginator['count'] = count($query->getQuery()->getScalarResult());
-        $paginator['per_page'] = 12;
-        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+        $users = $this->entityManager->getRepository(User::class)
+            ->findBy([], ['fullName' => 'ASC']);
 
-        $query->setFirstResult($offset)->setMaxResults($paginator['per_page'])->add('orderBy', 'U.id DESC');
-
-        $users = $query->getQuery()->getResult();
-
-        $systemUserTypes = $this->entityManager->getRepository(SystemUserType::class)
-            ->findAll();
-
-        return new ViewModel(['users' => $users, 'form' => $form, 'systemUserTypes' => $systemUserTypes, 'paginator' => $paginator, 'search_array' => $search_array]);
+        return new ViewModel(['selectedUser'=>$selectedUser,'selectedDate' =>$selectedDate, 'users' => $users]);
     }
 }

@@ -67,13 +67,13 @@ class NavManager
             ];
         } else {
 			
-			if ($this->rbacManager->isGranted(null, 'dashboard.manage')) {
-				$items[] = [
-					'id' => 'dashboard',
-					'label' => $this->translator->translate('Dashboard'),
-					'link'  => $url('dashboard')
-				];
-			}
+			// if ($this->rbacManager->isGranted(null, 'dashboard.manage')) {
+				// $items[] = [
+					// 'id' => 'dashboard',
+					// 'label' => $this->translator->translate('Dashboard'),
+					// 'link'  => $url('dashboard')
+				// ];
+			// }
 			
 			if ($this->rbacManager->isGranted(null, 'contacts.manage')) {
 				$items[] = [
