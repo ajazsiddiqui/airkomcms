@@ -32,7 +32,7 @@ $this->PageActions()->setItems([
 	<!-- <th><strong><?= $this->translate('Travel Type') ?></strong></th> -->
 	<!-- <th><strong><?= $this->translate('Call Type') ?></strong></th> -->
 	<!-- <th><strong><?= $this->translate('Call Count') ?></strong></th> -->
-	<th><strong><?= $this->translate('Contact') ?></strong></th>
+	<th><strong><?= $this->translate('Company') ?></strong></th>
 	<!-- <th><strong><?= $this->translate('Product Series') ?></strong></th> -->
 	<!-- <th><strong><?= $this->translate('Product Model') ?></strong></th> -->
 	<!-- <th><strong><?= $this->translate('Product Id') ?></strong></th> -->
@@ -63,7 +63,7 @@ $this->PageActions()->setItems([
 <!-- <td><?= $d->getTraveltype();?></td> -->
 <!-- <td><?= $d->getCalltype();?></td> -->
 <!-- <td><?= $d->getCallcount();?></td> -->
-<td><?= $this->MasterDetails()->getContactName($d->getContactid());?></td>
+<td><a href="<?= $this->url('dcr',[ 'action'=>'edit','id' => $d->getId()]); ?>" class="tx-semibold"><?= $this->MasterDetails()->getPropectName($d->getContactid());?></a></td>
 <!-- <td><?= $d->getProductseries();?></td> -->
 <!-- <td><?= $d->getProductmodel();?></td> -->
 <!-- <td><?= $d->getProductid();?></td> -->
@@ -78,14 +78,14 @@ $this->PageActions()->setItems([
 <!-- <td><?= $d->getAmountone();?></td> -->
 <!-- <td><?= $d->getTravelmode();?></td> -->
 <td><?= $d->getVisitdate()->format('d-m-Y');?></td>
-<td><?= $d->getAmounttwo();?></td>
+<td>₹ <?= $d->getAmounttwo();?></td>
 
 	<!-- <td><?= $d->getDateCreated();?></td> -->
 	<td>
-	<a href="<?= $this->url('dcr',[ 'action'=>'edit','id' => $d->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+	<a href="<?= $this->url('dcr',[ 'action'=>'edit','id' => $d->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
     </td>
 	<td>
-		<a href="<?= $this->url('dcr',[ 'action'=>'delete','id' => $d->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+		<a href="<?= $this->url('dcr',[ 'action'=>'delete','id' => $d->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

@@ -109,24 +109,26 @@ $this->PageActions()->setItems([
 				<?= $this->formElement($form->get('status')); ?>
 				<?= $this->formElementErrors($form->get('status')); ?>
 			</div>
-			<?= $this->formElement($form->get('submit')); ?>
+			
 		</div>
 		<div class="col-md-3">
-		   <div class="col-12">
 				<?php if(!empty($this->user->getProfilePic())){ ?>
 					<div class="pos-relative mb-5">
 						<img class="img-fluid rounded" src="<?= $this->basePath(); ?>/uploads/profile_pics/<?= $this->user->getProfilePic(); ?>" />
 					</div>
 				<?php } ?>
 			
-				<div class="custom-file mg-b-20">
+				<div class="custom-file mg-b-20 mb-5 mt-5">
 					<?= $this->formLabel($form->get('profile_pic')); ?><br/>
 					<?= $this->formElement($form->get('profile_pic')); ?>
 					<?= $this->formElementErrors($form->get('profile_pic')); ?>
 				</div>
-			</div>
 	  </div>
-    
+    <div class="col-md-12">
+		<div class="form-group">
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
+	</div>
   </div>
 </div>
 <?= $this->form()->closeTag(); ?>

@@ -17,6 +17,7 @@ use Application\Entity\Spt;
 use Application\Entity\Contacts;
 use User\Entity\User;
 use Settings\Entity\Settings;
+use Laminas\View\Model\JsonModel;
 
 class SPTController extends AbstractActionController
 {
@@ -34,6 +35,45 @@ class SPTController extends AbstractActionController
         $this->logManager = $logManager;
         $this->ExtranetUtilities = $ExtranetUtilities;
         $this->airkom = $airkom;
+    }
+	
+    public function cors()
+    {
+        // Allow from any origin
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            header('Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept');
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');    // cache for 1 day
+        }
+        // Access-Control headers are received during OPTIONS requests
+        if ('OPTIONS' == $_SERVER['REQUEST_METHOD']) {
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+                // may also be using PUT, PATCH, HEAD etc
+                header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            }
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+                header('Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept');
+            }
+
+            exit(0);
+        }
+    }
+	
+	public function getContactAction()
+    {
+		$id = $this->params()->fromQuery('contactid', 0);
+        $this->cors();
+		$contact = $this->entityManager->getRepository(Contacts::class)
+            ->findOneBY(['id'=>$id]);
+			
+		if(empty($contact)){
+			return new JsonModel([]);
+		}
+        $array = ['name'=>$contact->getName()];
+
+        return new JsonModel($array);
     }
 	
     public function indexAction()
@@ -62,7 +102,7 @@ class SPTController extends AbstractActionController
 		$form->get('actual_product')->setValueOptions($this->ExtranetUtilities->getProductsList());
 		$form->get('close_probability')->setValueOptions($this->ExtranetUtilities->getProbabilityList());
 		$form->get('next_action')->setValueOptions($this->ExtranetUtilities->getNextActionList());
-		$form->get('contact_id')->setValueOptions($this->ExtranetUtilities->getContactsList());
+		$form->get('propect_name')->setValueOptions($this->ExtranetUtilities->getContactsList());
 		$form->get('contacted_type')->setValueOptions($this->ExtranetUtilities->getContactedTypeList());
 		
         $request = $this->getRequest();
@@ -86,6 +126,7 @@ class SPTController extends AbstractActionController
 					$spt->setProductModel($data['product_model']);
 					$spt->setActualProduct($data['actual_product']);
 					$spt->setForecastedBookingValue((float)($data['forecasted_booking_value']));
+					$spt->setDiscountOffered((float)($data['discount_offered']));
 					$spt->setQuanitity($data['quanitity']);
 					$spt->setExpectedCloseDate($this->ExtranetUtilities->makeDate($data['expected_close_date']));
 					$spt->setExpectedMonth($data['expected_month']);
@@ -94,10 +135,12 @@ class SPTController extends AbstractActionController
 					$spt->setLastContactedDate($this->ExtranetUtilities->makeDate($data['last_contacted_date']));
 					$spt->setRemarks($data['remarks']);
 					$spt->setContactedType($data['contacted_type']);
-					$spt->setContactId($data['contact_id']);
+					$spt->setContact($data['contact']);
 					$spt->setCreatedBy($user->getId());
                     $this->entityManager->persist($spt);
                     $this->entityManager->flush();
+					
+					$this->flashMessenger()->addSuccessMessage('SPT Added '.$data['propect_name']);
                 } catch (Exception $e) {
                     $this->logger->info('Caught exception: ', $e->getMessage(), "\n");
                 }
@@ -105,11 +148,11 @@ class SPTController extends AbstractActionController
                 $log = $this->logManager;
                 $log->setlog('SPT Added', $data['propect_name'], $this->authService->getIdentity());
             } else {
-                $this->logger->info('form validator: ', $form->getMessages(), "\n");
+                print_r($form->getMessages());
             }
-            $this->flashMessenger()->addSuccessMessage('SPT Added '.$data['propect_name']);
+            
 
-            return $this->redirect()->toRoute('spt');
+          return $this->redirect()->toRoute('spt');
         }
 
         return new ViewModel(['form' => $form]);
@@ -145,7 +188,7 @@ class SPTController extends AbstractActionController
 		$form->get('actual_product')->setValueOptions($this->ExtranetUtilities->getProductsList());
 		$form->get('close_probability')->setValueOptions($this->ExtranetUtilities->getProbabilityList());
 		$form->get('next_action')->setValueOptions($this->ExtranetUtilities->getNextActionList());
-		$form->get('contact_id')->setValueOptions($this->ExtranetUtilities->getContactsList());
+		$form->get('propect_name')->setValueOptions($this->ExtranetUtilities->getContactsList());
 		$form->get('contacted_type')->setValueOptions($this->ExtranetUtilities->getContactedTypeList());
 		
         if ($this->getRequest()->isPost()) {
@@ -166,6 +209,7 @@ class SPTController extends AbstractActionController
 					$spt->setProductModel($data['product_model']);
 					$spt->setActualProduct($data['actual_product']);
 					$spt->setForecastedBookingValue((float)($data['forecasted_booking_value']));
+					$spt->setDiscountOffered((float)($data['discount_offered']));
 					$spt->setQuanitity($data['quanitity']);
 					$spt->setExpectedCloseDate($this->ExtranetUtilities->makeDate($data['expected_close_date']));
 					$spt->setExpectedMonth($data['expected_month']);
@@ -174,7 +218,7 @@ class SPTController extends AbstractActionController
 					$spt->setLastContactedDate($this->ExtranetUtilities->makeDate($data['last_contacted_date']));
 					$spt->setRemarks($data['remarks']);
 					$spt->setContactedType($data['contacted_type']);
-					$spt->setContactId($data['contact_id']);
+					$spt->setContact($data['contact']);
 					$spt->setCreatedBy($user->getId());
                     $this->entityManager->persist($spt);
                     $this->entityManager->flush();
@@ -203,6 +247,7 @@ class SPTController extends AbstractActionController
 			'product_model' => $spt->getProductModel(),
 			'actual_product' => $spt->getActualProduct(),
 			'forecasted_booking_value' => $spt->getForecastedBookingValue(),
+			'discount_offered' => $spt->getDiscountOffered(),
 			'quanitity' => $spt->getQuanitity(),
 			'expected_close_date' => $spt->getExpectedCloseDate()->format('dd/mm/Y'),
 			'expected_month' => $spt->getExpectedMonth(),
@@ -211,7 +256,7 @@ class SPTController extends AbstractActionController
 			'last_contacted_date' => $spt->getLastcontactedDate()->format('dd/mm/Y'),
 			'remarks' => $spt->getRemarks(),
 			'contacted_type' => $spt->getContactedType(),
-			'contact_id' => $spt->getContactId(),
+			'contact' => $spt->getContact(),
                 ]
             );
         }

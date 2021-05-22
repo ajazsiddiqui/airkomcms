@@ -40,10 +40,10 @@ $this->PageActions()->setItems([
   <td><a class="tx-semibold" href="<?= $this->url('product-models', ['action'=>'setstatus','id' => $model->getId()]); ?>"><?= ($model->getStatus()==1?'Active':'Deactivated');?></a></td>
 	<td><?= $model->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('product-models',[ 'action'=>'edit','id' => $model->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i>Edit</a>
+	<a href="<?= $this->url('product-models',[ 'action'=>'edit','id' => $model->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
     </td>
 		<td>
-		<a href="<?= $this->url('product-models',[ 'action'=>'delete','id' => $model->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+		<a href="<?= $this->url('product-models',[ 'action'=>'delete','id' => $model->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

@@ -36,8 +36,8 @@ $this->PageActions()->setItems([
 		<td><?= $tax->getDateCreated();?></td>
 		<td>
 			<div class=" pull-right">
-			<a href="<?= $this->url('tax', array('controller' => 'tax', 'action'=>'edit','id' => $tax->getId())); ?>" class="btn btn-light"><i data-feather="edit"></i> Edit</a>
-			<a href="#" data-link="<?= $this->url('tax', array('controller' => 'tax', 'action'=>'delete','id' => $tax->getId())); ?>" class="btn btn-danger " data-msg="Do you really want to delete the tax <?= $tax->getId();?>" data-toggle="modal" data-target="#confirmDelete">Delete</a>
+			<a href="<?= $this->url('tax', array('controller' => 'tax', 'action'=>'edit','id' => $tax->getId())); ?>" class="btn btn-light"><i data-feather="edit"></i></a>
+			<a href="#" data-link="<?= $this->url('tax', array('controller' => 'tax', 'action'=>'delete','id' => $tax->getId())); ?>" class="btn btn-danger " data-msg="Do you really want to the tax <?= $tax->getId();?>" data-toggle="modal" data-target="#confirmDelete">Delete</a>
 		</div>
 			</td>
 		</tr>

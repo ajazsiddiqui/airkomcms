@@ -8,7 +8,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 $this->mainMenu()->setActiveItemId('spt');
 $form->get('stage')->setAttributes(['class'=>'form-control','placeholder'=>'Stage']);
-$form->get('propect_name')->setAttributes(['class'=>'form-control','placeholder'=>'Propect Name']);
+$form->get('propect_name')->setAttributes(['id'=>'propect_name','class'=>'form-control','placeholder'=>'Propect Name','required'=>true]);
 $form->get('lead_source')->setAttributes(['class'=>'form-control','placeholder'=>'Lead Source']);
 $form->get('executive')->setAttributes(['class'=>'form-control','placeholder'=>'Executive']);
 $form->get('offer_no')->setAttributes(['class'=>'form-control','placeholder'=>'Offer No']);
@@ -17,15 +17,16 @@ $form->get('product_series')->setAttributes(['class'=>'form-control','placeholde
 $form->get('product_model')->setAttributes(['class'=>'form-control','placeholder'=>'Product Model']);
 $form->get('actual_product')->setAttributes(['class'=>'form-control','placeholder'=>'Actual Product']);
 $form->get('forecasted_booking_value')->setAttributes(['class'=>'form-control','placeholder'=>'Forecasted Booking Value']);
-$form->get('quanitity')->setAttributes(['class'=>'form-control','placeholder'=>'Quantity']);
-$form->get('expected_close_date')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'Expected Close Date']);
+$form->get('discount_offered')->setAttributes(['class'=>'form-control','placeholder'=>'Discount Offered']);
+$form->get('quanitity')->setAttributes(['class'=>'form-control','placeholder'=>'Quantity','required'=>true]);
+$form->get('expected_close_date')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'Expected Close Date','required'=>true]);
 $form->get('expected_month')->setAttributes(['class'=>'form-control','placeholder'=>'Expected Month']);
 $form->get('close_probability')->setAttributes(['class'=>'form-control','placeholder'=>'Close Probability']);
 $form->get('next_action')->setAttributes(['class'=>'form-control','placeholder'=>'Next Action']);
 $form->get('last_contacted_date')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'Last Contacted Date']);
 $form->get('remarks')->setAttributes(['class'=>'form-control','placeholder'=>'Remarks']);
 $form->get('contacted_type')->setAttributes(['class'=>'form-control','placeholder'=>'Contacted Type']);
-$form->get('contact_id')->setAttributes(['class'=>'form-control','placeholder'=>'Contact']);
+$form->get('contact')->setAttributes(['id'=>'contact','class'=>'form-control','placeholder'=>'Contact']);
 
 
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Save SPT'));
@@ -58,11 +59,17 @@ $this->PageActions()->setItems([
 			<?= $this->formElement($form->get('lead_source')); ?>
 			<?= $this->formElementErrors($form->get('lead_source')); ?>
 		</div>
-		<div class="form-group">
+		<div class="form-group input-group">
 			<?= $this->formLabel($form->get('executive')); ?>
-			<?= $this->formElement($form->get('executive')); ?>
-			<?= $this->formElementErrors($form->get('executive')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-user"></i></div>
+			</div>
+				<?= $this->formElement($form->get('executive')); ?>
+				<?= $this->formElementErrors($form->get('executive')); ?>
+			</div>
 		</div>
+
 		<div class="form-group">
 			<?= $this->formLabel($form->get('offer_no')); ?>
 			<?= $this->formElement($form->get('offer_no')); ?>
@@ -88,46 +95,75 @@ $this->PageActions()->setItems([
 			<?= $this->formElement($form->get('actual_product')); ?>
 			<?= $this->formElementErrors($form->get('actual_product')); ?>
 		</div>
-		<div class="form-group">
+		<div class="form-group input-group">
 			<?= $this->formLabel($form->get('forecasted_booking_value')); ?>
-			<?= $this->formElement($form->get('forecasted_booking_value')); ?>
-			<?= $this->formElementErrors($form->get('forecasted_booking_value')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">₹</div>
+			</div>
+				<?= $this->formElement($form->get('forecasted_booking_value')); ?>
+				<?= $this->formElementErrors($form->get('forecasted_booking_value')); ?>
+			</div>
 		</div>
-		<div class="form-group">
-			<?= $this->formElement($form->get('submit')); ?>
-		</div>
+
+		
 		</div>
 		<div class="col-md-6">
-		<div class="form-group">
+		<div class="form-group input-group">
 			<?= $this->formLabel($form->get('quanitity')); ?>
-			<?= $this->formElement($form->get('quanitity')); ?>
-			<?= $this->formElementErrors($form->get('quanitity')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">#</div>
+			</div>
+				<?= $this->formElement($form->get('quanitity')); ?>
+				<?= $this->formElementErrors($form->get('quanitity')); ?>
+			</div>
 		</div>
-		<div class="form-group">
+		
+	<div class="form-group input-group">
 			<?= $this->formLabel($form->get('expected_close_date')); ?>
-			<?= $this->formElement($form->get('expected_close_date')); ?>
-			<?= $this->formElementErrors($form->get('expected_close_date')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+			</div>
+				<?= $this->formElement($form->get('expected_close_date')); ?>
+				<?= $this->formElementErrors($form->get('expected_close_date')); ?>
+			</div>
 		</div>
+		
+
 		<div class="form-group">
 			<?= $this->formLabel($form->get('expected_month')); ?>
 			<?= $this->formElement($form->get('expected_month')); ?>
 			<?= $this->formElementErrors($form->get('expected_month')); ?>
 		</div>
-		<div class="form-group">
+		<div class="form-group input-group">
 			<?= $this->formLabel($form->get('close_probability')); ?>
-			<?= $this->formElement($form->get('close_probability')); ?>
-			<?= $this->formElementErrors($form->get('close_probability')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">%</div>
+			</div>
+				<?= $this->formElement($form->get('close_probability')); ?>
+				<?= $this->formElementErrors($form->get('close_probability')); ?>
+			</div>
 		</div>
 		<div class="form-group">
 			<?= $this->formLabel($form->get('next_action')); ?>
 			<?= $this->formElement($form->get('next_action')); ?>
 			<?= $this->formElementErrors($form->get('next_action')); ?>
 		</div>
-		<div class="form-group">
+			<div class="form-group input-group">
 			<?= $this->formLabel($form->get('last_contacted_date')); ?>
-			<?= $this->formElement($form->get('last_contacted_date')); ?>
-			<?= $this->formElementErrors($form->get('last_contacted_date')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+			</div>
+				<?= $this->formElement($form->get('last_contacted_date')); ?>
+				<?= $this->formElementErrors($form->get('last_contacted_date')); ?>
+			</div>
 		</div>
+		
+
 		<div class="form-group">
 			<?= $this->formLabel($form->get('remarks')); ?>
 			<?= $this->formElement($form->get('remarks')); ?>
@@ -139,14 +175,27 @@ $this->PageActions()->setItems([
 			<?= $this->formElementErrors($form->get('contacted_type')); ?>
 		</div>
 		<div class="form-group">
-			<?= $this->formLabel($form->get('contact_id')); ?>
-			<?= $this->formElement($form->get('contact_id')); ?>
-			<?= $this->formElementErrors($form->get('contact_id')); ?>
+			<?= $this->formLabel($form->get('contact')); ?>
+			<?= $this->formElement($form->get('contact')); ?>
+			<?= $this->formElementErrors($form->get('contact')); ?>
 		</div>
-
+		<div class="form-group input-group">
+			<?= $this->formLabel($form->get('discount_offered')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">%</div>
+			</div>
+				<?= $this->formElement($form->get('discount_offered')); ?>
+				<?= $this->formElementErrors($form->get('discount_offered')); ?>
+			</div>
+		</div>
 			</div>
 
-   
+   <div class="col-md-12">
+   <div class="form-group">
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
+		</div>
 		</div>
 		<?= $this->form()->closeTag(); ?>
 	</div>

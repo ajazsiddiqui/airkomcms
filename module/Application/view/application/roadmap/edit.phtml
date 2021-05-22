@@ -9,8 +9,8 @@ $this->pageBreadcrumbs()->setItems([
 $this->mainMenu()->setActiveItemId('roadmap');
 $form->get('week')->setAttributes(['class'=>'form-control','placeholder'=>'Week']);
 $form->get('market_segment')->setAttributes(['class'=>'form-control','placeholder'=>'Market Segment']);
-$form->get('prospect_name')->setAttributes(['class'=>'form-control','placeholder'=>'Prospect Name']);
-$form->get('prospect_city')->setAttributes(['class'=>'form-control','placeholder'=>'Prospect City']);
+$form->get('prospect_name')->setAttributes(['id'=>'rprospect_name','class'=>'form-control','placeholder'=>'Prospect Name']);
+$form->get('prospect_city')->setAttributes(['id'=>'rprospect_city','class'=>'form-control','placeholder'=>'Prospect City']);
 $form->get('propspect_machine')->setAttributes(['class'=>'form-control','placeholder'=>'Propspect Machine']);
 $form->get('product_series')->setAttributes(['class'=>'form-control','placeholder'=>'Product Series']);
 $form->get('product_model')->setAttributes(['class'=>'form-control','placeholder'=>'Product Model']);
@@ -34,21 +34,35 @@ $this->PageActions()->setItems([
 		<?= $this->form()->openTag($form); ?>
 		<div class="card-body row">
 		<div class="col-md-6">
-			<div class="form-group">
-            <?= $this->formLabel($form->get('week')); ?>
-            <?= $this->formElement($form->get('week')); ?>
-            <?= $this->formElementErrors($form->get('week')); ?>
-        </div>
+		<div class="form-group input-group">
+			<?= $this->formLabel($form->get('week')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+			</div>
+				<?= $this->formElement($form->get('week')); ?>
+				<?= $this->formElementErrors($form->get('week')); ?>
+			</div>
+		</div>
+
+
 <div class="form-group">
             <?= $this->formLabel($form->get('market_segment')); ?>
             <?= $this->formElement($form->get('market_segment')); ?>
             <?= $this->formElementErrors($form->get('market_segment')); ?>
         </div>
-<div class="form-group">
-            <?= $this->formLabel($form->get('prospect_name')); ?>
-            <?= $this->formElement($form->get('prospect_name')); ?>
-            <?= $this->formElementErrors($form->get('prospect_name')); ?>
-        </div>
+<div class="form-group input-group">
+			<?= $this->formLabel($form->get('prospect_name')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-user"></i></div>
+			</div>
+				<?= $this->formElement($form->get('prospect_name')); ?>
+				<?= $this->formElementErrors($form->get('prospect_name')); ?>
+			</div>
+		</div>
+		
+
 <div class="form-group">
             <?= $this->formLabel($form->get('prospect_city')); ?>
             <?= $this->formElement($form->get('prospect_city')); ?>
@@ -64,9 +78,7 @@ $this->PageActions()->setItems([
             <?= $this->formElement($form->get('product_series')); ?>
             <?= $this->formElementErrors($form->get('product_series')); ?>
         </div>
-		<div class="form-group">
-			<?= $this->formElement($form->get('submit')); ?>
-		</div>
+
 </div>
 <div class="col-md-6">
 <div class="form-group">
@@ -84,19 +96,34 @@ $this->PageActions()->setItems([
             <?= $this->formElement($form->get('next_action')); ?>
             <?= $this->formElementErrors($form->get('next_action')); ?>
         </div>
-<div class="form-group">
-            <?= $this->formLabel($form->get('expected_quanitity')); ?>
-            <?= $this->formElement($form->get('expected_quanitity')); ?>
-            <?= $this->formElementErrors($form->get('expected_quanitity')); ?>
-        </div>
-<div class="form-group">
-            <?= $this->formLabel($form->get('expected_potential_order_value')); ?>
-            <?= $this->formElement($form->get('expected_potential_order_value')); ?>
-            <?= $this->formElementErrors($form->get('expected_potential_order_value')); ?>
-        </div>
+<div class="form-group input-group">
+			<?= $this->formLabel($form->get('expected_quanitity')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">#</div>
+			</div>
+				<?= $this->formElement($form->get('expected_quanitity')); ?>
+				<?= $this->formElementErrors($form->get('expected_quanitity')); ?>
+			</div>
+		</div>
+<div class="form-group input-group">
+			<?= $this->formLabel($form->get('expected_potential_order_value')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">₹</div>
+			</div>
+				<?= $this->formElement($form->get('expected_potential_order_value')); ?>
+				<?= $this->formElementErrors($form->get('expected_potential_order_value')); ?>
+			</div>
+		</div>
+
 
 			</div>
-
+   <div class="col-md-12">
+   <div class="form-group">
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
+		</div>
    
 		</div>
 		<?= $this->form()->closeTag(); ?>

@@ -33,6 +33,13 @@ class MasterDetails extends AbstractHelper
 
         return empty($source) ? null : $source->getName();
     }
+
+	public function getPropectName($id)
+    {
+        $contact = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
+
+        return empty($contact) ? null : $contact->getCompany();
+    }
 	
 	public function getLeadStageName($id)
     {

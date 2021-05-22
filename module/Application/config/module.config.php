@@ -120,13 +120,14 @@ return [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+user.manage'],
             ],
             Controller\SPTController::class => [
-                ['actions' => ['index','add','edit','delete'], 'allow' => '+spt.manage'],
+                ['actions' => ['getContact','index','add','edit','delete'], 'allow' => '+spt.manage'],
             ],
+		
             Controller\DCRController::class => [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+dcr.manage'],
             ],
             Controller\RoadmapController::class => [
-                ['actions' => ['index','add','edit','delete'], 'allow' => '+roadmap.manage'],
+                ['actions' => ['getCity','index','add','edit','delete'], 'allow' => '+roadmap.manage'],
             ],
             Controller\ReportsController::class => [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+reports.manage'],

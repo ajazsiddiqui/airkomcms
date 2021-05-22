@@ -17,8 +17,8 @@ class RoadmapForm extends Form
     {
 		$this->add(['name' => 'week', 'options' => ['label' => 'Week', 'value_options'=>['0'=>'Select Week','1'=>'Week 1','2'=>'Week 2','3'=>'Week 3','4'=>'Week 4']], 'type' => 'Select']);
 		$this->add(['name' => 'market_segment', 'options' => ['label' => 'Market Segment', ], 'type' => 'Select']);
-		$this->add(['name' => 'prospect_name', 'options' => ['label' => 'Prospect Name', ], 'type' => 'Text']);
-		$this->add(['name' => 'prospect_city', 'options' => ['label' => 'Prospect City', ], 'type' => 'Text']);
+		$this->add(['name' => 'prospect_name', 'options' => ['id'=>'prospect_name','label' => 'Prospect Name', ], 'type' => 'Select']);
+		$this->add(['name' => 'prospect_city', 'options' => ['id'=>'prospect_city','label' => 'Prospect City', ], 'type' => 'Text']);
 		$this->add(['name' => 'propspect_machine', 'options' => ['label' => 'Propspect Machine', ], 'type' => 'Text']);
 		$this->add(['name' => 'product_series', 'options' => ['label' => 'Product Series', ], 'type' => 'Select']);
 		$this->add(['name' => 'product_model', 'options' => ['label' => 'Product Model', ], 'type' => 'Select']);

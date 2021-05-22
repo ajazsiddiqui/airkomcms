@@ -50,7 +50,7 @@ $this->PageActions()->setItems([
 <td><?= $r->getID();?></td>
 <!-- <td><?= $r->getWeek();?></td> -->
 <td><?= $this->MasterDetails()->getMarketSegmentName($r->getMarketSegment());?></td>
-<td><?= $r->getProspectName();?></td>
+<td><a href="<?= $this->url('roadmap',[ 'action'=>'edit','id' => $r->getId()]); ?>" class="tx-semibold"><?= $this->MasterDetails()->getPropectName($r->getProspectName());?></a></td>
 <!-- <td><?= $r->getProspectCity();?></td> -->
 <!-- <td><?= $r->getPropspectMachine();?></td> -->
 <!-- <td><?= $r->getProductSeries();?></td> -->
@@ -58,15 +58,15 @@ $this->PageActions()->setItems([
 <!-- <td><?= $r->getProduct();?></td> -->
 <td><?= $this->MasterDetails()->getNextActionName($r->getNextAction());?></td>
 <td><?= $r->getExpectedQuanitity();?></td>
-<td><?= $r->getExpectedPotentialOrderValue();?></td>
+<td>₹ <?= $r->getExpectedPotentialOrderValue();?></td>
 
 
 	<!-- <td><?= $r->getDateCreated();?></td> -->
 	<td>
-	<a href="<?= $this->url('roadmap',[ 'action'=>'edit','id' => $r->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+	<a href="<?= $this->url('roadmap',[ 'action'=>'edit','id' => $r->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
     </td>
 	<td>
-		<a href="<?= $this->url('roadmap',[ 'action'=>'delete','id' => $r->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+		<a href="<?= $this->url('roadmap',[ 'action'=>'delete','id' => $r->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

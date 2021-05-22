@@ -29,9 +29,9 @@ class Spt
     private $stage;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="propect_name", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="propect_name", type="integer", precision=0, scale=0, nullable=false, unique=false)
      */
     private $propectName;
 
@@ -90,6 +90,13 @@ class Spt
      * @ORM\Column(name="forecasted_booking_value", type="decimal", precision=10, scale=2, nullable=false, unique=false)
      */
     private $forecastedBookingValue;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="discount_offered", type="decimal", precision=10, scale=2, nullable=false, unique=false)
+     */
+    private $discountOffered;
 
     /**
      * @var int
@@ -147,12 +154,13 @@ class Spt
      */
     private $contactedType;
 
+
     /**
      * @var int
      *
-     * @ORM\Column(name="contact_id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="contact", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
-    private $contactId;
+    private $contact;
 
     /**
      * @var int
@@ -210,7 +218,7 @@ class Spt
     /**
      * Set propectName.
      *
-     * @param string $propectName
+     * @param int $propectName
      *
      * @return Spt
      */
@@ -224,7 +232,7 @@ class Spt
     /**
      * Get propectName.
      *
-     * @return string
+     * @return int
      */
     public function getPropectName()
     {
@@ -423,6 +431,31 @@ class Spt
         return $this->forecastedBookingValue;
     }
 
+
+    /**
+     * Set discountOffered.
+     *
+     * @param string $discountOffered
+     *
+     * @return Spt
+     */
+    public function setDiscountOffered($discountOffered)
+    {
+        $this->discountOffered = $discountOffered;
+
+        return $this;
+    }
+
+    /**
+     * Get discountOffered.
+     *
+     * @return string
+     */
+    public function getDiscountOffered()
+    {
+        return $this->discountOffered;
+    }
+
     /**
      * Set quanitity.
      *
@@ -616,27 +649,27 @@ class Spt
     }
 
     /**
-     * Set contactId.
+     * Set contact.
      *
-     * @param int $contactId
+     * @param int $contact
      *
      * @return Spt
      */
-    public function setContactId($contactId)
+    public function setContact($contact)
     {
-        $this->contactId = $contactId;
+        $this->contactId = $contact;
 
         return $this;
     }
 
     /**
-     * Get contactId.
+     * Get contact.
      *
      * @return int
      */
-    public function getContactId()
+    public function getContact()
     {
-        return $this->contactId;
+        return $this->contact;
     }
 
     /**

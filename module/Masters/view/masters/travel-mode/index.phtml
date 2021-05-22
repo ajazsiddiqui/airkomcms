@@ -40,10 +40,10 @@ $this->PageActions()->setItems([
   <td><a class="tx-semibold" href="<?= $this->url('travel-mode', ['action'=>'setstatus','id' => $mode->getId()]); ?>"><?= ($mode->getStatus()==1?'Active':'Deactivated');?></a></td>
 	<td><?= $mode->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('travel-mode',[ 'action'=>'edit','id' => $mode->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i>Edit</a>
+	<a href="<?= $this->url('travel-mode',[ 'action'=>'edit','id' => $mode->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
     </td>
 		<td>
-		<a href="<?= $this->url('travel-mode',[ 'action'=>'delete','id' => $mode->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+		<a href="<?= $this->url('travel-mode',[ 'action'=>'delete','id' => $mode->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

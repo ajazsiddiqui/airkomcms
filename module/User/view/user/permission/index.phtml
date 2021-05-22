@@ -39,12 +39,12 @@ $this->PageActions()->setItems([
 								<td><?= $this->escapeHtml($permission->getDescription()); ?></td>
 								<td><?= $this->escapeHtml($permission->getDateCreated()); ?></td>
 								<td>
-								<a class="btn btn-light" href="<?= $this->url('permissions',['action'=>'edit', 'id'=>$permission->getId()]); ?>">
-                 Edit
+								<a class="btn btn-light" href="<?= $this->url('permissions',['action'=>'edit', 'id'=>$permission->getId()]); ?>">Edit
+                
             </a>
 			<a class="btn btn-danger" href="#" data-link="<?= $this->url('permissions',
                     ['action'=>'delete', 'id'=>$permission->getId()]); ?>" data-toggle="modal" data-target="#confirmDelete">
-                Delete Permission
+                Permission
             </a>
 								</td>
 							</tr>
@@ -57,4 +57,3 @@ $this->PageActions()->setItems([
 	</div>
 </div>
 
-<?= $this->partial('application/index/delete'); ?>

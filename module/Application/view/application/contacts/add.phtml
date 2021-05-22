@@ -31,6 +31,11 @@ $this->PageActions()->setItems([
 			<div class="card-body row">
 		
 		<div class="col-md-6">
+		<div class="form-group">
+					<?= $this->formLabel($form->get('company')); ?>
+					<?= $this->formElement($form->get('company')); ?>
+					<?= $this->formElementErrors($form->get('company')); ?>
+				</div>
         <div class="form-group">
             <?= $this->formLabel($form->get('name')); ?>
             <?= $this->formElement($form->get('name')); ?>
@@ -42,40 +47,57 @@ $this->PageActions()->setItems([
 					<?= $this->formElementErrors($form->get('designation')); ?>
 				</div>
 		<div class="form-group">
-					<?= $this->formLabel($form->get('company')); ?>
-					<?= $this->formElement($form->get('company')); ?>
-					<?= $this->formElementErrors($form->get('company')); ?>
-				</div>
-		<div class="form-group">
 					<?= $this->formLabel($form->get('city')); ?>
 					<?= $this->formElement($form->get('city')); ?>
 					<?= $this->formElementErrors($form->get('city')); ?>
 		</div>
-		<div class="form-group">
-			<?= $this->formElement($form->get('submit')); ?>
-		</div>
+
 		</div>
 		<div class="col-md-6">
 		<div class="form-group">
-					<?= $this->formLabel($form->get('address')); ?>
-					<?= $this->formElement($form->get('address')); ?>
-					<?= $this->formElementErrors($form->get('address')); ?>
-				</div>
-		<div class="form-group">
-					<?= $this->formLabel($form->get('telephone')); ?>
-					<?= $this->formElement($form->get('telephone')); ?>
-					<?= $this->formElementErrors($form->get('telephone')); ?>
-				</div>
-		<div class="form-group">
-					<?= $this->formLabel($form->get('email')); ?>
-					<?= $this->formElement($form->get('email')); ?>
-					<?= $this->formElementErrors($form->get('email')); ?>
-				</div>
-		<div class="form-group">
-					<?= $this->formLabel($form->get('website')); ?>
-					<?= $this->formElement($form->get('website')); ?>
-					<?= $this->formElementErrors($form->get('website')); ?>
-				</div>
+			<?= $this->formLabel($form->get('address')); ?>
+			<?= $this->formElement($form->get('address')); ?>
+			<?= $this->formElementErrors($form->get('address')); ?>
+		</div>
+		
+		<div class="form-group input-group">
+			<?= $this->formLabel($form->get('telephone')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-phone"></i></div>
+			</div>
+				<?= $this->formElement($form->get('telephone')); ?>
+				<?= $this->formElementErrors($form->get('telephone')); ?>
+			</div>
+		</div>
+
+				
+		<div class="form-group input-group">
+			<?= $this->formLabel($form->get('email')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text">@</div>
+			</div>
+				<?= $this->formElement($form->get('email')); ?>
+				<?= $this->formElementErrors($form->get('email')); ?>
+			</div>
+		</div>
+		
+		<div class="form-group input-group">
+			<?= $this->formLabel($form->get('website')); ?>
+			<div class="input-group">
+				<div class="input-group-prepend">
+				<div class="input-group-text"><i class="fa fa-globe"></i></div>
+			</div>
+				<?= $this->formElement($form->get('website')); ?>
+				<?= $this->formElementErrors($form->get('website')); ?>
+			</div>
+		</div>
+		
+   <div class="col-md-12">
+   <div class="form-group">
+			<?= $this->formElement($form->get('submit')); ?>
+		</div>
 		</div>
 
        

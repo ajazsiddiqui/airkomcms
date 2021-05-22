@@ -150,7 +150,7 @@ class ExtranetUtilities
 		$contacts = $this->entityManager->getRepository(Contacts::class)->findAll();
         $list = [];
         foreach ($contacts as $contact) {
-            $list[$contact->getID()] = $contact->getName();
+            $list[$contact->getID()] = $contact->getCompany();
         }
         return $list;
 	}

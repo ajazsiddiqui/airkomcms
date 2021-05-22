@@ -17,6 +17,7 @@ use Application\Entity\Roadmap;
 use Application\Entity\Contacts;
 use User\Entity\User;
 use Settings\Entity\Settings;
+use Laminas\View\Model\JsonModel;
 
 class RoadmapController extends AbstractActionController
 {
@@ -36,7 +37,46 @@ class RoadmapController extends AbstractActionController
         $this->airkom = $airkom;
     }
 	
-    public function indexAction()
+   public function cors()
+    {
+        // Allow from any origin
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            header('Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept');
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');    // cache for 1 day
+        }
+        // Access-Control headers are received during OPTIONS requests
+        if ('OPTIONS' == $_SERVER['REQUEST_METHOD']) {
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+                // may also be using PUT, PATCH, HEAD etc
+                header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            }
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+                header('Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept');
+            }
+
+            exit(0);
+        }
+    }
+	
+	public function getCityAction()
+    {
+		$id = $this->params()->fromQuery('contactid', 0);
+        $this->cors();
+		$contact = $this->entityManager->getRepository(Contacts::class)
+            ->findOneBY(['id'=>$id]);
+			
+		if(empty($contact)){
+			return new JsonModel([]);
+		}
+        $array = ['name'=>$contact->getCity()];
+
+        return new JsonModel($array);
+    }
+
+	public function indexAction()
     {
 		$paginator['page'] = $this->params()->fromQuery('page', 1);
         $paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Roadmap::class)->count();
@@ -53,6 +93,7 @@ class RoadmapController extends AbstractActionController
 	public function addAction()
     {
 		$form = new RoadmapForm();
+		$form->get('prospect_name')->setValueOptions($this->ExtranetUtilities->getContactsList());
 		$form->get('market_segment')->setValueOptions($this->ExtranetUtilities->getMarketSegmentList());
 		$form->get('product_series')->setValueOptions($this->ExtranetUtilities->getProductSeriesList());
 		$form->get('product_model')->setValueOptions($this->ExtranetUtilities->getProductModelsList());
@@ -125,6 +166,7 @@ class RoadmapController extends AbstractActionController
         }
 
         $form = new RoadmapForm();
+		$form->get('prospect_name')->setValueOptions($this->ExtranetUtilities->getContactsList());
 		$form->get('market_segment')->setValueOptions($this->ExtranetUtilities->getMarketSegmentList());
 		$form->get('product_series')->setValueOptions($this->ExtranetUtilities->getProductSeriesList());
 		$form->get('product_model')->setValueOptions($this->ExtranetUtilities->getProductModelsList());

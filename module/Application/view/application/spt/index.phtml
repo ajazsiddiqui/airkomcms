@@ -56,7 +56,7 @@ $this->PageActions()->setItems([
 <tr>
 <td><?= $s->getID();?></td>
 <td><?= $this->MasterDetails()->getLeadStageName($s->getStage());?></td>
-<td><?= $s->getPropectName();?></td>
+<td><a href="<?= $this->url('spt',[ 'action'=>'edit','id' => $s->getId()]); ?>" class="tx-semibold"><?= $this->MasterDetails()->getPropectName($s->getPropectName());?></a></td>
 <td><?= $this->MasterDetails()->getLeadSourceName($s->getLeadSource());?></td>
 <td><?= $this->MasterDetails()->getExecutiveName($s->getExecutive());?></td>
 <!-- <td><?= $s->getOfferNo();?></td> -->
@@ -73,15 +73,15 @@ $this->PageActions()->setItems([
 <td><?= $s->getLastContactedDate()->format('d/m/Y');;?></td>
 <!-- <td><?= $s->getRemarks();?></td> -->
 <!-- <td><?= $s->getContactedType();?></td> -->
-<!-- <td><?= $s->getContactId();?></td> -->
+<!-- <td><?= $s->getContact();?></td> -->
 
 
 	<!-- <td><?= $s->getDateCreated();?></td> -->
 	<td>
-	<a href="<?= $this->url('spt',[ 'action'=>'edit','id' => $s->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> Edit</a>
+	<a href="<?= $this->url('spt',[ 'action'=>'edit','id' => $s->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
     </td>
 	<td>
-		<a href="<?= $this->url('spt',[ 'action'=>'delete','id' => $s->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+		<a href="<?= $this->url('spt',[ 'action'=>'delete','id' => $s->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

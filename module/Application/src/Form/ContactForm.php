@@ -19,7 +19,7 @@ class ContactForm extends Form
             [
                 'name' => 'name',
                 'options' => [
-                    'label' => 'Name',
+                    'label' => 'Contact Name',
                 ],
                 'type' => 'Text',
             ]

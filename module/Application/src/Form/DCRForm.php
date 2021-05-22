@@ -22,7 +22,7 @@ class DCRForm extends Form
 		$this->add(['name' => 'travel_type', 'options' => ['label' => 'Travel Type', ], 'type' => 'Select']);
 		$this->add(['name' => 'call_type', 'options' => ['label' => 'Call Type', ], 'type' => 'Select']);
 		$this->add(['name' => 'call_count', 'options' => ['label' => 'Call Count', ], 'type' => 'Number']);
-		$this->add(['name' => 'contact_id', 'options' => ['label' => 'Contact', ], 'type' => 'Select']);
+		$this->add(['name' => 'contact_id', 'options' => ['label' => 'Company', ], 'type' => 'Select']);
 		$this->add(['name' => 'product_series', 'options' => ['label' => 'Product Series', ], 'type' => 'Select']);
 		$this->add(['name' => 'product_model', 'options' => ['label' => 'Product Model', ], 'type' => 'Select']);
 		$this->add(['name' => 'product_id', 'options' => ['label' => 'Actual Product', ], 'type' => 'Select']);
