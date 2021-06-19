@@ -12,7 +12,7 @@ $form->get('status')->setAttributes(['id' => 'status']);
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Add Lead Stage'));
 $form->prepare();
 $this->PageActions()->setItems([
-            ['label'=>'Back to Lead Stages','url'=>$this->url('lead-stage'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to Lead Stages','url'=>$this->url('lead-stage'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">

@@ -1,0 +1,86 @@
+<?php
+$title = $this->translate('Targets');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+           $this->translate('Home')=>$this->url('home'),
+           $this->translate('Manage Targets')=>$this->url('targets'),
+            ]);
+$this->pageBreadcrumbs()->setTitle($title);			
+$this->mainMenu()->setActiveItemId('settings');
+
+
+?>
+<div class="row">
+<div class="col-md-12">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Monthly Targets</h4>
+			</div>
+			<div class="card-body">
+			<div class="col-md-12">
+				<form name="target_form" method="post" action="<?= $this->url('targets'); ?>">
+					<div class="form-row">
+						<div class="form-group col-sm-4">
+						   <select class="form-control" id="s_user" name="s_user">
+							<option value="">Select User</option>
+								<?php foreach ($users as $user) { ?>
+									<option <?= empty($selectedUser)?'':($selectedUser==$user->getId()?'selected':''); ?> value="<?= $user->getId(); ?>"><?= $user->getFullName(); ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<div class="col-sm-3 mg-t-10 mg-sm-t-0">
+						  <button type="submit" class="btn btn-primary btn-block mg-b-10">Get User</button>
+						</div>
+						<div class="col-sm-2 mg-t-10 mg-sm-t-0">
+							  <a href="<?= $this->url('targets'); ?>" class="btn btn-light btn-block">Refresh</a>
+						</div>
+					</div>
+				</form>
+			
+			<?php 
+				function getValues($id, $targets){
+					$value = 0;
+					if(empty($targets)) return $value;
+					
+					foreach ($targets as $t){
+						if($t['callType'] != $id) continue;
+						$value = $t['target'];
+					}
+					return $value;
+				}
+				
+			?>
+			
+			<?php if(!empty($currentuser)){ ?>			
+			<form name="target_modify" method="post" action="<?= $this->url('targets'); ?>">
+			<input type="hidden" name="target_user" value="<?= $currentuser->getId(); ?>" />
+				<div class="table-responsive">
+					<table class="table table-responsive-md">
+						<thead>
+							<tr>
+								<th colspan="2"><h4 class="text-primary font-weight-bold"><?= $currentuser->getFullName(); ?></h4></th>
+							</tr>
+							<tr>
+								<th><strong>TYPE</strong></th>
+								<th><strong>TARGET</strong></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($calltypes as $c){  ?>
+							   <tr><td>No. of <?= $c->getName() ?></td><td><input type="number" class="form-control" name="<?= $c->getId() ?>" value="<?= getValues($c->getId(), $targets) ?>" /></td></tr>
+							<?php } ?>
+							<tr><td><b>No. of Local Calls</b></td><td><input type="number" class="form-control" name="99" value="<?= getValues(97, $targets) ?>" /></td></tr>
+							<tr><td><b>No. of Outstation Calls</b></td><td><input type="number" class="form-control" name="100" value="<?= getValues(98, $targets) ?>" /></td></tr>
+							<tr><td><b>No. of Sales Prospects</b></td><td><input type="number" class="form-control" name="99" value="<?= getValues(99, $targets) ?>" /></td></tr>
+							<tr><td><b>No. of Target Bookings</b></td><td><input type="number" class="form-control" name="100" value="<?= getValues(100, $targets) ?>" /></td></tr>
+							<tr><td colspan="2"><button type="submit" class="btn btn-primary  mg-b-10">Save User Targets</button></td></tr>
+						</tbody>
+					</table>
+				</div>
+			</form>	
+			<?php } ?>
+			</div>
+			</div>
+			</div>
+</div>
+</div>

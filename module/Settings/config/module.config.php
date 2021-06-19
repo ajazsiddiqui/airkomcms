@@ -9,7 +9,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\SettingsController::class => Controller\Factory\SettingsControllerFactory::class,
-            Controller\TaxController::class => Controller\Factory\TaxControllerFactory::class,
+            Controller\TargetsController::class => Controller\Factory\TargetsControllerFactory::class,
         ],
     ],
 
@@ -30,16 +30,16 @@ return [
                     ],
                 ],
             ],
-            'tax' => [
+            'targets' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/tax[/:action[/:id]]',
+                    'route' => '/targets[/:action[/:id]]',
                     'constraints' => [
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ],
                     'defaults' => [
-                        'controller' => Controller\TaxController::class,
+                        'controller' => Controller\TargetsController::class,
                         'action' => 'index',
                     ],
                 ],
@@ -52,8 +52,8 @@ return [
             Controller\SettingsController::class => [
                 ['actions' => ['index'], 'allow' => '+settings.manage'],
             ],
-            Controller\TaxController::class => [
-                ['actions' => ['index', 'add', 'edit', 'delete'], 'allow' => '+settings.manage'],
+            Controller\TargetsController::class => [
+                ['actions' => ['index', 'add', 'edit', 'delete'], 'allow' => '+targets.manage'],
             ],
         ],
     ],

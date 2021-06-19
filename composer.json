@@ -36,7 +36,8 @@
 		"laminas/laminas-hydrator" : "^3.0",
         "laminas/laminas-permissions-rbac": "^3.1",
         "laminas/laminas-serializer": "^2.10",
-        "laminas/laminas-mvc-i18n": "^1.2"
+        "laminas/laminas-mvc-i18n": "^1.2",
+        "phpoffice/phpspreadsheet": "^1.18"
     },
     "autoload": {
         "psr-4": {

@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 
 $this->PageActions()->setItems([
-            ['label'=>'Add Market Segment','url'=>$this->url('market-segment', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add Market Segment','url'=>$this->url('market-segment', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -40,10 +40,10 @@ $this->PageActions()->setItems([
   <td><a class="tx-semibold" href="<?= $this->url('market-segment', ['action'=>'setstatus','id' => $segment->getId()]); ?>"><?= ($segment->getStatus()==1?'Active':'Deactivated');?></a></td>
 	<td><?= $segment->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('market-segment',[ 'action'=>'edit','id' => $segment->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
+	<a href="<?= $this->url('market-segment',[ 'action'=>'edit','id' => $segment->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
     </td>
 		<td>
-		<a href="<?= $this->url('market-segment',[ 'action'=>'delete','id' => $segment->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+		<a href="<?= $this->url('market-segment',[ 'action'=>'delete','id' => $segment->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

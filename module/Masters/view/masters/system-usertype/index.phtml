@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 
 $this->PageActions()->setItems([
-            ['label'=>'Add System UserType','url'=>$this->url('system-usertype', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add System UserType','url'=>$this->url('system-usertype', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -42,10 +42,10 @@ $this->PageActions()->setItems([
   <td><a href="<?= $this->url('system-usertype', ['action'=>'setstatus','id' => $usertype->getId()]); ?>"><?= ($usertype->getStatus()==1?'<i data-feather="toggle-right"></i>':'<i class="tx-gray-500" data-feather="toggle-left"></i>');?></a></td>
 	<td><?= $usertype->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('system-usertype', array('controller' => 'system-usertype', 'action'=>'edit','id' => $usertype->getId())); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
+	<a href="<?= $this->url('system-usertype', array('controller' => 'system-usertype', 'action'=>'edit','id' => $usertype->getId())); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
     </td>
 		<td>
-		<a href="<?= $this->url('system-usertype',[ 'action'=>'delete','id' => $usertype->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+		<a href="<?= $this->url('system-usertype',[ 'action'=>'delete','id' => $usertype->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

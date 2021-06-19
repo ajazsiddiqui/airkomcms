@@ -8,7 +8,7 @@ $this->pageBreadcrumbs()->setItems([
             $this->translate('Manage Roles')=>$this->url('roles'),
             ]);
 $this->PageActions()->setItems([
-            ['label'=>'Add Roles','url'=>$this->url('roles', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add Roles','url'=>$this->url('roles', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);
 ?>
 
@@ -40,9 +40,9 @@ $this->PageActions()->setItems([
 								<td><?= $this->escapeHtml($role->getDescription()); ?></td>
 								<td><?= $this->escapeHtml($role->getDateCreated()); ?></td>
 								<td>
-								<a class="btn btn-light" href="<?= $this->url('roles',['action'=>'edit', 'id'=>$role->getId()]); ?>"><i class="fa fa-pencil"></i>
+								<a class="btn btn-light round-btn" href="<?= $this->url('roles',['action'=>'edit', 'id'=>$role->getId()]); ?>"><i class="fa fa-pencil"></i>
             </a>
-			<a class="btn btn-danger" href="#" data-link="<?= $this->url('roles',
+			<a class="btn btn-danger round-btn" href="#" data-link="<?= $this->url('roles',
                     ['action'=>'delete', 'id'=>$role->getId()]); ?>" data-toggle="modal" data-target="#confirmDelete"><i class="fa fa-trash"></i>
             </a>
 								</td>

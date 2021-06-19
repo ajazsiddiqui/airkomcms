@@ -657,7 +657,7 @@ class Spt
      */
     public function setContact($contact)
     {
-        $this->contactId = $contact;
+        $this->contact = $contact;
 
         return $this;
     }

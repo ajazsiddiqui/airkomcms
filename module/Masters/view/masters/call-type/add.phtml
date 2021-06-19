@@ -12,7 +12,7 @@ $form->get('status')->setAttributes(['id' => 'status']);
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Add Call Type'));
 $form->prepare();
 $this->PageActions()->setItems([
-            ['label'=>'Back to Call Types','url'=>$this->url('call-type'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to Call Types','url'=>$this->url('call-type'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">

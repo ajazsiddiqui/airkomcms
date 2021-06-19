@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 
 $this->PageActions()->setItems([
-            ['label'=>'Add Travel Type','url'=>$this->url('travel-type', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add Travel Type','url'=>$this->url('travel-type', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -40,10 +40,10 @@ $this->PageActions()->setItems([
   <td><a class="tx-semibold" href="<?= $this->url('travel-type', ['action'=>'setstatus','id' => $type->getId()]); ?>"><?= ($type->getStatus()==1?'Active':'Deactivated');?></a></td>
 	<td><?= $type->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('travel-type',[ 'action'=>'edit','id' => $type->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
+	<a href="<?= $this->url('travel-type',[ 'action'=>'edit','id' => $type->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
     </td>
 		<td>
-		<a href="<?= $this->url('travel-type',[ 'action'=>'delete','id' => $type->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+		<a href="<?= $this->url('travel-type',[ 'action'=>'delete','id' => $type->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

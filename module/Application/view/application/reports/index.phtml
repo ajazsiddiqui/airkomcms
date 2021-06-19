@@ -8,11 +8,12 @@ $this->pageBreadcrumbs()->setItems([
            $this->translate('Manage Reports')=>$this->url('reports'),
             ]);	
 $this->PageActions()->setItems([
-            ['label'=>'Print','url'=>'','icon'=>'print','class'=>'btn-primary printbtn'],
+            ['label'=>'Print','url'=>'','icon'=>'fa fa-print','class'=>'btn-primary printbtn'],
             ]);	
 ?>
-<div class="row main-content">
-<div class="card col-md-12">
+<div class="row">
+<div class="col-md-12">
+<div class="card">
 <div class="card-header">
 	<?php 
 		function getDates($d){
@@ -43,7 +44,7 @@ $this->PageActions()->setItems([
 					</select>
 				</div>
 				<div class="form-group col-sm-3">
-				  <input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?=empty($selectedDate)?'':$selectedDate;?>"/>
+				  <input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?=empty($selectedDate)?date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y'):$selectedDate;?>"/>
 				  </div>
 				<div class="col-sm-3 mg-t-10 mg-sm-t-0">
 				  <button type="submit" class="btn btn-primary btn-block mg-b-10">Generate Report</button>
@@ -54,79 +55,83 @@ $this->PageActions()->setItems([
 			</div>
 		</form>
 	</div>
+	
+<?php if(!empty($calls_array)){ ?>
 	<div id="printTable" class="col-12">
 		<div class="table-responsive">
 			<table class="table table-responsive-md">
 				<thead>
 					<tr>
-						<th><strong>Type of Sales Calls</strong></th>
-						<th><strong>Target</strong></th>
-						<th><strong>Performmed</strong></th>
-						<th><strong>Efficiency</strong></th>
+						<th><strong>TYPE OF SALES CALLS</strong></th>
+						<th><strong>TARGET</strong></th>
+						<th><strong>PERFORMED</strong></th>
+						<th><strong>EFFICIENCY</strong></th>
 					</tr>
 				</thead>
 				<tbody>
-				   <tr><td>No. of Cold Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. of OEM Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. of Prospect Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. of Order Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. Sales Payment Collection Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. of Form Collection Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. of Sales Issue Handling Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>No. of Service Calls</td><td></td><td></td><td></td></tr>
-					<tr><td><strong>Up-to-date Call Efficiency</strong></td><td></td><td></td><td></td></tr>
+				<?php foreach ($calls_array as $key => $value){ 
+					if($key == 'uptodate_call_efficiency') continue;
+				?>
+				   <tr><td>No. of <?= $key ?></td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?></td></tr>
+				<?php } ?>
+					<tr><td><strong>Up-to-date Call Efficiency</strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['efficiency']; ?></strong></td></tr>
 				</tbody>
 			</table>
 			<br/>
 			<table class="table table-responsive-md">
 				<thead>
 					<tr>
-						<th><strong>Total no. of Calls</strong></th>
-						<th><strong>Target</strong></th>
-						<th><strong>Performed</strong></th>
-						<th><strong>Efficiency</strong></th>
+						<th><strong>TOTAL NO. OF CALLS</strong></th>
+						<th><strong>TARGET</strong></th>
+						<th><strong>PERFORMED</strong></th>
+						<th><strong>EFFICIENCY</strong></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td>Total No. of Local Calls</td><td></td><td></td><td></td></tr>
-					<tr><td>Total No. of Outstation Calls</td><td></td><td></td><td></td></tr>
-					<tr><td><strong>Total Call Efficiency</strong></td><td></td><td></td><td></td></tr>
+				<?php foreach ($travels_array as $key => $value){ 
+					if($key == 'total_call_efficiency') continue;
+				?>
+				   <tr><td>No. of <?= $key ?> Calls</td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?></td></tr>
+				<?php } ?>
+					<tr><td><strong>Total Call Efficiency</strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['efficiency']; ?></strong></td></tr>
 				</tbody>
 			</table>
 			<br/>
 			<table class="table table-responsive-md">
 				<thead>
 					<tr>
-						<th><strong>Description</strong></th>
-						<th><strong>Value</strong></th>
-						<th><strong>Unit</strong></th>
+						<th><strong>DESCRIPTION</strong></th>
+						<th><strong>VALUE</strong></th>
+						<th><strong>UNIT</strong></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td>Monthly Total Distance Travelled by Bike</td><td></td><td>KMs</td></tr>
-					<tr><td>Monthly Total Amount for the distance travelled by Bike</td><td></td><td>Rs.</td></tr>
-					<tr><td>Monthly Total Amount spent for Conveyance (Local)</td><td></td><td>Rs.</td></tr>
-					<tr><td><strong>Monthly Total Travel Expenses</strong></td><td></td><td>Rs.</td></tr>
+					<tr><td>Monthly Total Distance Travelled by Bike</td><td class="text-right"><?= $distance_array['travelled'] ?></td><td>KMs</td></tr>
+					<tr><td>Monthly Total Amount for the distance travelled by Bike</td><td class="text-right"><?= $distance_array['amountone'] ?></td><td>Rs.</td></tr>
+					<tr><td>Monthly Total Amount spent for Conveyance (Local)</td><td class="text-right"><?= $distance_array['amounttwo'] ?></td><td>Rs.</td></tr>
+					<tr><td><strong>Monthly Total Travel Expenses</strong></td><td class="text-right"><strong><?= $distance_array['total'] ?></strong></td><td><strong>Rs.</strong></td></tr>
 				</tbody>
 			</table>
 			<br/>
 			<table class="table table-responsive-md">
 				<thead>
 					<tr>
-						<th><strong>Description</strong></th>
-						<th><strong>Target</strong></th>
-						<th><strong>Performed</strong></th>
-						<th><strong>Efficiency</strong></th>
+						<th><strong>DESCRIPTION</strong></th>
+						<th><strong>TARGET</strong></th>
+						<th><strong>PERFORMED</strong></th>
+						<th><strong>EFFICIENCY</strong></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td>Up-to-date Sales Prospect Generated (<?= date('d-m-Y') ?>)</td><td></td><td></td><td></td></tr>
-					<tr><td>Up-to-date Target Booking vs Order Booking</td><td></td><td></td><td></td></tr>
-					<tr><td colspan="3"><strong>Overall Efficiency</strong></td><td></td></tr>
+					<tr><td>Up-to-date Sales Prospect Generated (<?= date('d-m-Y') ?>)</td><td class="text-right"><?= $sales_array['sales_prospect']['target'] ?></td><td class="text-right"><?= $sales_array['sales_prospect']['performed'] ?></td><td class="text-right"><?= $sales_array['sales_prospect']['efficiency'] ?></td></tr>
+					<tr><td>Up-to-date Target Booking vs Order Booking</td><td class="text-right"><?= $sales_array['target_booking']['target'] ?></td><td class="text-right"><?= $sales_array['target_booking']['performed'] ?></td><td class="text-right"><?= $sales_array['target_booking']['efficiency'] ?></td></tr>
+					<tr><td colspan="3"><strong>Overall Efficiency</strong></td><td class="text-right"><strong><?= $sales_array['overall_efficency']; ?></strong></td></tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+<?php } ?>
+</div>
 </div>
 </div>
 </div>

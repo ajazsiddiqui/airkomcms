@@ -1,0 +1,167 @@
+<?php
+$title = $this->translate('Dashboard');
+$this->headTitle($title);
+$this->mainMenu()->setActiveItemId('dashboard');
+$this->pageBreadcrumbs()->setTitle('Dashboard');
+
+
+$params =  http_build_query($data);;
+
+$this->headScript()->appendFile($this->basePath() . '/vendor/apexchart/apexchart.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params, 'text/javascript'); 
+?>
+
+<div class="row dashboard">
+	<div class="col-xl-9">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-header d-sm-flex d-block border-0 pb-0">
+						<div>
+							<h4 class="fs-20 text-black">Generate Reports</h4>
+							<span class="fs-12">Choose a date range a generate specific report</span>
+						</div>
+					</div>
+					<div class="card-body pb-0">
+						<form method="post" action="<?= $this->url('dashboard',['action'=>'sptreport']); ?>">
+						
+						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+							<div class="mr-3 pb-3">
+								<p class="fs-14 mb-1">Date Range</p>
+								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>" /></span>
+							</div>
+							<div class="mr-3 pb-3">
+								<p class="fs-14 mb-1">Select User</p>
+								<span class="text-black font-w500">
+								<select class="form-control" name="s_user">
+								<?php foreach( $users as $u) { ?>
+								<option value="<?= $u->getId() ?>" ><?= $u->getFullName(); ?></option>
+								<?php } ?>
+								</select>
+								</span>
+							</div>
+							<div class="d-block pb-3 align-items-center align-left-text">
+								<div class="mr-3">
+									<p class="fs-14 mb-1">Report Type</p>
+									<span class="text-black font-w500">Sales Prospect Tracker</span>
+								</div>
+							</div>
+							<div class="mr-3 pb-3">
+								<button type="submit" class="btn btn-primary btn-block mg-b-10">Generate</button>
+							</div>
+						</div>
+						</form>
+						
+						<form method="post" action="<?= $this->url('dashboard',['action'=>'dcrreport']); ?>">
+						
+						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+							<div class="mr-3 pb-3">
+								<p class="fs-14 mb-1">Date Range</p>
+								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>"/></span>
+							</div>
+							<div class="mr-3 pb-3">
+								<p class="fs-14 mb-1">Select User</p>
+								<span class="text-black font-w500">
+								<select class="form-control" name="s_user">
+								<?php foreach( $users as $u) { ?>
+								<option value="<?= $u->getId() ?>" ><?= $u->getFullName(); ?></option>
+								<?php } ?>
+								</select>
+								</span>
+							</div>
+							<div class="d-block pb-3 align-items-center align-left-text">
+								<div class="mr-3">
+									<p class="fs-14 mb-1">Report Type</p>
+									<span class="text-black font-w500">Daily Call Records</span>
+								</div>
+							</div>
+							<div class="mr-3 pb-3">
+								<button type="submit" class="btn btn-primary btn-block mg-b-10">Generate</button>
+							</div>
+						</div>
+						</form>
+						
+						<form method="post" action="<?= $this->url('dashboard',['action'=>'roadmapreport']); ?>">
+						
+						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+							<div class="mr-3 pb-3">
+								<p class="fs-14 mb-1">Date Range</p>
+								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>"/></span>
+							</div>
+							<div class="mr-3 pb-3">
+								<p class="fs-14 mb-1">Select User</p>
+								<span class="text-black font-w500">
+								<select class="form-control" name="s_user">
+								<?php foreach( $users as $u) { ?>
+								<option value="<?= $u->getId() ?>" ><?= $u->getFullName(); ?></option>
+								<?php } ?>
+								</select>
+								</span>
+							</div>
+							<div class="d-block pb-3 align-items-center align-left-text">
+								<div class="mr-3">
+									<p class="fs-14 mb-1">Report Type</p>
+									<span class="text-black font-w500">Roadmap</span>
+								</div>
+							</div>
+							<div class="mr-3 pb-3">
+								<button type="submit" class="btn btn-primary btn-block mg-b-10">Generate</button>
+							</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-header border-0 pb-0">
+						<div>
+							<h4 class="fs-20 text-black">Leads Statistic</h4>
+							<span class="fs-12">piechart showing leads till date.</span>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xl-12 col-sm-6">
+								<div id="pieChart"></div>
+							</div>
+							<div class=" col-xl-12 col-sm-6">
+								<div class="d-flex flex-wrap text-black fs-12 mt-4">
+									<span class="mr-4 mb-3">
+										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect width="19" height="19" rx="9.5" fill="#1EAAE7"></rect>
+										</svg>
+										Early
+									</span>
+									<span class="mr-4 mb-3">
+										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect width="19" height="19" rx="9.5" fill="#FF7A30"></rect>
+										</svg>
+										Active
+									</span>
+									<span class="mr-4 mb-3">
+										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect width="19" height="19" rx="9.5" fill="#2BC155"></rect>
+										</svg>
+										Close
+									</span>
+									<span class="mr-4 mb-3">
+										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect width="19" height="19" rx="9.5" fill="#FF2E2E"></rect>
+										</svg>
+										Offline
+									</span>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

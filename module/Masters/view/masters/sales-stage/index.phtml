@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 
 $this->PageActions()->setItems([
-            ['label'=>'Add Sales Stage','url'=>$this->url('sales-stage', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add Sales Stage','url'=>$this->url('sales-stage', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -40,10 +40,10 @@ $this->PageActions()->setItems([
   <td><a class="tx-semibold" href="<?= $this->url('sales-stage', ['action'=>'setstatus','id' => $stage->getId()]); ?>"><?= ($stage->getStatus()==1?'Active':'Deactivated');?></a></td>
 	<td><?= $stage->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('sales-stage',[ 'action'=>'edit','id' => $stage->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
+	<a href="<?= $this->url('sales-stage',[ 'action'=>'edit','id' => $stage->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
     </td>
 		<td>
-		<a href="<?= $this->url('sales-stage',[ 'action'=>'delete','id' => $stage->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+		<a href="<?= $this->url('sales-stage',[ 'action'=>'delete','id' => $stage->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

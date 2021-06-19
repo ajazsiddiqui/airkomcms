@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 
 $this->PageActions()->setItems([
-            ['label'=>'Add SPT','url'=>$this->url('spt', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add SPT','url'=>$this->url('spt', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -78,10 +78,10 @@ $this->PageActions()->setItems([
 
 	<!-- <td><?= $s->getDateCreated();?></td> -->
 	<td>
-	<a href="<?= $this->url('spt',[ 'action'=>'edit','id' => $s->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i></a>
+	<a href="<?= $this->url('spt',[ 'action'=>'edit','id' => $s->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
     </td>
 	<td>
-		<a href="<?= $this->url('spt',[ 'action'=>'delete','id' => $s->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+		<a href="<?= $this->url('spt',[ 'action'=>'delete','id' => $s->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

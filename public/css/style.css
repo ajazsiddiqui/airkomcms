@@ -1,53 +1,4 @@
-/*
-    Table of Contents
 
-    Table of Sass Contents
-
-    1. Abstracts
-        _bs-custom
-        _inheritance
-        _maps
-        _mixin
-        _variable
-
-    2. bootstrap 
-        -Here goes all official bootstrap scss files
-
-    3. Global/Base
-        _color
-        _custom-grid
-        _fonts
-        _helper
-        _reset
-
-    4. layout
-        +footer
-        +header
-        +rtl
-        +sidebar
-        +tables
-        +theme
-        +version-dark
-
-    5. Conponents
-        +app
-        +charts
-        +forms
-        +map
-        +uc
-        +ui
-        +widget
-
-    6. Page
-        _index-1
-        _page-error
-        _page-register
-        _page-signin
-        _page-user-lock
-        _page-user-lock
-
-*/
-/*$primary  : #7356f1 !default;*/
 @import url("../icons/simple-line-icons/css/simple-line-icons.css");
 @import url("../icons/font-awesome-old/css/font-awesome.min.css");
 @import url("../icons/material-design-iconic-font/css/materialdesignicons.min.css");
@@ -22208,7 +22159,7 @@ svg text {
 .form-control {
   border-radius: 0;
   background: #fff;
-  border: 1px solid #f0f1f5;
+  border: 1px solid #d7dae3;
   color: #000;
   height: 56px; }
   @media only screen and (max-width: 1400px) {
@@ -24687,7 +24638,7 @@ button {
 
 .btn {
   padding: 0.938rem 1.5rem;
-  border-radius: 1.25rem;
+  border-radius: 3rem;
   font-weight: 500;
   font-size: 1rem; }
   .btn:hover, .btn:focus, .btn:active, .btn.active {
@@ -30981,4 +30932,178 @@ form{
 .checkbox label:hover {
     cursor: pointer;
 }
+
+.btn.round-btn {
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
+}
+
+
+
+.drag-list {
+  display: flex;
+  align-items: flex-start;
+}
+@media (max-width: 690px) {
+  .drag-list {
+    display: block;
+  }
+}
+
+.drag-column {
+  flex: 1;
+  margin: 0 5px 0 0;
+  position: relative;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+@media (max-width: 690px) {
+  .drag-column {
+    margin-bottom: 30px;
+  }
+}
+.drag-column h2 {
+  font-size: 0.8rem;
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.drag-column .drag-column-header,
+.drag-column .is-moved,
+.drag-column .drag-options {
+  background: transparent;
+}
+
+.drag-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.drag-inner-list {
+  min-height: 50px;
+}
+
+.drag-item {
+  margin: 5px;
+  padding:10px;
+  background: #fff;
+  border-radius: 5px;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: grab;
+}
+.drag-item.is-moving {
+  border: 4px solid #eee;
+}
+
+.drag-header-more {
+  cursor: pointer;
+}
+
+.drag-options {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.drag-options.active {
+  transform: translateX(0);
+  opacity: 1;
+}
+.drag-options-label {
+  display: block;
+  margin: 0 0 5px 0;
+}
+.drag-options-label input {
+  opacity: 0.6;
+}
+.drag-options-label span {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-left: 5px;
+}
+
+/* Dragula CSS  */
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  list-style-type: none;
+}
+
+.gu-hide {
+  display: none !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.gu-transit {
+  opacity: 0.2;
+}
+
+.drag-container{
+	background: #fff;
+	padding: 5px;
+	box-shadow: 0 0 10px rgba(0,0,0,.05);
+}
+.timeline-panel{
+	display: flex;
+}
+
+.timeline-panel .media img{
+	max-width: 40px;
+	border-radius: 4px;
+}
+
+.media-body h5{
+	margin-bottom:0;
+}
+
+.drag-container .media-info{
+	width: 50px;
+	height: 50px;
+	background: #eee;
+	border-radius: 12px;
+	overflow: hidden;
+	font-size: 20px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	align-self: start;
+	color: #1eaae7;
+}
+
+#printTable{
+	font-family:'arial';
+}
+
+.align-left-text{
+	display: block !important;
+	width: 200px;
+	text-align: left;
+}
+
+.dashboard .input-daterange-datepicker{
+	max-width:220px !important;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -107,13 +107,22 @@ class SPTController extends AbstractActionController
 		
         $request = $this->getRequest();
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()], ['id' => 'ASC']);
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
 
         if ($request->isPost()) {
             $post = $request->getPost()->toArray();
             $form->setData($post);
             if ($form->isValid()) {
                 $data = $form->getData();
+				
+			$spt = $this->entityManager->getRepository(Spt::class)
+					->findOneBy(['propectName' => $data['propect_name']]);	
+			
+			if(!empty($spt)){			
+				$this->flashMessenger()->addErrorMessage('Prospect already there in SPT.');
+				return $this->redirect()->toRoute('spt');
+			}
+			
                 try {
                     $spt = new Spt();
 					$spt->setStage($data['stage']);
@@ -199,8 +208,8 @@ class SPTController extends AbstractActionController
                 $data = $form->getData();
 
                 try {
-					$spt->setStage($data['stage']);
-					$spt->setPropectName($data['propect_name']);
+					$spt->setStage($spt->getStage());
+					//$spt->setPropectName($data['propect_name']);
 					$spt->setLeadSource($data['lead_source']);
 					$spt->setExecutive($data['executive']);
 					$spt->setOfferNo($data['offer_no']);
@@ -233,7 +242,7 @@ class SPTController extends AbstractActionController
 
                 return $this->redirect()->toRoute('spt');
             }
-            $this->logger->info('form validator: ', $form->getMessages(), "\n");
+            print_r($form->getMessages());
         } else {
             $form->setData(
                 [
@@ -264,7 +273,7 @@ class SPTController extends AbstractActionController
 		$settings = $this->entityManager->getRepository(Settings::class)
             ->find(['id' =>1]);
 		
-        return new ViewModel(['form' => $form]);
+        return new ViewModel(['form' => $form,'stage'=>$spt->getStage()]);
 
     }
 	

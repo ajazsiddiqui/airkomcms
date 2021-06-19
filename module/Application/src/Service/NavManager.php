@@ -67,13 +67,13 @@ class NavManager
             ];
         } else {
 			
-			// if ($this->rbacManager->isGranted(null, 'dashboard.manage')) {
-				// $items[] = [
-					// 'id' => 'dashboard',
-					// 'label' => $this->translator->translate('Dashboard'),
-					// 'link'  => $url('dashboard')
-				// ];
-			// }
+			if ($this->rbacManager->isGranted(null, 'dashboard.manage')) {
+				$items[] = [
+					'id' => 'dashboard',
+					'label' => $this->translator->translate('Dashboard'),
+					'link'  => $url('dashboard')
+				];
+			}
 			
 			if ($this->rbacManager->isGranted(null, 'contacts.manage')) {
 				$items[] = [
@@ -96,6 +96,14 @@ class NavManager
 					'id' => 'dcr',
 					'label' => $this->translator->translate('DCR Form'),
 					'link'  => $url('dcr')
+				];
+			}
+			
+			if ($this->rbacManager->isGranted(null, 'pipeline.manage')) {
+				$items[] = [
+					'id' => 'pipeline',
+					'label' => $this->translator->translate('Leads Pipeline'),
+					'link'  => $url('pipeline')
 				];
 			}
 			
@@ -142,7 +150,16 @@ class NavManager
                 ];
             }
 
-            if ($this->rbacManager->isGranted(null, 'settings.manage')) {
+            if ($this->rbacManager->isGranted(null, 'targets.manage')) {
+                
+                $settingsMenu[] = [
+                    'id' => 'manage_targets',
+                    'label' => $this->translator->translate('Manage Targets'),
+                    'link' => $url('targets'),
+                ];
+            }
+			
+			if ($this->rbacManager->isGranted(null, 'settings.manage')) {
                 
                 $settingsMenu[] = [
                     'id' => 'manage_settings',

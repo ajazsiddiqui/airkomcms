@@ -8,7 +8,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 $this->pageBreadcrumbs()->setTitle($title);
 $this->PageActions()->setItems([
-            ['label'=>'Add New Permission','url'=>$this->url('permissions', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add New Permission','url'=>$this->url('permissions', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">
@@ -39,12 +39,12 @@ $this->PageActions()->setItems([
 								<td><?= $this->escapeHtml($permission->getDescription()); ?></td>
 								<td><?= $this->escapeHtml($permission->getDateCreated()); ?></td>
 								<td>
-								<a class="btn btn-light" href="<?= $this->url('permissions',['action'=>'edit', 'id'=>$permission->getId()]); ?>">Edit
+								<a class="btn btn-light round-btn" href="<?= $this->url('permissions',['action'=>'edit', 'id'=>$permission->getId()]); ?>"><i class="fa fa-pencil"></i>
                 
             </a>
-			<a class="btn btn-danger" href="#" data-link="<?= $this->url('permissions',
+			<a class="btn btn-danger round-btn" href="#" data-link="<?= $this->url('permissions',
                     ['action'=>'delete', 'id'=>$permission->getId()]); ?>" data-toggle="modal" data-target="#confirmDelete">
-                Permission
+<i class="fa fa-trash"></i>
             </a>
 								</td>
 							</tr>

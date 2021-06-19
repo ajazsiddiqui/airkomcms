@@ -12,7 +12,7 @@ $form->get('status')->setAttributes(['id' => 'status']);
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update'));
 $form->prepare();
 $this->PageActions()->setItems([
-            ['label'=>'Back to Sales Stages','url'=>$this->url('sales-stage'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to Sales Stages','url'=>$this->url('sales-stage'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">

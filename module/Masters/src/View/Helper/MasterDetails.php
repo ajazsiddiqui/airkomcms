@@ -26,6 +26,8 @@ class MasterDetails extends AbstractHelper
 
         return empty($contact) ? null : $contact->getName();
     }
+	
+
 
 	public function getLeadSourceName($id)
     {

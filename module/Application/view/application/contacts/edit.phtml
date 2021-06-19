@@ -18,7 +18,7 @@ $form->get('website')->setAttributes(['class'=>'form-control','placeholder'=>'We
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update Contact'));
 $form->prepare();
 $this->PageActions()->setItems([
-            ['label'=>'Back to Contacts','url'=>$this->url('contacts'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to Contacts','url'=>$this->url('contacts'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">

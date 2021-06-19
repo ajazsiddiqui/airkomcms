@@ -32,7 +32,7 @@ $form->get('contact')->setAttributes(['id'=>'contact','class'=>'form-control','p
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update SPT'));
 $form->prepare();
 $this->PageActions()->setItems([
-            ['label'=>'Back to SPT','url'=>$this->url('spt'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to SPT','url'=>$this->url('spt'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">
@@ -44,7 +44,11 @@ $this->PageActions()->setItems([
 		<?= $this->form()->openTag($form); ?>
 		<div class="card-body row">
 		<div class="col-md-6">
-			<div class="form-group">
+		<div class="form-group">
+            <label for="stage">Stage</label>
+			<input type="text" class="form-control" readonly="readonly" value="<?= $this->MasterDetails()->getLeadStageName($stage) ?>">
+		</div>
+		<div class="form-group d-none">
             <?= $this->formLabel($form->get('stage')); ?>
             <?= $this->formElement($form->get('stage')); ?>
             <?= $this->formElementErrors($form->get('stage')); ?>

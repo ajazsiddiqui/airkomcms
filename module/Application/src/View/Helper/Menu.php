@@ -79,6 +79,9 @@ class Menu extends AbstractHelper
 		
 		case 'Contacts':
                 return 'flaticon-381-user-9';
+				
+		case 'Leads Pipeline':
+                return 'flaticon-381-shuffle-1';
 
         default:
             return 'flaticon-381-networking';

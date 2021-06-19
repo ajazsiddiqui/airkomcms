@@ -9,7 +9,7 @@ $this->pageBreadcrumbs()->setItems([
             ]);
 
 $this->PageActions()->setItems([
-            ['label'=>'Add Contacts','url'=>$this->url('contacts', ['action'=>'add']),'icon'=>'plus','class'=>'btn-primary'],
+            ['label'=>'Add Contacts','url'=>$this->url('contacts', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -52,10 +52,10 @@ $this->PageActions()->setItems([
 <!-- <td><?= $contact->getWebsite();?></td> -->
 	<td><?= $contact->getDateCreated();?></td>
 	<td>
-	<a href="<?= $this->url('contacts',[ 'action'=>'edit','id' => $contact->getId()]); ?>" class="btn btn-light"><i class="fa fa-pencil"></i> </a>
+	<a href="<?= $this->url('contacts',[ 'action'=>'edit','id' => $contact->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i> </a>
     </td>
 	<td>
-		<a href="<?= $this->url('contacts',[ 'action'=>'delete','id' => $contact->getId()]); ?>" class="btn btn-danger"><i class="fa fa-trash"></i> </a>
+		<a href="<?= $this->url('contacts',[ 'action'=>'delete','id' => $contact->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i> </a>
     </td>
 </tr>
 <?php endforeach; ?>

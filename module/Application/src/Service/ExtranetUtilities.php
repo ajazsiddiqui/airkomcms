@@ -16,6 +16,7 @@ use Masters\Entity\MarketSegment;
 use Masters\Entity\Probability;
 use Masters\Entity\ContactedType;
 use Application\Entity\Contacts;
+use Settings\Entity\Targets;
 use User\Entity\User;
 class ExtranetUtilities
 {
@@ -37,6 +38,14 @@ class ExtranetUtilities
         }
         return false;
     }
+	
+	 public function getTargetByUser($userid, $callType)
+    {
+        $target = $this->entityManager->getRepository(Targets::class)->findOneBy(['userId' => $userid,'callType' => $callType]);
+
+        return empty($target) ? 0 : $target->getTarget();
+    }
+	
     public function changePassword($user, $password)
     {
         // Set new password for user
@@ -79,11 +88,7 @@ class ExtranetUtilities
             ->findOneBy(['id' => $user->getUserType()]);
         return empty($usertype)?'':$usertype->getName();
     }
-    public function getCityName($id)
-    {
-        $city = $this->entityManager->getRepository(Locations::class)->findOneBy(['id' => $id]);
-        return empty($city) ? '' : $city->getName();
-    }
+
     public function makeDate($string)
     {
         if (0 == $string || empty($string)) {
@@ -262,4 +267,109 @@ class ExtranetUtilities
         }
         return $list;
 	}
+	
+	public function getStageName($id)
+	{
+		$stage = $this->entityManager->getRepository(LeadStage::class)->findOneBy(['id' => $id]);
+        return empty($stage) ? '' : $stage->getName();
+	}
+	
+	public function getProspectName($id)
+	{
+		$prospect = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
+        return empty($prospect) ? '' : $prospect->getCompany();
+	}
+	public function getLeadSourceName($id)
+	{
+		$source = $this->entityManager->getRepository(LeadSource::class)->findOneBy(['id' => $id]);
+        return empty($source) ? '' : $source->getName();
+	}
+	public function getExecutiveName($id)
+	{
+		$user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
+        return empty($user) ? '' : $user->getFullName();
+	}
+	public function getSalesStageName($id)
+	{
+		$stage = $this->entityManager->getRepository(SalesStage::class)->findOneBy(['id' => $id]);
+        return empty($stage) ? '' : $stage->getName();
+	}
+	public function getProductSeriesName($id)
+	{
+		$series = $this->entityManager->getRepository(ProductSeries::class)->findOneBy(['id' => $id]);
+        return empty($series) ? '' : $series->getName();
+	}
+	public function getActualProductName($id)
+	{
+		$product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => $id]);
+        return empty($product) ? '' : $product->getName();
+	}
+	public function getProductModelName($id)
+	{
+		$product = $this->entityManager->getRepository(ProductModels::class)->findOneBy(['id' => $id]);
+        return empty($product) ? '' : $product->getName();
+	}
+	public function getExpectedMonthName($id)
+	{
+		$months = [1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.'];
+        return empty($id) ? '' : $months[$id];
+	}
+	public function getClosePropabilityName($id)
+	{
+		$probability = $this->entityManager->getRepository(Probability::class)->findOneBy(['id' => $id]);
+        return empty($probability) ? '' : $probability->getName();
+	}
+	public function getNextActionName($id)
+	{
+		$action = $this->entityManager->getRepository(NextAction::class)->findOneBy(['id' => $id]);
+        return empty($action) ? '' : $action->getName();
+	}
+	
+	public function getContactedTypeName($id)
+	{
+		$type = $this->entityManager->getRepository(ContactedType::class)->findOneBy(['id' => $id]);
+        return empty($type) ? '' : $type->getName();
+	}
+	
+	public function getCityName($id)
+    {
+        $city = $this->entityManager->getRepository(Locations::class)->findOneBy(['id' => $id]);
+        return empty($city) ? '' : $city->getName();
+    }
+	
+	public function getCallTypeName($id)
+    {
+        $calltype = $this->entityManager->getRepository(CallType::class)->findOneBy(['id' => $id]);
+        return empty($calltype) ? '' : $calltype->getName();
+    }
+	public function getContactName($id)
+    {
+        $contact = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
+        return empty($contact) ? '' : $contact->getName();
+    }
+	public function getContactCity($id)
+    {
+        $contact = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
+        return empty($contact) ? '' : $contact->getCity();
+    }
+	public function getContactCompany($id)
+    {
+        $contact = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
+        return empty($contact) ? '' : $contact->getCompany();
+    }
+	public function getContactContact($id)
+    {
+        $contact = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
+        return empty($contact) ? '' : $contact->getContact();
+    }
+	public function getMarketSegmentName($id)
+    {
+        $segment = $this->entityManager->getRepository(MarketSegment::class)->findOneBy(['id' => $id]);
+        return empty($segment) ? '' : $segment->getName();
+    }
+	public function getTravelModeName($id)
+    {
+        $mode = $this->entityManager->getRepository(TravelMode::class)->findOneBy(['id' => $id]);
+        return empty($mode) ? '' : $mode->getName();
+    }
 }

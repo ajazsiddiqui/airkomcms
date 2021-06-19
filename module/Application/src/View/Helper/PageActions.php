@@ -75,13 +75,15 @@ class PageActions extends AbstractHelper
     {
         $escapeHtml = $this->getView()->plugin('escapeHtml');
 
-        return '<a class="btn pd-x-15 mg-l-5 '.$class.' btn-uppercase" href="'.$escapeHtml($link).'"><i data-feather="'.$icon.'" class="wd-10 mg-r-5"></i>'.$escapeHtml($label).'</a>';
+        return '<a class="btn btn-rounded btn-primary '.$class.' btn-uppercase" href="'.$escapeHtml($link).'">
+		<span class="btn-icon-left text-primary"><i class="'.$icon.'" aria-hidden="true"></i></span>'.$escapeHtml($label).'</a>';
     }
 
     protected function renderModalItem($label, $link, $icon, $class)
     {
         $escapeHtml = $this->getView()->plugin('escapeHtml');
 
-        return '<a class="btn btn-sm pd-x-15 mg-l-5 '.$class.' btn-uppercase" href="#" data-toggle="modal" data-target="'.$escapeHtml($link).'"><i data-feather="'.$icon.'" class="wd-10 mg-r-5"></i>'.$escapeHtml($label).'</a>';
+        return '<a class="btn btn-rounded btn-primary '.$class.' btn-uppercase" href="#" data-toggle="modal" data-target="'.$escapeHtml($link).'">
+		<span class="btn-icon-left text-primary"><i class="'.$icon.'" class="wd-10 mg-r-5"></i></span>'.$escapeHtml($label).'</a>';
     }
 }

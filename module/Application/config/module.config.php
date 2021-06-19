@@ -58,6 +58,16 @@ return [
                     ],
                 ],
             ],
+			'pipeline' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/pipeline[/:action[/:id]]',
+                    'defaults' => [
+                        'controller' => Controller\PipelineController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
 			'roadmap' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -105,6 +115,7 @@ return [
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
             Controller\SPTController::class => Controller\Factory\SPTControllerFactory::class,
             Controller\DCRController::class => Controller\Factory\DCRControllerFactory::class,
+            Controller\PipelineController::class => Controller\Factory\PipelineControllerFactory::class,
             Controller\RoadmapController::class => Controller\Factory\RoadmapControllerFactory::class,
             Controller\ReportsController::class => Controller\Factory\ReportsControllerFactory::class,
             Controller\DashboardController::class => Controller\Factory\DashboardControllerFactory::class,
@@ -126,6 +137,10 @@ return [
             Controller\DCRController::class => [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+dcr.manage'],
             ],
+			Controller\PipelineController::class => [
+                ['actions' => ['index'], 'allow' => '+pipeline.manage'],
+				 ['actions' => ['changeStage'], 'allow' => '*'],
+            ],
             Controller\RoadmapController::class => [
                 ['actions' => ['getCity','index','add','edit','delete'], 'allow' => '+roadmap.manage'],
             ],
@@ -133,7 +148,7 @@ return [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+reports.manage'],
             ],
             Controller\DashboardController::class => [
-                ['actions' => ['index','add','edit','delete'], 'allow' => '+dashboard.manage'],
+                ['actions' => ['index','sptreport','dcrreport','roadmapreport'], 'allow' => '+dashboard.manage'],
             ],
 			Controller\ContactsController::class => [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+contacts.manage'],
@@ -155,6 +170,7 @@ return [
             // View\Helper\SearchEngine::class => View\Helper\Factory\SearchEngineFactory::class,
             // View\Helper\TaxDetails::class => View\Helper\Factory\TaxDetailsFactory::class,
             View\Helper\SystemSettings::class => View\Helper\Factory\SystemSettingsFactory::class,
+            View\Helper\ContactDetail::class => View\Helper\Factory\ContactDetailFactory::class,
             View\Helper\Menu::class => View\Helper\Factory\MenuFactory::class,
             View\Helper\Breadcrumbs::class => InvokableFactory::class,
             View\Helper\PageActions::class => InvokableFactory::class,
@@ -163,6 +179,7 @@ return [
             // 'SearchEngine' => View\Helper\SearchEngine::class,
             // 'TaxDetails' => View\Helper\TaxDetails::class,
             'SystemSettings' => View\Helper\SystemSettings::class,
+            'ContactDetail' => View\Helper\ContactDetail::class,
             'mainMenu' => View\Helper\Menu::class,
             'pageBreadcrumbs' => View\Helper\Breadcrumbs::class,
             'PageActions' => View\Helper\PageActions::class,

@@ -12,7 +12,7 @@ $form->get('status')->setAttributes(['id' => 'status']);
 $form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Update'));
 $form->prepare();
 $this->PageActions()->setItems([
-            ['label'=>'Back to Probabilities','url'=>$this->url('probability'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to Probabilities','url'=>$this->url('probability'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);
 ?>
 <div class="row">

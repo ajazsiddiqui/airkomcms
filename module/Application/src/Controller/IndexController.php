@@ -33,7 +33,7 @@ class IndexController extends AbstractActionController
 	
     public function indexAction()
     {
-       return $this->redirect()->toRoute('contacts');
+       return $this->redirect()->toRoute('dashboard');
     }
 	
 	public function addAction()
