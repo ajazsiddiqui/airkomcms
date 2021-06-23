@@ -4,6 +4,7 @@ namespace User\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
 use Masters\Entity\SystemUserType;
+use Masters\Entity\Branch;
 use Properties\Entity\Properties;
 use User\Entity\User;
 
@@ -44,6 +45,13 @@ class UserDetail extends AbstractHelper
 
         return $user->getFullName();
     }
+	
+    public function getBranch($id)
+    {
+        $branch = $this->entityManager->getRepository(Branch::class)->findOneBy(['id' => $id]);
+
+        return $branch->getName();
+    }
 
     public function getUserPic($id)
     {
@@ -56,29 +64,6 @@ class UserDetail extends AbstractHelper
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $this->authService->getIdentity()]);
 
-        $partner = $this->entityManager->getRepository(SystemUserType::class)
-            ->findOneBy(['name' => 'Channel Partner'])
-        ;
-
-        $administrator = $this->entityManager->getRepository(SystemUserType::class)
-            ->findOneBy(['name' => 'Administrator'])
-        ;
-
-        $customers = $this->entityManager->getRepository(SystemUserType::class)
-            ->findOneBy(['name' => 'Customers'])
-        ;
-
-        if ($user->getUserType() == $administrator->getId()) {
-            $usertype = 'administrator';
-        } elseif ($user->getUserType() == $partner->getId()) {
-            $usertype = 'partner';
-        } elseif ($user->getUserType() == $customers->getId()) {
-            $usertype = 'customer';
-        } else {
-            $usertype = 'general';
-        }
-
-        return $usertype;
         if (!empty($user)) {
             $usertype = $this->entityManager->getRepository(SystemUserType::class)->findOneBy(['id' => $user->getUserType()]);
         }

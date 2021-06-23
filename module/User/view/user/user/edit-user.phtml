@@ -29,7 +29,9 @@ $form->get('contact_no')->setAttributes([
     'class'=>'form-control',
     'placeholder'=>'Contact No.'
     ]);
-
+$form->get('branch')->setAttributes([
+    'class'=>'form-control',
+    ]);
 $form->get('status')->setAttributes([
     'class'=>'custom-select',
     ]);
@@ -61,6 +63,12 @@ $this->PageActions()->setItems([
 				<?= $this->formElement($form->get('contact_no')); ?>
 				<?= $this->formElementErrors($form->get('contact_no')); ?>
 			</div>
+			
+			<div class="form-group">
+				<?= $this->formLabel($form->get('branch')); ?>
+				<?= $this->formElement($form->get('branch')); ?>
+				<?= $this->formElementErrors($form->get('branch')); ?>
+			</div>	
 			
 			<div class="custom-file mg-b-20 col-md-4">
 					<?= $this->formLabel($form->get('profile_pic')); ?><br/>

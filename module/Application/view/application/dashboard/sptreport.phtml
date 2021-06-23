@@ -1,0 +1,91 @@
+<?php
+$title = $this->translate('Dashboard');
+$this->headTitle($title);
+$this->mainMenu()->setActiveItemId('dashboard');
+$this->pageBreadcrumbs()->setTitle('SPT Report');
+$this->headLink()->appendStylesheet($this->basePath() . '/vendor/datatables/css/jquery.dataTables.min.css'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/jquery.dataTables.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/js/plugins-init/datatables.init.js'); 
+
+$this->PageActions()->setItems([
+            ['label'=>'Back to Dashboard','url'=>$this->url('dashboard'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<?php if(isset($data)) { ?>
+<div class="row dashboard">
+	<div class="col-xl-12">
+				<div class="card">
+					<div class="card-header d-sm-flex d-block border-0 pb-0">
+						<div>
+							<h4 class="fs-20 text-black"><?= $user->getFullName(); ?></h4>
+							<span class="fs-16"><b>Branch:</b> <?= $this->UserDetail()->getBranch($user->getBranch()); ?> <b>Date:</b> <?= $daterange; ?></span>
+						</div>
+					</div>
+					<div class="card-body pb-0">
+					 <div class="table-responsive">
+                                    <table id="datatable" class="display min-w850 dataTable">
+                                        <thead>
+                                            <tr>
+												<th>Stage</th>
+												<th>Prospect</th>
+												<th>Lead Source</th>
+												<th>Executive</th>
+												<th>Offer No</th>
+												<th>Sales Stage</th>
+												<th>Product Series</th>
+												<th>Actual Product</th>
+												<th>FBV</th>
+												<th>Quantity</th>
+												<th>Exp. Close Date</th>
+												<th>Expected Month</th>
+												<th>Close Probability</th>
+												<th>Next Action</th>
+												<th>Last Con. Date</th>
+												<th>Remarks</th>
+												<th>Contacted Type</th>
+												<th>Contact Name</th>
+												<th>Designation</th>
+												<th>City</th>
+												<th>Telephone</th>
+												<th>Email</th>
+												<th>Website</th>
+												<th>Date Created</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+										<?php foreach ($data as $s) { ?>
+                                            <tr>
+                                                <td><?= $s['stage'] ;?></td>
+                                                <td><?= $s['propectName'] ;?></td>
+                                                <td><?= $s['leadSource'] ;?></td>
+                                                <td><?= $s['executive'] ;?></td>
+                                                <td><?= $s['offerNo'] ;?></td>
+                                                <td><?= $s['salesStage'] ;?></td>
+                                                <td><?= $s['productSeries'] ;?></td>
+                                                <td><?= $s['actualProduct'] ;?></td>
+                                                <td><?= $s['forecastedBookingValue'] ;?></td>
+                                                <td><?= $s['quanitity'] ;?></td>
+                                                <td><?= $s['expectedCloseDate'] ;?></td>
+                                                <td><?= $s['expectedMonth'] ;?></td>
+                                                <td><?= $s['closeProbability'] ;?></td>
+                                                <td><?= $s['nextAction'] ;?></td>
+                                                <td><?= $s['lastContactedDate'] ;?></td>
+                                                <td><?= $s['remarks'] ;?></td>
+                                                <td><?= $s['contactedType'] ;?></td>
+                                                <td><?= $s['contact'] ;?></td>
+                                                <td><?= $s['designation'] ;?></td>
+                                                <td><?= $s['city'] ;?></td>
+                                                <td><?= $s['telephone'] ;?></td>
+                                                <td><?= $s['email'] ;?></td>
+                                                <td><?= $s['website'] ;?></td>
+                                                <td><?= $s['dateCreated'] ;?></td>
+                                            </tr>
+										<?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+					</div>
+				</div>
+			</div>
+</div>
+<?php } ?>

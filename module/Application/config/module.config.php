@@ -128,7 +128,7 @@ return [
         ],
         'controllers' => [
             Controller\IndexController::class => [
-                ['actions' => ['index','add','edit','delete'], 'allow' => '+user.manage'],
+                ['actions' => ['index','add','edit','delete'], 'allow' => '+dashboard.manage'],
             ],
             Controller\SPTController::class => [
                 ['actions' => ['getContact','index','add','edit','delete'], 'allow' => '+spt.manage'],

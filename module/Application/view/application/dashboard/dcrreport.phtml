@@ -1,0 +1,86 @@
+<?php
+$title = $this->translate('Dashboard');
+$this->headTitle($title);
+$this->mainMenu()->setActiveItemId('dashboard');
+$this->pageBreadcrumbs()->setTitle('DCR Report');
+$this->headLink()->appendStylesheet($this->basePath() . '/vendor/datatables/css/jquery.dataTables.min.css'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/jquery.dataTables.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/js/plugins-init/datatables.init.js'); 
+$this->PageActions()->setItems([
+            ['label'=>'Back to Dashboard','url'=>$this->url('dashboard'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<?php if(isset($data)) { ?>
+<div class="row dashboard">
+<div class="col-xl-12">
+<div class="card">
+<div class="card-header d-sm-flex d-block border-0 pb-0">
+<div>
+<h4 class="fs-20 text-black"><?= $user->getFullName(); ?></h4>
+<span class="fs-16"><b>Branch:</b> <?= $this->UserDetail()->getBranch($user->getBranch()); ?> <b>Date:</b> <?= $daterange; ?></span>
+</div>
+</div>
+<div class="card-body pb-0">
+<div class="table-responsive">
+	<table id="datatable" class="display min-w850 dataTable">
+		<thead>
+			<tr>
+				<th>Visit date</th>
+				<th>DCR No.</th>
+				<th>Call Type</th>
+				<th>Call Count</th>
+				<th>Name</th>
+				<th>City</th>
+				<th>Company</th>
+				<th>Telephone</th>
+				<th>Product</th>
+				<th>Model</th>
+				<th>Quantity</th>
+				<th>Order Value</th>
+				<th>Sales Stage</th>
+				<th>Next Action</th>
+				<th>Remarks</th>
+				<th>Bike KM Start</th>
+				<th>Bike KM End</th>
+				<th>Distance Travelled</th>
+				<th>Amount One</th>
+				<th>Travel Mode</th>
+				<th>Amount Two</th>
+				<th>Date Created</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($data as $s) { ?>
+			<tr>
+				<td><?= $s['visitDate'] ;?></td>
+				<td><?= $s['dcrNo'] ;?></td>
+				<td><?= $s['callType'] ;?></td>
+				<td><?= $s['callCount'] ;?></td>
+				<td><?= $s['name'] ;?></td>
+				<td><?= $s['city'] ;?></td>
+				<td><?= $s['company'] ;?></td>
+				<td><?= $s['telephone'] ;?></td>
+				<td><?= $s['productId'] ;?></td>
+				<td><?= $s['productModel'] ;?></td>
+				<td><?= $s['quanitity'] ;?></td>
+				<td><?= $s['orderValue'] ;?></td>
+				<td><?= $s['salesStage'] ;?></td>
+				<td><?= $s['nextAction'] ;?></td>
+				<td><?= $s['remarks'] ;?></td>
+				<td><?= $s['bikeKmReadingStart'] ;?></td>
+				<td><?= $s['bikeKmReadingEnd'] ;?></td>
+				<td><?= $s['distanceTravelled'] ;?></td>
+				<td><?= $s['amountOne'] ;?></td>
+				<td><?= $s['travelMode'] ;?></td>
+				<td><?= $s['amountTwo'] ;?></td>
+				<td><?= $s['dateCreated'] ;?></td>
+			</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<?php } ?>

@@ -52,51 +52,78 @@ class DashboardController extends AbstractActionController
 			$array[$s->getName()] = count($spt);
 		}
 		
-		$users = $this->entityManager->getRepository(User::class)
-            ->findAll();
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+		
+		if($user->getUserType() == 1){
+			$users = $this->entityManager->getRepository(User::class)
+				->findAll();
+		}else{
+			$users = $this->entityManager->getRepository(User::class)
+				->findBy(['id'=>$user->getId()]);
+		}
 		
 		return new ViewModel(['data'=>$array,'users'=>$users]);
     }
 	
+	
 	 public function sptreportAction()
     {
-		
-		$this->layout()->setTemplate('layout/blank');
 		
 		$post = $this->getRequest()->getPost()->toArray();
 		if(!$post){
 			return;
 		}
 		
+		if(isset($post['view'])){
+			$data = $this->getSptView($post);
+			return new ViewModel($data);
+		}
+		
+		$this->layout()->setTemplate('layout/blank');
+		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $post['s_user']]);
+			
+		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->getProperties()->setCreator('AirkomCMS')->setLastModifiedBy('AirkomCMS')->setTitle('AirkomCMS');
 		// Rename worksheet
 		$spreadsheet->getActiveSheet()->setTitle('SPT Report');
+
 		$spreadsheet->setActiveSheetIndex(0) 
-		->setCellValue('A1', 'Stage')
-		->setCellValue('B1', 'Prospect Name')
-		->setCellValue('C1', 'Lead Source Name')
-		->setCellValue('D1', 'ExecUtive')
-		->setCellValue('E1', 'Offer No')
-		->setCellValue('F1', 'Sales Stage')
-		->setCellValue('G1', 'Product Series')
-		->setCellValue('H1', 'Actual Product')
-		->setCellValue('I1', 'Forecasted Booking Value ')
-		->setCellValue('J1', 'Quantity')
-		->setCellValue('K1', 'Expected Close Date')
-		->setCellValue('L1', 'Expected Month')
-		->setCellValue('M1', 'Close Probability')
-		->setCellValue('N1', 'Next Action')
-		->setCellValue('O1', 'Last Contacted Date')
-		->setCellValue('P1', 'Remarks')
-		->setCellValue('Q1', 'Contacted Type')
-		->setCellValue('R1', 'Contact Name')
-		->setCellValue('S1', 'Designation')
-		->setCellValue('T1', 'City')
-		->setCellValue('U1', 'Telephone')
-		->setCellValue('V1', 'Email')
-		->setCellValue('W1', 'Website')
-		->setCellValue('X1', 'Date Created');
+		->setCellValue('A1', 'Engg')
+		->setCellValue('B1', $user->getFullName())
+		->setCellValue('A2', 'Branch')
+		->setCellValue('B2', $this->ExtranetUtilities->getBranchName($user->getBranch()))
+		->setCellValue('A3', 'Date Range')
+		->setCellValue('B3', $post['s_daterange']);
+		
+		$spreadsheet->setActiveSheetIndex(0) 
+		->setCellValue('A5', 'Stage')
+		->setCellValue('B5', 'Prospect Name')
+		->setCellValue('C5', 'Lead Source Name')
+		->setCellValue('D5', 'ExecUtive')
+		->setCellValue('E5', 'Offer No')
+		->setCellValue('F5', 'Sales Stage')
+		->setCellValue('G5', 'Product Series')
+		->setCellValue('H5', 'Actual Product')
+		->setCellValue('I5', 'Forecasted Booking Value ')
+		->setCellValue('J5', 'Quantity')
+		->setCellValue('K5', 'Expected Close Date')
+		->setCellValue('L5', 'Expected Month')
+		->setCellValue('M5', 'Close Probability')
+		->setCellValue('N5', 'Next Action')
+		->setCellValue('O5', 'Last Contacted Date')
+		->setCellValue('P5', 'Remarks')
+		->setCellValue('Q5', 'Contacted Type')
+		->setCellValue('R5', 'Contact Name')
+		->setCellValue('S5', 'Designation')
+		->setCellValue('T5', 'City')
+		->setCellValue('U5', 'Telephone')
+		->setCellValue('V5', 'Email')
+		->setCellValue('W5', 'Website')
+		->setCellValue('X5', 'Date Created');
 		
 		
 		$query = $this->entityManager->createQueryBuilder()->select('S')
@@ -116,7 +143,7 @@ class DashboardController extends AbstractActionController
 				$spt = $query->getQuery()->getArrayResult();
 
 				if (!empty($spt)){
-					$n = 1;
+					$n = 5;
 
 					$count = count($spt);
 
@@ -170,42 +197,131 @@ class DashboardController extends AbstractActionController
 		
     }
 	
-	public function dcrreportAction()
+	
+	 public function getSptView($post)
     {
-		$this->layout()->setTemplate('layout/blank');
 		
 		$post = $this->getRequest()->getPost()->toArray();
 		if(!$post){
 			return;
 		}
 		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $post['s_user']]);
+			
+		$daterange =  '';
+		
+		$query = $this->entityManager->createQueryBuilder()->select('S')
+				->from('Application\Entity\Spt', 'S');
+		if (!empty($post['s_daterange'])) {
+				$dates = explode(" - ", $post['s_daterange']);
+				$startdate = $this->ExtranetUtilities->makeDBDate($dates[0]);
+				$enddate = $this->ExtranetUtilities->makeDBDate($dates[1]);
+
+				$query->AndWhere('S.dateCreated >= :startdate')
+					->setParameter('startdate', $startdate);
+				$query->AndWhere('S.dateCreated <= :enddate')
+					->setParameter('enddate', $enddate);
+				$query->AndWhere('S.createdBy = :createdBy')
+					->setParameter('createdBy', $post['s_user']);
+			
+				$spt = $query->getQuery()->getArrayResult();
+
+				$daterange = $post['s_daterange']; 
+		}
+		
+		$data = [];
+		
+		if (!empty($spt)){
+
+			foreach ($spt as $k => $v) {
+				
+				$contact = $this->entityManager->getRepository(Contacts::class)
+							->findOneBy(['id' => $spt[$k]['propectName']]);
+				$spt[$k]['stage'] = $this->ExtranetUtilities->getStageName($spt[$k]['stage']);
+				$spt[$k]['propectName'] = $this->ExtranetUtilities->getProspectName($spt[$k]['propectName']);
+				$spt[$k]['leadSource'] = $this->ExtranetUtilities->getLeadSourceName($spt[$k]['leadSource']);
+				$spt[$k]['executive'] = $this->ExtranetUtilities->getExecutiveName($spt[$k]['executive']);
+				//$spt[$k]['offerNo'] = $spt[$k]['offerNo']);
+				$spt[$k]['salesStage'] = $this->ExtranetUtilities->getSalesStageName($spt[$k]['salesStage']);
+				$spt[$k]['productSeries'] = $this->ExtranetUtilities->getProductSeriesName($spt[$k]['productSeries']);
+				$spt[$k]['actualProduct'] = $this->ExtranetUtilities->getActualProductName($spt[$k]['actualProduct']);
+				//$spt[$k]['forecastedBookingValue'] = $spt[$k]['forecastedBookingValue']);
+				//$spt[$k]['quanitity'] = $spt[$k]['quanitity']);
+				$spt[$k]['expectedCloseDate'] = $spt[$k]['expectedCloseDate']->format('d-m-Y');
+				$spt[$k]['expectedMonth'] = $this->ExtranetUtilities->getExpectedMonthName($spt[$k]['expectedMonth']);
+				$spt[$k]['closeProbability'] = $this->ExtranetUtilities->getClosePropabilityName($spt[$k]['closeProbability']);
+				$spt[$k]['nextAction'] = $this->ExtranetUtilities->getNextActionName($spt[$k]['nextAction']);
+				$spt[$k]['lastContactedDate'] = $spt[$k]['lastContactedDate']->format('d-m-Y');
+				//$spt[$k]['remarks'] = $spt[$k]['remarks']);
+				$spt[$k]['contactedType'] = $this->ExtranetUtilities->getContactedTypeName($spt[$k]['contactedType']);
+				//$spt[$k]['contact'] = $spt[$k]['contact']);
+				$spt[$k]['designation'] = !empty($contact)?$contact->getDesignation():'';
+				$spt[$k]['city'] = !empty($contact)?$contact->getCity():'';
+				$spt[$k]['telephone'] = !empty($contact)?$contact->getTelephone():'';
+				$spt[$k]['email'] = !empty($contact)?$contact->getEmail():'';
+				$spt[$k]['website'] = !empty($contact)?$contact->getWebsite():'';
+				$spt[$k]['dateCreated'] = $spt[$k]['dateCreated']->format('d-m-Y');
+			}
+		}
+				
+		return ['data'=>$spt,'user'=>$user,'daterange'=>$daterange];
+    }
+	
+	public function dcrreportAction()
+    {
+		
+		$post = $this->getRequest()->getPost()->toArray();
+		if(!$post){
+			return;
+		}
+		
+		if(isset($post['view'])){
+			$data = $this->getDcrView($post);
+			return new ViewModel($data);
+		}
+		
+		$this->layout()->setTemplate('layout/blank');
+		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $post['s_user']]);
+		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->getProperties()->setCreator('AirkomCMS')->setLastModifiedBy('AirkomCMS')->setTitle('AirkomCMS');
 		// Rename worksheet
 		$spreadsheet->getActiveSheet()->setTitle('DCR Report');
+		
 		$spreadsheet->setActiveSheetIndex(0) 
-			->setCellValue('A1', 'Visit Date')
-			->setCellValue('B1', 'DCR No')
-			->setCellValue('C1', 'Call Type')
-			->setCellValue('D1', 'Call Count')
-			->setCellValue('E1', 'Customer Name')
-			->setCellValue('F1', 'City')
-			->setCellValue('G1', 'Company Name')
-			->setCellValue('H1', 'Contact No')
-			->setCellValue('I1', 'Product')
-			->setCellValue('J1', 'Model')
-			->setCellValue('K1', 'Qty')
-			->setCellValue('L1', 'Order Value (Basic)')
-			->setCellValue('M1', 'Sales Stage')
-			->setCellValue('N1', 'Next Action')
-			->setCellValue('O1', 'Remarks')
-			->setCellValue('P1', 'Bike Reading KM Start')
-			->setCellValue('Q1', 'Bike Reading KM End')
-			->setCellValue('R1', 'Distance Travelled')
-			->setCellValue('S1', 'Amount 1')
-			->setCellValue('T1', 'Local Travel Mode')
-			->setCellValue('U1', 'Amount 2')
-			->setCellValue('V1', 'Date Created');
+		->setCellValue('A1', 'Engg')
+		->setCellValue('B1', $user->getFullName())
+		->setCellValue('A2', 'Branch')
+		->setCellValue('B2', $this->ExtranetUtilities->getBranchName($user->getBranch()))
+		->setCellValue('A3', 'Date Range')
+		->setCellValue('B3', $post['s_daterange']);
+		
+		$spreadsheet->setActiveSheetIndex(0) 
+			->setCellValue('A5', 'Visit Date')
+			->setCellValue('B5', 'DCR No')
+			->setCellValue('C5', 'Call Type')
+			->setCellValue('D5', 'Call Count')
+			->setCellValue('E5', 'Customer Name')
+			->setCellValue('F5', 'City')
+			->setCellValue('G5', 'Company Name')
+			->setCellValue('H5', 'Contact No')
+			->setCellValue('I5', 'Product')
+			->setCellValue('J5', 'Model')
+			->setCellValue('K5', 'Qty')
+			->setCellValue('L5', 'Order Value (Basic)')
+			->setCellValue('M5', 'Sales Stage')
+			->setCellValue('N5', 'Next Action')
+			->setCellValue('O5', 'Remarks')
+			->setCellValue('P5', 'Bike Reading KM Start')
+			->setCellValue('Q5', 'Bike Reading KM End')
+			->setCellValue('R5', 'Distance Travelled')
+			->setCellValue('S5', 'Amount 1')
+			->setCellValue('T5', 'Local Travel Mode')
+			->setCellValue('U5', 'Amount 2')
+			->setCellValue('V5', 'Date Created');
 		
 		
 		$query = $this->entityManager->createQueryBuilder()->select('D')
@@ -225,7 +341,7 @@ class DashboardController extends AbstractActionController
 				$dcr = $query->getQuery()->getArrayResult();
 
 				if (!empty($dcr)){
-					$n = 1;
+					$n = 5;
 
 					$count = count($dcr);
 
@@ -276,31 +392,118 @@ class DashboardController extends AbstractActionController
 		$writer->save('php://output');
     }
 	
-	public function roadmapreportAction()
+	
+	public function getDcrView($post)
     {
-		$this->layout()->setTemplate('layout/blank');
 		
 		$post = $this->getRequest()->getPost()->toArray();
 		if(!$post){
 			return;
 		}
 		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $post['s_user']]);
+				
+		$daterange =  '';
+		
+		$query = $this->entityManager->createQueryBuilder()->select('D')
+				->from('Application\Entity\Dcr', 'D');
+				
+		if (!empty($post['s_daterange'])) {
+				$dates = explode(" - ", $post['s_daterange']);
+				$startdate = $this->ExtranetUtilities->makeDBDate($dates[0]);
+				$enddate = $this->ExtranetUtilities->makeDBDate($dates[1]);
+
+				$query->AndWhere('D.dateCreated >= :startdate')
+					->setParameter('startdate', $startdate);
+				$query->AndWhere('D.dateCreated <= :enddate')
+					->setParameter('enddate', $enddate);
+				$query->AndWhere('D.createdBy = :createdBy')
+					->setParameter('createdBy', $post['s_user']);
+					
+				$dcr = $query->getQuery()->getArrayResult();
+		}
+		
+		$data = [];
+		
+		if (!empty($dcr)){
+
+			foreach ($dcr as $k => $v) {
+				
+				$contact = $this->entityManager->getRepository(Contacts::class)
+							->findOneBy(['id' => $dcr[$k]['contactId']]);
+							
+				$dcr[$k]['visitDate'] = $dcr[$k]['visitDate']->format('d/m/Y');
+				$dcr[$k]['dcrNo'] = $dcr[$k]['dcrNo'];
+				$dcr[$k]['callType'] = $this->ExtranetUtilities->getCallTypeName($dcr[$k]['callType']);
+				$dcr[$k]['callCount'] = $dcr[$k]['callCount'];
+				$dcr[$k]['name'] = $contact->getName();
+				$dcr[$k]['city'] = $contact->getCity();
+				$dcr[$k]['company'] = $contact->getCompany();
+				$dcr[$k]['telephone'] = $contact->getTelephone();
+				$dcr[$k]['productId'] = $this->ExtranetUtilities->getActualProductName($dcr[$k]['productId']);
+				$dcr[$k]['productModel'] = $this->ExtranetUtilities->getProductModelName($dcr[$k]['productModel']);
+				$dcr[$k]['quanitity'] = $dcr[$k]['quanitity'];
+				$dcr[$k]['orderValue'] = $dcr[$k]['orderValue'];
+				$dcr[$k]['salesStage'] = $this->ExtranetUtilities->getSalesStageName($dcr[$k]['salesStage']);
+				$dcr[$k]['nextAction'] = $this->ExtranetUtilities->getNextActionName($dcr[$k]['nextAction']);
+				$dcr[$k]['remarks'] = $dcr[$k]['remarks'];
+				$dcr[$k]['bikeKmReadingStart'] = $dcr[$k]['bikeKmReadingStart'];
+				$dcr[$k]['bikeKmReadingEnd'] = $dcr[$k]['bikeKmReadingEnd'];
+				$dcr[$k]['distanceTravelled'] = $dcr[$k]['distanceTravelled'];
+				$dcr[$k]['amountOne'] = $dcr[$k]['amountOne'];
+				$dcr[$k]['travelMode'] = $this->ExtranetUtilities->getTravelModeName($dcr[$k]['travelMode']);
+				$dcr[$k]['amountTwo'] = $dcr[$k]['amountTwo'];
+				$dcr[$k]['dateCreated'] = $dcr[$k]['dateCreated']->format('d/m/Y');
+			}
+		}
+		return ['data'=>$dcr,'user'=>$user,'daterange'=>$daterange];
+    }
+	
+	
+	public function roadmapreportAction()
+    {
+		
+		$post = $this->getRequest()->getPost()->toArray();
+		if(!$post){
+			return;
+		}
+		
+		if(isset($post['view'])){
+			$data = $this->getRoadmapView($post);
+			return new ViewModel($data);
+		}
+		
+		$this->layout()->setTemplate('layout/blank');
+		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $post['s_user']]);
+			
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->getProperties()->setCreator('AirkomCMS')->setLastModifiedBy('AirkomCMS')->setTitle('AirkomCMS');
 		// Rename worksheet
 		$spreadsheet->getActiveSheet()->setTitle('Roadmap Report');
+		
 		$spreadsheet->setActiveSheetIndex(0) 
-			->setCellValue('A1', 'Market Segment')
-			->setCellValue('B1', 'Prospect Name')
-			->setCellValue('C1', 'Prospect City ')
-			->setCellValue('D1', 'Prospect Machine')
-			->setCellValue('E1', 'Product')
-			->setCellValue('F1', 'Product Series')
-			->setCellValue('G1', 'Product Model')
-			->setCellValue('H1', 'Action Plan')
-			->setCellValue('I1', 'Exepected Qty')
-			->setCellValue('J1', 'Expected Potential Order Value')
-			->setCellValue('K1', 'Date Created');
+		->setCellValue('A1', 'Engg')
+		->setCellValue('B1', $user->getFullName())
+		->setCellValue('A2', 'Branch')
+		->setCellValue('B2', $this->ExtranetUtilities->getBranchName($user->getBranch()))
+		->setCellValue('A3', 'Date Range')
+		->setCellValue('B3', $post['s_daterange']);
+		
+		$spreadsheet->setActiveSheetIndex(0) 
+			->setCellValue('A5', 'Market Segment')
+			->setCellValue('B5', 'Prospect Name')
+			->setCellValue('C5', 'Prospect City')
+			->setCellValue('D5', 'Prospect Machine')
+			->setCellValue('E5', 'Product')
+			->setCellValue('F5', 'Product Series')
+			->setCellValue('G5', 'Product Model')
+			->setCellValue('H5', 'Action Plan')
+			->setCellValue('I5', 'Exepected Qty')
+			->setCellValue('J5', 'Expected Potential Order Value')
+			->setCellValue('K5', 'Date Created');
 		
 		
 		$query = $this->entityManager->createQueryBuilder()->select('R')
@@ -320,7 +523,7 @@ class DashboardController extends AbstractActionController
 				$roadmap = $query->getQuery()->getArrayResult();
 
 				if (!empty($roadmap)){
-					$n = 1;
+					$n = 5;
 
 					$count = count($roadmap);
 
@@ -359,4 +562,63 @@ class DashboardController extends AbstractActionController
 		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 		$writer->save('php://output');
     }
+
+	public function getRoadmapView($post)
+    {
+		
+		$post = $this->getRequest()->getPost()->toArray();
+		if(!$post){
+			return;
+		}
+		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['id' => $post['s_user']]);
+			
+		$daterange =  '';
+		
+		$query = $this->entityManager->createQueryBuilder()->select('R')
+				->from('Application\Entity\Roadmap', 'R');
+		if (!empty($post['s_daterange'])) {
+				$dates = explode(" - ", $post['s_daterange']);
+				$startdate = $this->ExtranetUtilities->makeDBDate($dates[0]);
+				$enddate = $this->ExtranetUtilities->makeDBDate($dates[1]);
+
+				$query->AndWhere('R.dateCreated >= :startdate')
+					->setParameter('startdate', $startdate);
+				$query->AndWhere('R.dateCreated <= :enddate')
+					->setParameter('enddate', $enddate);
+				$query->AndWhere('R.createdBy = :createdBy')
+					->setParameter('createdBy', $post['s_user']);
+					
+				$roadmap = $query->getQuery()->getArrayResult();
+
+				$daterange = $post['s_daterange']; 
+		}
+		
+		$data = [];
+		
+		if (!empty($roadmap)){
+			
+					foreach ($roadmap as $k => $v) {
+						
+						$contact = $this->entityManager->getRepository(Contacts::class)
+									->findOneBy(['id' => $roadmap[$k]['prospectName']]);
+									
+						$roadmap[$k]['marketSegment'] = $this->ExtranetUtilities->getMarketSegmentName($roadmap[$k]['marketSegment']);
+						$roadmap[$k]['company'] = $contact->getCompany();
+						$roadmap[$k]['prospectCity'] = $roadmap[$k]['prospectCity'];
+						$roadmap[$k]['propspectMachine'] = $roadmap[$k]['propspectMachine'];
+						$roadmap[$k]['product'] = $this->ExtranetUtilities->getActualProductName($roadmap[$k]['product']);
+						$roadmap[$k]['productSeries'] = $this->ExtranetUtilities->getProductSeriesName($roadmap[$k]['productSeries']);
+						$roadmap[$k]['productModel'] = $this->ExtranetUtilities->getProductModelName($roadmap[$k]['productModel']);
+						$roadmap[$k]['nextAction'] = $this->ExtranetUtilities->getNextActionName($roadmap[$k]['nextAction']);
+						$roadmap[$k]['expectedQuanitity'] = $roadmap[$k]['expectedPotentialOrderValue'];
+						$roadmap[$k]['expectedPotentialOrderValue'] = $roadmap[$k]['expectedPotentialOrderValue'];
+						$roadmap[$k]['dateCreated'] = $roadmap[$k]['dateCreated']->format('d/m/Y');
+					}
+				}
+		
+		return ['data'=>$roadmap,'user'=>$user,'daterange'=>$daterange];
+
+    }	
 }

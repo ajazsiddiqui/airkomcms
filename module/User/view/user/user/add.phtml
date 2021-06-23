@@ -38,7 +38,9 @@ $form->get('user_type')->setAttributes([
 $form->get('status')->setAttributes([
     'class'=>'form-control',
     ]);
-
+$form->get('branch')->setAttributes([
+    'class'=>'form-control',
+    ]);
 
 $form->get('roles')->setAttributes([
     'id'=>'form-control',
@@ -126,7 +128,11 @@ $this->PageActions()->setItems([
 				<?= $this->formElement($form->get('user_type')); ?>
 				<?= $this->formElementErrors($form->get('user_type')); ?>
 			</div>
-
+			<div class="form-group">
+				<?= $this->formLabel($form->get('branch')); ?>
+				<?= $this->formElement($form->get('branch')); ?>
+				<?= $this->formElementErrors($form->get('branch')); ?>
+			</div>	
 			<div class="form-group">
 				<?= $this->formLabel($form->get('roles')); ?>
 				<?= $this->formElement($form->get('roles')); ?>

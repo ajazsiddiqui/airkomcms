@@ -1,0 +1,65 @@
+<?php
+$title = $this->translate('Dashboard');
+$this->headTitle($title);
+$this->mainMenu()->setActiveItemId('dashboard');
+$this->pageBreadcrumbs()->setTitle('SPT Report');
+$this->headLink()->appendStylesheet($this->basePath() . '/vendor/datatables/css/jquery.dataTables.min.css'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/jquery.dataTables.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/js/plugins-init/datatables.init.js'); 
+
+$this->PageActions()->setItems([
+            ['label'=>'Back to Dashboard','url'=>$this->url('dashboard'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<?php if(isset($data)) { ?>
+<div class="row dashboard">
+	<div class="col-xl-12">
+				<div class="card">
+					<div class="card-header d-sm-flex d-block border-0 pb-0">
+						<div>
+							<h4 class="fs-20 text-black"><?= $user->getFullName(); ?></h4>
+							<span class="fs-16"><b>Branch:</b> <?= $this->UserDetail()->getBranch($user->getBranch()); ?> <b>Date:</b> <?= $daterange; ?></span>
+						</div>
+					</div>
+					<div class="card-body pb-0">
+					 <div class="table-responsive">
+                                    <table id="datatable" class="display min-w850 dataTable">
+                                        <thead>
+                                            <tr>
+												<th>Market Segment</th>
+												<th>Prospect Name</th>
+												<th>Prospect City</th>
+												<th>Prospect Machine</th>
+												<th>Product</th>
+												<th>Series</th>
+												<th>Model</th>
+												<th>Action Plan</th>
+												<th>Exepected Qty</th>
+												<th>Exp. POV</th>
+												<th>Date Created</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+										<?php foreach ($data as $s) { ?>
+                                            <tr>
+                                                <td><?= $s['marketSegment'] ;?></td>
+                                                <td><?= $s['company'] ;?></td>
+                                                <td><?= $s['prospectCity'] ;?></td>
+                                                <td><?= $s['propspectMachine'] ;?></td>
+                                                <td><?= $s['product'] ;?></td>
+                                                <td><?= $s['productSeries'] ;?></td>
+                                                <td><?= $s['productModel'] ;?></td>
+                                                <td><?= $s['nextAction'] ;?></td>
+                                                <td><?= $s['expectedQuanitity'] ;?></td>
+                                                <td><?= $s['expectedPotentialOrderValue'] ;?></td>
+                                                <td><?= $s['dateCreated'] ;?></td>
+                                            </tr>
+										<?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+					</div>
+				</div>
+			</div>
+</div>
+<?php } ?>

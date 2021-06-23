@@ -5,9 +5,10 @@
 				<th><strong><?= $this->translate('ID') ?></strong></th>
 				<th><strong><?= $this->translate('Photo') ?></strong></th>
 				<th><strong><?= $this->translate('Name') ?></strong></th>
-				<!-- <th><strong><?= $this->translate('Email') ?></strong></th> -->
 				<th><strong><?= $this->translate('Contact') ?></strong></th>
+				<th><strong><?= $this->translate('Branch') ?></strong></th>
 				<th><strong><?= $this->translate('Usertype') ?></strong></th>
+				<th><strong><?= $this->translate('Status') ?></strong></th>
 				<!-- <th><strong><?= $this->translate('Date Created') ?></strong></th> -->
 				<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
 			</tr>
@@ -23,9 +24,10 @@
 					<td><a class="tx-semibold" href="<?= $this->url('users', ['action'=>'edit', 'id'=>$user->getId()]); ?>"><?= $this->escapeHtml($user->getFullName()); ?></a></td>
 					<!-- <td><?= $user->getEmail(); ?></td> -->
 					<td><?= $user->getContactNo(); ?></td>
+					<td><?= $this->UserDetail()->getBranch($user->getBranch()); ?></td>
 					<td><?= $this->escapeHtml($user->getRolesAsString()); ?></td>
 					<!-- <td><?= $this->escapeHtml($user->getDateCreated()); ?></td> -->
-					<td colspan="2">
+					<td>
 				
 					<a class="btn btn-light mr-2" href="<?= $this->url('users', ['action'=>'setstatus','id' => $user->getId()]); ?>"><?= ($user->getStatus()==1?'Active':'Deactivated');?>
 					</td>
@@ -48,6 +50,7 @@
 					<td><a class="tx-semibold" href="<?= $this->url('users', ['action'=>'edit', 'id'=>$user->getId()]); ?>"><?= $this->escapeHtml($user->getFullName()); ?></a></td>
 					<!-- <td><?= $user->getEmail(); ?></td> -->
 					<td><?= $user->getContactNo(); ?></td>
+					<td><?= $this->UserDetail()->getBranch($user->getBranch()); ?></td>
 					<td><?= $this->escapeHtml($user->getRolesAsString()); ?></td>
 					<!-- <td><?= $this->escapeHtml($user->getDateCreated()); ?></td> -->
 					<td>

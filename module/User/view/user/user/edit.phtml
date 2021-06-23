@@ -36,7 +36,9 @@ $form->get('user_type')->setAttributes([
     'class'=>'form-control',
     'placeholder'=>'User Type',
     ]);
-
+$form->get('branch')->setAttributes([
+    'class'=>'form-control',
+    ]);
 $form->get('status')->setAttributes([
     'class'=>'form-control',
     ]);
@@ -51,7 +53,7 @@ $form->get('submit')->setAttributes(['class'=>'btn btn-primary','id'=>'submit', 
 $form->prepare();
 
 $this->PageActions()->setItems([
-            ['label'=>'Back to Users','url'=>$this->url('users'),'icon'=>'arrow-left','class'=>'btn-primary'],
+            ['label'=>'Back to Users','url'=>$this->url('users'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
             ]);	
 ?>
 
@@ -90,7 +92,12 @@ $this->PageActions()->setItems([
 					<?= $this->formElementErrors($form->get('email')); ?>
 				</div>
 			</div>
-										
+					
+			<div class="form-group">
+				<?= $this->formLabel($form->get('branch')); ?>
+				<?= $this->formElement($form->get('branch')); ?>
+				<?= $this->formElementErrors($form->get('branch')); ?>
+			</div>					
 
 			<div class="form-group">
 				<?= $this->formLabel($form->get('user_type')); ?>

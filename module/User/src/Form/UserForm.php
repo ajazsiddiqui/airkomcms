@@ -173,6 +173,17 @@ class UserForm extends Form
                 ],
             ]
         );
+		
+		// Add "branch" field
+        $this->add(
+            [
+                'type' => 'select',
+                'name' => 'branch',
+                'options' => [
+                    'label' => 'Branch',
+                ],
+            ]
+        );
 
         // Add the Submit button
         $this->add(

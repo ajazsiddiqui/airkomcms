@@ -40,6 +40,11 @@ class User
     protected $password;
 
     /**
+     * @ORM\Column(name="branch")
+     */
+    protected $branch;
+	
+	/**
      * @ORM\Column(name="status")
      */
     protected $status;
@@ -162,6 +167,16 @@ class User
     {
         return $this->status;
     }
+	
+    /**
+     * Returns branch.
+     *
+     * @return int
+     */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
 
     /**
      * Returns contactNo.
@@ -259,6 +274,16 @@ class User
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * Sets branch.
+     *
+     * @param int $branch
+     */
+    public function setBranch($branch)
+    {
+        $this->branch = $branch;
     }
 
     /**

@@ -10,6 +10,7 @@ use Masters\Entity\Products;
 use Masters\Entity\SalesStage;
 use Masters\Entity\TravelMode;
 use Masters\Entity\NextAction;
+use Masters\Entity\Branch;
 use Masters\Entity\LeadStage;
 use Masters\Entity\LeadSource;
 use Masters\Entity\MarketSegment;
@@ -278,6 +279,11 @@ class ExtranetUtilities
 	{
 		$prospect = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
         return empty($prospect) ? '' : $prospect->getCompany();
+	}
+	public function getBranchName($id)
+	{
+		$branch = $this->entityManager->getRepository(Branch::class)->findOneBy(['id' => $id]);
+        return empty($branch) ? '' : $branch->getName();
 	}
 	public function getLeadSourceName($id)
 	{

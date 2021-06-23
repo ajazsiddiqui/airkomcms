@@ -22,6 +22,7 @@ return [
 			Controller\SalesStageController::class => Controller\Factory\SalesStageControllerFactory::class,
 			Controller\TravelModeController::class => Controller\Factory\TravelModeControllerFactory::class,
 			Controller\TravelTypeController::class => Controller\Factory\TravelTypeControllerFactory::class,
+			Controller\BranchController::class => Controller\Factory\BranchControllerFactory::class,
 
         ],
     ],
@@ -225,6 +226,20 @@ return [
 					],
 				],
 			],
+			'branch' => [
+				'type' => Segment::class,
+				'options' => [
+					'route' => '/branch[/:action[/:id]]',
+					'constraints' => [
+						'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+						'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+					],
+					'defaults' => [
+						'controller' => Controller\BranchController::class,
+						'action' => 'index',
+					],
+				],
+			],
 
         ],
     ],
@@ -273,7 +288,9 @@ return [
 			Controller\TravelTypeController::class => [
 				['actions' => ['index', 'add', 'edit', 'setstatus', 'delete'], 'allow' => '+masters.manage'],
 			],
-
+			Controller\BranchController::class => [
+				['actions' => ['index', 'add', 'edit', 'setstatus', 'delete'], 'allow' => '+masters.manage'],
+			],
         ],
     ],
     'view_manager' => [

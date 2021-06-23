@@ -1,0 +1,59 @@
+<?php
+$title = $this->translate('Branch');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('masters');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate(' Branch')=>$this->url('branch'),
+            $this->translate('Listings')=>$this->url('branch', ['action'=>'index']),
+            ]);
+
+$this->PageActions()->setItems([
+            ['label'=>'Add Branch','url'=>$this->url('branch', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+  <div class="col-12">
+<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Manage Branches</h4>
+			</div>
+			<div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-responsive-md">
+<thead>
+<tr>
+	<th><strong><?= $this->translate('Id') ?></strong></th>
+	<th><strong><?= $this->translate('Name') ?></strong></th>
+	<th><strong><?= $this->translate('Status') ?></strong></th>
+	<th><strong><?= $this->translate('Date Created') ?></strong></th>
+	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+</tr>
+</thead>
+<tbody>
+<?php foreach ($branches as $branch) : ?>
+<tr>
+<td><?= $branch->getID();?></td>
+    <td><a href="<?= $this->url('branch',['action'=>'edit','id' => $branch->getId()]); ?>" class="tx-semibold"><?= $branch->getName();?></a></td>
+  <td><a class="tx-semibold" href="<?= $this->url('branch', ['action'=>'setstatus','id' => $branch->getId()]); ?>"><?= ($branch->getStatus()==1?'Active':'Deactivated');?></a></td>
+	<td><?= $branch->getDateCreated();?></td>
+	<td>
+	<a href="<?= $this->url('branch',[ 'action'=>'edit','id' => $branch->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
+    </td>
+		<td>
+		<a href="<?= $this->url('branch',[ 'action'=>'delete','id' => $branch->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table></div>
+
+
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator]); ?>
+
+</div>
+    </div>
+    </div>
+    </div>

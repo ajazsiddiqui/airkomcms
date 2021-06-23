@@ -200,6 +200,12 @@ class NavManager
                 ];
 				
 				$masterDropdownItems[] = [
+                    'id' => 'branch',
+                    'label' => $this->translator->translate('Branch'),
+                    'link' => $url('branch'),
+                ];
+				
+				$masterDropdownItems[] = [
                     'id' => 'call-type',
                     'label' => $this->translator->translate('Call Types'),
                     'link' => $url('call-type'),

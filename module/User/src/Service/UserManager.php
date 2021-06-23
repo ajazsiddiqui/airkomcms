@@ -8,7 +8,6 @@ use SendGrid;
 use Settings\Entity\Settings;
 use User\Entity\Role;
 use User\Entity\User;
-use User\Entity\UserDetails;
 
 /**
  * This service is responsible for adding/editing users
@@ -69,6 +68,7 @@ class UserManager
         $user->setEmail($data['email']);
         $user->setFullName($data['full_name']);
         $user->setContactNo($data['contact_no']);
+        $user->setBranch($data['branch']);
         $user->setUserType($data['user_type']);
         $user->setProfilePic($newFileName);
 
@@ -91,19 +91,6 @@ class UserManager
         // Apply changes to database.
         $this->entityManager->flush();
 
-        //userdetails
-        $name = explode(' ', $data['full_name'], 2);
-
-        $userdetails = new UserDetails();
-        $userdetails->setUserId($user->getId());
-        $userdetails->setFirstName($name[0]);
-        $userdetails->setLastName(isset($name[1]) ? $name[1] : '-');
-        $userdetails->setEmail($data['email']);
-        $userdetails->setContact($data['contact_no']);
-        $userdetails->setUserType($data['user_type']);
-        $this->entityManager->persist($userdetails);
-        $this->entityManager->flush();
-
         return $user;
     }
 
@@ -124,22 +111,10 @@ class UserManager
         $user->setEmail($data['email']);
         $user->setFullName($data['full_name']);
         $user->setContactNo($data['contact_no']);
+        $user->setBranch($data['branch']);
         $user->setUserType($data['user_type']);
         $user->setProfilePic($newFileName);
         $user->setStatus($data['status']);
-
-        //userdetails
-        $name = explode(' ', $data['full_name'], 2);
-        $userdetails = $this->entityManager->getRepository(UserDetails::class)
-            ->findOneBy(['userId' => $user->getId()])
-        ;
-        $userdetails->setFirstName($name[0]);
-        $userdetails->setLastName(isset($name[1]) ? $name[1] : '-');
-        $userdetails->setEmail($data['email']);
-        $userdetails->setContact($data['contact_no']);
-        $userdetails->setUserType($data['user_type']);
-        $this->entityManager->persist($userdetails);
-        $this->entityManager->flush();
 
         // Assign roles to user.
         $this->assignRoles($user, $data['roles']);
@@ -193,8 +168,7 @@ class UserManager
     public function checkUserExists($email)
     {
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneByEmail($email)
-        ;
+            ->findOneByEmail($email);
 
         return null !== $user;
     }
@@ -270,8 +244,7 @@ class UserManager
     public function validatePasswordResetToken($passwordResetToken)
     {
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneByPasswordResetToken($passwordResetToken)
-        ;
+            ->findOneByPasswordResetToken($passwordResetToken);
 
         if (null == $user) {
             return false;
@@ -302,8 +275,7 @@ class UserManager
         }
 
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneByPasswordResetToken($passwordResetToken)
-        ;
+            ->findOneByPasswordResetToken($passwordResetToken);
 
         if (null === $user) {
             return false;

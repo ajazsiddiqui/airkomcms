@@ -6,6 +6,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Masters\Entity\SystemUserType;
 use User\Entity\Role;
+use Masters\Entity\Branch;
 use User\Entity\User;
 use User\Form\PasswordChangeForm;
 use User\Form\PasswordResetForm;
@@ -48,8 +49,8 @@ class UserController extends AbstractActionController
         }
 
         $query = $this->entityManager->createQueryBuilder()->select('U')
-            ->from('User\Entity\User', 'U')
-        ;
+            ->from('User\Entity\User', 'U');
+			
         if (!empty($search_array['s_user'])) {
             $query->Where('U.fullName like :s_user')->setParameter('s_user', '%'.$post['s_user'].'%');
         }
@@ -66,8 +67,7 @@ class UserController extends AbstractActionController
         $users = $query->getQuery()->getResult();
 
         $systemUserTypes = $this->entityManager->getRepository(SystemUserType::class)
-            ->findAll()
-        ;
+            ->findAll();
 
         return new ViewModel(['users' => $users, 'form' => $form, 'systemUserTypes' => $systemUserTypes, 'paginator' => $paginator, 'search_array' => $search_array]);
     }
@@ -82,8 +82,16 @@ class UserController extends AbstractActionController
         foreach ($allRoles as $role) {
             $roleList[$role->getId()] = $role->getName();
         }
+		
+		$allBranches = $this->entityManager->getRepository(Branch::class)
+            ->findBy([], ['name' => 'ASC']);
+        $branchList = [];
+        foreach ($allBranches as $branch) {
+            $branchList[$branch->getId()] = $branch->getName();
+        }
 
         $form->get('roles')->setValueOptions($roleList);
+        $form->get('branch')->setValueOptions($branchList);
 
         $allUserTypes = $this->entityManager->getRepository(SystemUserType::class)
             ->findBy([], ['name' => 'ASC']);
@@ -143,18 +151,12 @@ class UserController extends AbstractActionController
 
         if ($id < 1) {
             $user = $this->entityManager->getRepository(User::class)
-                ->findOneBy(['email' => $this->authService->getIdentity()])
-            ;
-            if (1 != $user->getUserType()) {
-                $this->layout()->setTemplate('layout/property_layout');
-            }
+                ->findOneBy(['email' => $this->authService->getIdentity()]);
         } else {
             $user = $this->entityManager->getRepository(User::class)
-                ->findOneBy(['email' => $this->authService->getIdentity()])
-            ;
+                ->findOneBy(['email' => $this->authService->getIdentity()]);
 
             if (1 != $user->getUserType()) {
-                $this->layout()->setTemplate('layout/property_layout');
 
                 if ($id != $user->getId()) {
                     $this->layout()->setTemplate('layout/blank');
@@ -164,8 +166,7 @@ class UserController extends AbstractActionController
                 }
             } else {
                 $user = $this->entityManager->getRepository(User::class)
-                    ->find($id)
-                ;
+                    ->find($id);
             }
         }
 
@@ -199,8 +200,7 @@ class UserController extends AbstractActionController
         }
 
         $user = $this->entityManager->getRepository(User::class)
-            ->find($id)
-        ;
+            ->find($id);
 
         if (null == $user) {
             $this->getResponse()->setStatusCode(404);
@@ -212,18 +212,25 @@ class UserController extends AbstractActionController
         $form->getInputFilter()->get('profile_pic')->setRequired(false);
 
         $allRoles = $this->entityManager->getRepository(Role::class)
-            ->findBy([], ['name' => 'ASC'])
-        ;
+            ->findBy([], ['name' => 'ASC']);
         $roleList = [];
         foreach ($allRoles as $role) {
             $roleList[$role->getId()] = $role->getName();
         }
 
+		$allBranches = $this->entityManager->getRepository(Branch::class)
+            ->findBy([], ['name' => 'ASC']);
+        $branchList = [];
+        foreach ($allBranches as $branch) {
+            $branchList[$branch->getId()] = $branch->getName();
+        }
+
         $form->get('roles')->setValueOptions($roleList);
+        $form->get('branch')->setValueOptions($branchList);
+		
 
         $allUserTypes = $this->entityManager->getRepository(SystemUserType::class)
-            ->findBy([], ['name' => 'ASC'])
-        ;
+            ->findBy([], ['name' => 'ASC']);
         $UserTypesList = [];
         foreach ($allUserTypes as $userType) {
             $UserTypesList[$userType->getId()] = $userType->getName();
@@ -280,6 +287,7 @@ class UserController extends AbstractActionController
                     'contact_no' => $user->getContactNo(),
                     'user_type' => $user->getUserType(),
                     'email' => $user->getEmail(),
+                    'branch' => $user->getBranch(),
                     'status' => $user->getStatus(),
                     'roles' => $userRoleIds,
                 ]
@@ -305,8 +313,7 @@ class UserController extends AbstractActionController
         }
 
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()])
-        ;
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
 
         if ($user->getId() != $id) {
             $this->layout()->setTemplate('layout/blank');
@@ -319,14 +326,22 @@ class UserController extends AbstractActionController
         $form->getInputFilter()->get('profile_pic')->setRequired(false);
 
         $allRoles = $this->entityManager->getRepository(Role::class)
-            ->findBy([], ['name' => 'ASC'])
-        ;
+            ->findBy([], ['name' => 'ASC']);
+			
         $roleList = [];
         foreach ($allRoles as $role) {
             $roleList[$role->getId()] = $role->getName();
         }
 
+		$allBranches = $this->entityManager->getRepository(Branch::class)
+            ->findBy([], ['name' => 'ASC']);
+        $branchList = [];
+        foreach ($allBranches as $branch) {
+            $branchList[$branch->getId()] = $branch->getName();
+        }
+
         $form->get('roles')->setValueOptions($roleList);
+        $form->get('branch')->setValueOptions($branchList);
 
         if ($this->getRequest()->isPost()) {
             $post = array_merge_recursive(
@@ -371,6 +386,7 @@ class UserController extends AbstractActionController
                     'full_name' => $user->getFullName(),
                     'contact_no' => $user->getContactNo(),
                     'email' => $user->getEmail(),
+                    'branch' => $user->getBranch(),
                     'status' => $user->getStatus(),
                 ]
             );
@@ -395,11 +411,9 @@ class UserController extends AbstractActionController
         }
 
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()])
-        ;
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
 
         if (1 != $user->getUserType()) {
-            $this->layout()->setTemplate('layout/property_layout');
             if ($user->getId() != $id) {
                 $this->layout()->setTemplate('layout/blank');
                 $this->getResponse()->setStatusCode(404);
@@ -407,8 +421,7 @@ class UserController extends AbstractActionController
         }
 
         $user = $this->entityManager->getRepository(User::class)
-            ->find($id)
-        ;
+            ->find($id);
 
         if (null == $user) {
             $this->getResponse()->setStatusCode(404);
@@ -461,8 +474,8 @@ class UserController extends AbstractActionController
             $form->setData($data);
             if ($form->isValid()) {
                 $user = $this->entityManager->getRepository(User::class)
-                    ->findOneByEmail($data['email'])
-                ;
+                    ->findOneByEmail($data['email']);
+					
                 if (null != $user) {
                     $this->userManager->generatePasswordResetToken($user);
 
@@ -553,8 +566,8 @@ class UserController extends AbstractActionController
     {
         $id = (int) $this->params()->fromRoute('id', -1);
         $user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['id' => $id])
-        ;
+            ->findOneBy(['id' => $id]);
+			
         $status = $user->getStatus();
         if (1 == $status) {
             $user->setStatus('0');

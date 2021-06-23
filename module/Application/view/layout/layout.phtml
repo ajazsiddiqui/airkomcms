@@ -60,19 +60,19 @@
             ->appendFile($this->basePath('vendor/chart.js/Chart.bundle.min.js')) 
             ->appendFile($this->basePath('vendor/owl-carousel/owl.carousel.js')) 
             ->appendFile($this->basePath('vendor/peity/jquery.peity.min.js')) 
+			->appendFile($this->basePath('vendor/moment/moment.min.js')) 
+			->appendFile($this->basePath('vendor/bootstrap-daterangepicker/daterangepicker.js')) 
+            ->appendFile($this->basePath('js/plugins-init/bs-daterange-picker-init.js')) 
+            ->appendFile($this->basePath('js/printThis.js')) 
           ?>
 		  
 		   <!-- Scripts -->
         <?= $this->headScript() ?>
 		
-		 <?= $this->inlineScript()
-            ->appendFile($this->basePath('vendor/moment/moment.min.js')) 
-			->appendFile($this->basePath('vendor/bootstrap-daterangepicker/daterangepicker.js')) 
-            ->appendFile($this->basePath('js/plugins-init/bs-daterange-picker-init.js')) 
-            ->appendFile($this->basePath('js/custom.min.js')) 
-            ->appendFile($this->basePath('js/deznav-init.js')) 
-            ->appendFile($this->basePath('js/printThis.js')) 
-			?>
+				<script src="<?= $this->basePath('js/custom.min.js'); ?>" type="text/javascript"></script>
+		<script src="<?= $this->basePath('js/deznav-init.js'); ?>" type="text/javascript"></script>
+			
+		
 		<script>
 		function carouselReview(){
 			/*  testimonial one function by = owl.carousel.js */

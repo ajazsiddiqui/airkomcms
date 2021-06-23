@@ -27335,7 +27335,7 @@ table#example {
 
 table.dataTable {
   color: #000;
-  border-radius: 1.25rem; }
+  }
 
 #example2_wrapper .dataTables_scrollBody {
   max-height: 33.25rem !important; }
@@ -27367,7 +27367,7 @@ table.dataTable tbody td {
 
 table.dataTable thead th {
   color: #000;
-  font-size: 18px;
+  font-size: 16px;
   white-space: nowrap;
   font-weight: 600; }
   [data-theme-version="dark"] table.dataTable thead th {
@@ -27377,16 +27377,19 @@ table.dataTable thead th {
       font-size: 14px; } }
 
 table.dataTable tbody td {
-  font-size: 16px;
-  padding: 22px 15px; }
+  font-size: 14px;
+  padding: 8px 4px; }
   @media only screen and (max-width: 1400px) {
     table.dataTable tbody td {
       padding: 8px 15px;
-      font-size: 14px; } }
+      font-size: 12px; } }
 
 table.dataTable tr.selected {
   color: #1EAAE7; }
-
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 8px 12px !important;
+	white-space: nowrap !important;
+}
 table.dataTable tfoot th {
   color: #B1B1B1;
   font-weight: 600; }
@@ -31104,6 +31107,14 @@ form{
 
 .dashboard .input-daterange-datepicker{
 	max-width:220px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    padding-top: 0.25em;
+    margin-bottom: 50px !important;
+    background: #fff !important;
 }
 
 /*# sourceMappingURL=style.css.map */
