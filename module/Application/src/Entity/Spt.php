@@ -717,6 +717,6 @@ class Spt
      */
     public function getDateCreated()
     {
-        return $this->dateCreated->format('Y-m-d H:i:s');
+        return $this->dateCreated->format('Y-m-d');
     }
 }

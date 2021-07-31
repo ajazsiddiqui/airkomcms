@@ -18,6 +18,7 @@ use Application\Entity\Contacts;
 use User\Entity\User;
 use Settings\Entity\Settings;
 use Laminas\View\Model\JsonModel;
+use Application\Entity\Pipeline;
 
 class SPTController extends AbstractActionController
 {
@@ -78,15 +79,28 @@ class SPTController extends AbstractActionController
 	
     public function indexAction()
     {
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-        $paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(SPT::class)->count();
-        $paginator['per_page'] = 10;
-        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-
         $form = new SPTForm();
-        $spt = $this->entityManager->getRepository(Spt::class)
-            ->findBy([], ['id' => 'ASC'], $paginator['per_page'], $offset);
-
+        
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+			
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+		$paginator['per_page'] = 10;
+			
+		if($user->getUserType() == 1){
+			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Spt::class)->count();
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+			
+			$spt = $this->entityManager->getRepository(Spt::class)
+            ->findBy([], ['id' => 'DESC'], $paginator['per_page'], $offset);
+		}else{
+			$spt = $this->entityManager->getRepository(Spt::class)
+            ->findBy(['createdBy'=>$user->getId()]);
+			
+			$paginator['count'] = count($spt);
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		}
+		
         return new ViewModel(['spt' => $spt, 'form' => $form, 'paginator' => $paginator]);
     }
 	
@@ -115,13 +129,13 @@ class SPTController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 				
-			$spt = $this->entityManager->getRepository(Spt::class)
-					->findOneBy(['propectName' => $data['propect_name']]);	
+			// $spt = $this->entityManager->getRepository(Spt::class)
+					// ->findOneBy(['propectName' => $data['propect_name']]);	
 			
-			if(!empty($spt)){			
-				$this->flashMessenger()->addErrorMessage('Prospect already there in SPT.');
-				return $this->redirect()->toRoute('spt');
-			}
+			// if(!empty($spt)){			
+				// $this->flashMessenger()->addErrorMessage('Prospect already there in SPT.');
+				// return $this->redirect()->toRoute('spt');
+			// }
 			
                 try {
                     $spt = new Spt();
@@ -148,6 +162,15 @@ class SPTController extends AbstractActionController
 					$spt->setCreatedBy($user->getId());
                     $this->entityManager->persist($spt);
                     $this->entityManager->flush();
+					
+					//Add to Pipeline
+					$pipeline = new Pipeline();
+					$pipeline->setContact($data['propect_name']);
+					$pipeline->setSptId($spt->getId());
+					$pipeline->setStage($data['stage']);
+					$pipeline->setCreatedBy($user->getId());
+					$this->entityManager->persist($pipeline);
+					$this->entityManager->flush();
 					
 					$this->flashMessenger()->addSuccessMessage('SPT Added '.$data['propect_name']);
                 } catch (Exception $e) {
@@ -284,6 +307,11 @@ class SPTController extends AbstractActionController
             ->find($id);
         $Sptid = $spt->getPropectName();
         $this->entityManager->remove($spt);
+        $this->entityManager->flush();
+		
+        $pipeline = $this->entityManager->getRepository(Pipeline::class)
+            ->findOneBy(['sptId'=>$id]);
+        $this->entityManager->remove($pipeline);
         $this->entityManager->flush();
 
         $log = $this->logManager;

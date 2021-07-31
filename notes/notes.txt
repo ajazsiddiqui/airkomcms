@@ -1,7 +1,0 @@
-In targets table
-except calltype ids some others ids are there to define
-
-localcalls = 97
-outstation call = 98
-sales prospects = 99
-target booking = 100

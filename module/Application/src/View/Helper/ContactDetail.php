@@ -20,14 +20,14 @@ class ContactDetail extends AbstractHelper
     {
         $user = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
 
-        return $user->getName();
+        return ($user)?$user->getName():'';
     }
 
     public function getCompanyName($id)
     {
         $user = $this->entityManager->getRepository(Contacts::class)->findOneBy(['id' => $id]);
 
-        return $user->getCompany();
+        return ($user)?$user->getCompany():'';
     }
     
 }

@@ -5,6 +5,9 @@ $this->mainMenu()->setActiveItemId('dashboard');
 $this->pageBreadcrumbs()->setTitle('DCR Report');
 $this->headLink()->appendStylesheet($this->basePath() . '/vendor/datatables/css/jquery.dataTables.min.css'); 
 $this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/jquery.dataTables.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/dataTables.buttons.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/buttons.colVis.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/buttons.print.min.js', 'text/javascript'); 
 $this->headScript()->appendFile($this->basePath() . '/js/plugins-init/datatables.init.js'); 
 $this->PageActions()->setItems([
             ['label'=>'Back to Dashboard','url'=>$this->url('dashboard'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
@@ -15,14 +18,29 @@ $this->PageActions()->setItems([
 <div class="col-xl-12">
 <div class="card">
 <div class="card-header d-sm-flex d-block border-0 pb-0">
-<div>
-<h4 class="fs-20 text-black"><?= $user->getFullName(); ?></h4>
-<span class="fs-16"><b>Branch:</b> <?= $this->UserDetail()->getBranch($user->getBranch()); ?> <b>Date:</b> <?= $daterange; ?></span>
-</div>
+<div class="col-xs-12 col-sm-6">
+							<h4 id="reportuser" class="fs-20 text-black"><?= gettype($user) == 'object'?$user->getFullName():'All Users'; ?></h4>
+							<span id="reportdetails" class="fs-16"><b>Branch:</b> <?= gettype($user) == 'object'? $this->UserDetail()->getBranch($user->getBranch()):'All Branches'; ?> <b>Date:</b> <?= $daterange; ?></span>
+						</div>	
+						<?php if (isset($ov) && !empty($ov)){ ?>
+							<div class="col-xs-12 col-sm-6">
+								<div class="d-flex flex-wrap text-black fs-12 mt-4">
+									<?php $colors = ['#1EAAE7','#FF7A30','#2BC155','#FF2E2E']; ?>
+									<?php foreach ($ov as $k => $v) { ?>
+										<div class="col-6 mb-3">
+											<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect width="19" height="19" rx="9.5" fill="<?= $colors[$k] ?>"></rect>
+											</svg>
+											<?= $v['calltype']; ?> (₹ <?= number_format($v['ov'],0); ?>)
+										</div>
+									<?php } ?>
+								</div>
+							</div>
+						<?php } ?>
 </div>
 <div class="card-body pb-0">
 <div class="table-responsive">
-	<table id="datatable" class="display min-w850 dataTable">
+	<table id="datatable" class="display min-w850 dataTable" style="width:100%">
 		<thead>
 			<tr>
 				<th>Visit date</th>
@@ -63,7 +81,7 @@ $this->PageActions()->setItems([
 				<td><?= $s['productId'] ;?></td>
 				<td><?= $s['productModel'] ;?></td>
 				<td><?= $s['quanitity'] ;?></td>
-				<td><?= $s['orderValue'] ;?></td>
+				<td>₹ <?= number_format($s['orderValue'], 0);?></td>
 				<td><?= $s['salesStage'] ;?></td>
 				<td><?= $s['nextAction'] ;?></td>
 				<td><?= $s['remarks'] ;?></td>

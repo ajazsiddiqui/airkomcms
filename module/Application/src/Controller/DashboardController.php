@@ -63,9 +63,39 @@ class DashboardController extends AbstractActionController
 				->findBy(['id'=>$user->getId()]);
 		}
 		
+		$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv` from `spt` group by `stage`";
+
+		$stmt = $this->entityManager->getConnection()->prepare($sql);
+		$stmt->execute();
+		$fbv =  $stmt->fetchAll();
+		
+		foreach ($fbv as $k => $f){
+			$array['f_'.$f['stage']] = $f['fbv'];
+		}
+		
 		return new ViewModel(['data'=>$array,'users'=>$users]);
     }
 	
+	public function thousandsCurrencyFormat($num) {
+
+	  if($num>1000) {
+
+			$x = round($num);
+			$x_number_format = number_format($x);
+			$x_array = explode(',', $x_number_format);
+			$x_parts = array('k', 'm', 'b', 't');
+			$x_count_parts = count($x_array) - 1;
+			$x_display = $x;
+			$x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+			$x_display .= $x_parts[$x_count_parts - 1];
+
+			return $x_display;
+
+	  }
+
+	  return $num;
+	}
+
 	
 	 public function sptreportAction()
     {
@@ -85,6 +115,10 @@ class DashboardController extends AbstractActionController
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
 			
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findAll();
+		}
 		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->getProperties()->setCreator('AirkomCMS')->setLastModifiedBy('AirkomCMS')->setTitle('AirkomCMS');
@@ -93,9 +127,9 @@ class DashboardController extends AbstractActionController
 
 		$spreadsheet->setActiveSheetIndex(0) 
 		->setCellValue('A1', 'Engg')
-		->setCellValue('B1', $user->getFullName())
+		->setCellValue('B1', $post['s_user'] == 0?'All Users':$user->getFullName())
 		->setCellValue('A2', 'Branch')
-		->setCellValue('B2', $this->ExtranetUtilities->getBranchName($user->getBranch()))
+		->setCellValue('B2', $post['s_user'] == 0?'All Branches':$this->ExtranetUtilities->getBranchName($user->getBranch()))
 		->setCellValue('A3', 'Date Range')
 		->setCellValue('B3', $post['s_daterange']);
 		
@@ -137,8 +171,11 @@ class DashboardController extends AbstractActionController
 					->setParameter('startdate', $startdate);
 				$query->AndWhere('S.dateCreated <= :enddate')
 					->setParameter('enddate', $enddate);
-				$query->AndWhere('S.createdBy = :createdBy')
-					->setParameter('createdBy', $post['s_user']);
+				
+				if($post['s_user'] != 0){
+					$query->AndWhere('S.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
 			
 				$spt = $query->getQuery()->getArrayResult();
 
@@ -208,7 +245,12 @@ class DashboardController extends AbstractActionController
 		
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
-			
+		
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findAll();
+		}
+		
 		$daterange =  '';
 		
 		$query = $this->entityManager->createQueryBuilder()->select('S')
@@ -222,8 +264,10 @@ class DashboardController extends AbstractActionController
 					->setParameter('startdate', $startdate);
 				$query->AndWhere('S.dateCreated <= :enddate')
 					->setParameter('enddate', $enddate);
-				$query->AndWhere('S.createdBy = :createdBy')
-					->setParameter('createdBy', $post['s_user']);
+				if($post['s_user'] != 0){
+					$query->AndWhere('S.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
 			
 				$spt = $query->getQuery()->getArrayResult();
 
@@ -264,8 +308,14 @@ class DashboardController extends AbstractActionController
 				$spt[$k]['dateCreated'] = $spt[$k]['dateCreated']->format('d-m-Y');
 			}
 		}
-				
-		return ['data'=>$spt,'user'=>$user,'daterange'=>$daterange];
+		
+		$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv` from `spt` where `date_created` >= '".$startdate."' and `date_created` <= '".$enddate."' group by `stage`";
+
+		$stmt = $this->entityManager->getConnection()->prepare($sql);
+		$stmt->execute();
+		$fbv =  $stmt->fetchAll();
+		
+		return ['fbv'=>$fbv,'data'=>$spt,'user'=>$user,'daterange'=>$daterange];
     }
 	
 	public function dcrreportAction()
@@ -286,6 +336,11 @@ class DashboardController extends AbstractActionController
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
 		
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findAll();
+		}
+		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->getProperties()->setCreator('AirkomCMS')->setLastModifiedBy('AirkomCMS')->setTitle('AirkomCMS');
 		// Rename worksheet
@@ -293,9 +348,9 @@ class DashboardController extends AbstractActionController
 		
 		$spreadsheet->setActiveSheetIndex(0) 
 		->setCellValue('A1', 'Engg')
-		->setCellValue('B1', $user->getFullName())
+		->setCellValue('B1', $post['s_user'] == 0?'All Users':$user->getFullName())
 		->setCellValue('A2', 'Branch')
-		->setCellValue('B2', $this->ExtranetUtilities->getBranchName($user->getBranch()))
+		->setCellValue('B2', $post['s_user'] == 0?'All Branches':$this->ExtranetUtilities->getBranchName($user->getBranch()))
 		->setCellValue('A3', 'Date Range')
 		->setCellValue('B3', $post['s_daterange']);
 		
@@ -335,8 +390,10 @@ class DashboardController extends AbstractActionController
 					->setParameter('startdate', $startdate);
 				$query->AndWhere('D.dateCreated <= :enddate')
 					->setParameter('enddate', $enddate);
-				$query->AndWhere('D.createdBy = :createdBy')
-					->setParameter('createdBy', $post['s_user']);
+				if($post['s_user'] != 0){
+					$query->AndWhere('D.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
 					
 				$dcr = $query->getQuery()->getArrayResult();
 
@@ -403,7 +460,12 @@ class DashboardController extends AbstractActionController
 		
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
-				
+		
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findAll();
+		}
+		
 		$daterange =  '';
 		
 		$query = $this->entityManager->createQueryBuilder()->select('D')
@@ -418,8 +480,11 @@ class DashboardController extends AbstractActionController
 					->setParameter('startdate', $startdate);
 				$query->AndWhere('D.dateCreated <= :enddate')
 					->setParameter('enddate', $enddate);
-				$query->AndWhere('D.createdBy = :createdBy')
-					->setParameter('createdBy', $post['s_user']);
+				
+				if($post['s_user'] != 0){
+					$query->AndWhere('D.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
 					
 				$dcr = $query->getQuery()->getArrayResult();
 		}
@@ -457,7 +522,15 @@ class DashboardController extends AbstractActionController
 				$dcr[$k]['dateCreated'] = $dcr[$k]['dateCreated']->format('d/m/Y');
 			}
 		}
-		return ['data'=>$dcr,'user'=>$user,'daterange'=>$daterange];
+		
+		
+		$sql = "SELECT (SELECT `name` FROM `call_type` WHERE `id` = `call_type`) as `calltype`, sum(`order_value`) as `ov` from `dcr` where `date_created` >= '".$startdate."' and `date_created` <= '".$enddate."' group by `call_type`";
+
+		$stmt = $this->entityManager->getConnection()->prepare($sql);
+		$stmt->execute();
+		$ov =  $stmt->fetchAll();
+		
+		return ['ov'=>$ov,'data'=>$dcr,'user'=>$user,'daterange'=>$daterange];
     }
 	
 	
@@ -478,7 +551,12 @@ class DashboardController extends AbstractActionController
 		
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
-			
+		
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findAll();
+		}
+		
 		$spreadsheet = new Spreadsheet();
 		$spreadsheet->getProperties()->setCreator('AirkomCMS')->setLastModifiedBy('AirkomCMS')->setTitle('AirkomCMS');
 		// Rename worksheet
@@ -486,9 +564,9 @@ class DashboardController extends AbstractActionController
 		
 		$spreadsheet->setActiveSheetIndex(0) 
 		->setCellValue('A1', 'Engg')
-		->setCellValue('B1', $user->getFullName())
+		->setCellValue('B1', $post['s_user'] == 0?'All Users':$user->getFullName())
 		->setCellValue('A2', 'Branch')
-		->setCellValue('B2', $this->ExtranetUtilities->getBranchName($user->getBranch()))
+		->setCellValue('B2', $post['s_user'] == 0?'All Branches':$this->ExtranetUtilities->getBranchName($user->getBranch()))
 		->setCellValue('A3', 'Date Range')
 		->setCellValue('B3', $post['s_daterange']);
 		
@@ -517,8 +595,10 @@ class DashboardController extends AbstractActionController
 					->setParameter('startdate', $startdate);
 				$query->AndWhere('R.dateCreated <= :enddate')
 					->setParameter('enddate', $enddate);
-				$query->AndWhere('R.createdBy = :createdBy')
-					->setParameter('createdBy', $post['s_user']);
+				if($post['s_user'] != 0){
+					$query->AndWhere('R.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
 					
 				$roadmap = $query->getQuery()->getArrayResult();
 
@@ -573,7 +653,12 @@ class DashboardController extends AbstractActionController
 		
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
-			
+		
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findAll();
+		}
+		
 		$daterange =  '';
 		
 		$query = $this->entityManager->createQueryBuilder()->select('R')
@@ -587,8 +672,10 @@ class DashboardController extends AbstractActionController
 					->setParameter('startdate', $startdate);
 				$query->AndWhere('R.dateCreated <= :enddate')
 					->setParameter('enddate', $enddate);
-				$query->AndWhere('R.createdBy = :createdBy')
-					->setParameter('createdBy', $post['s_user']);
+				if($post['s_user'] != 0){
+					$query->AndWhere('R.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
 					
 				$roadmap = $query->getQuery()->getArrayResult();
 
@@ -617,8 +704,14 @@ class DashboardController extends AbstractActionController
 						$roadmap[$k]['dateCreated'] = $roadmap[$k]['dateCreated']->format('d/m/Y');
 					}
 				}
+				
+		$sql = "SELECT (SELECT `name` FROM `next_action` WHERE `id` = `next_action`) as `nextaction`, sum(`expected_potential_order_value`) as `epov` from `roadmap` where `date_created` >= '".$startdate."' and `date_created` <= '".$enddate."' group by `next_action`";
+
+		$stmt = $this->entityManager->getConnection()->prepare($sql);
+		$stmt->execute();
+		$epov =  $stmt->fetchAll();
 		
-		return ['data'=>$roadmap,'user'=>$user,'daterange'=>$daterange];
+		return ['epov'=>$epov,'data'=>$roadmap,'user'=>$user,'daterange'=>$daterange];
 
     }	
 }

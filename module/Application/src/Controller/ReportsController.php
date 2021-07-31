@@ -43,9 +43,22 @@ class ReportsController extends AbstractActionController
 		$selectedUser = !empty($post['s_user'])?$post['s_user']:'';
 		$selectedDate = !empty($post['s_daterange'])?$post['s_daterange']:'';
 
-        $users = $this->entityManager->getRepository(User::class)
-            ->findBy([], ['fullName' => 'ASC']);
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
+		$query = $this->entityManager->createQueryBuilder()->select('P, P.id, P.contact, P.sptId, MAX(P.stage) AS stage')
+            ->from('Application\Entity\Pipeline', 'P')
+            ->groupBy("P.sptId")
+            ->addOrderBy('P.id', 'ASC');
+			
+		if($user->getUserType() == 1){
+			$users = $this->entityManager->getRepository(User::class)
+            ->findBy([], ['fullName' => 'ASC']);
+		}else{
+			$users = $this->entityManager->getRepository(User::class)
+            ->findBy(['id'=>$user->getId()]);
+		}
+						
 		$calltypes = $this->entityManager->getRepository(CallType::class)
             ->findAll();
 		
@@ -95,7 +108,8 @@ class ReportsController extends AbstractActionController
 				}
 				$calls_array['uptodate_call_efficiency']['target'] = array_sum(array_column($calls_array,'target'));
 				$calls_array['uptodate_call_efficiency']['performed'] = array_sum(array_column($calls_array,'performed'));
-				$calls_array['uptodate_call_efficiency']['efficiency'] = array_sum(array_column($calls_array,'efficiency'));
+				//$calls_array['uptodate_call_efficiency']['efficiency'] = array_sum(array_column($calls_array,'efficiency'));
+				$calls_array['uptodate_call_efficiency']['efficiency'] = round($calls_array['uptodate_call_efficiency']['performed'] / $calls_array['uptodate_call_efficiency']['target'] * 100, 2);
 				
 				
 				foreach ($traveltypes as $t){
@@ -109,7 +123,11 @@ class ReportsController extends AbstractActionController
 				}
 				$travels_array['total_call_efficiency']['target'] = array_sum(array_column($travels_array,'target'));
 				$travels_array['total_call_efficiency']['performed'] = array_sum(array_column($travels_array,'performed'));
-				$travels_array['total_call_efficiency']['efficiency'] = array_sum(array_column($travels_array,'efficiency'));
+				
+				$travels_array['total_call_efficiency']['efficiency'] = round($travels_array['total_call_efficiency']['performed'] / $travels_array['total_call_efficiency']['target'] * 100, 2);
+				
+				
+				//$travels_array['total_call_efficiency']['efficiency'] = array_sum(array_column($travels_array,'efficiency'));
 				
 				$distance_array['travelled'] = array_sum(array_column($dcr,'distanceTravelled'));
 				$distance_array['amountone'] = array_sum(array_column($dcr,'amountOne'));
@@ -141,10 +159,16 @@ class ReportsController extends AbstractActionController
 				
 				$overall_efficency = 0;
 				if($salesprospect > 0){
-					$overall_efficency = (($sales_array['sales_prospect']['target'] + $sales_array['target_booking']['target']) / 
-										($salesprospect + $targetbooking)) * 100;
+
+					$sales_array['total_sales_efficiency']['target'] = array_sum(array_column($sales_array,'target'));
+					$sales_array['total_sales_efficiency']['performed'] = array_sum(array_column($sales_array,'performed'));
+					//$sales_array['total_sales_efficiency']['efficiency'] = array_sum(array_column($sales_array,'efficiency'));
+					$sales_array['total_sales_efficiency']['efficiency'] = round($sales_array['total_sales_efficiency']['performed'] / $sales_array['total_sales_efficiency']['target'] * 100, 2);
+					
+					//$overall_efficency = (($sales_array['sales_prospect']['target'] + $sales_array['target_booking']['target']) / 
+						//				($salesprospect + $targetbooking)) * 100;
 				}
-				$sales_array['overall_efficency'] = round($overall_efficency, 2);
+				//$sales_array['overall_efficency'] = round($overall_efficency, 2);
 			}
 		}
 		

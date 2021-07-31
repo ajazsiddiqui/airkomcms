@@ -78,14 +78,26 @@ class RoadmapController extends AbstractActionController
 
 	public function indexAction()
     {
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-        $paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Roadmap::class)->count();
-        $paginator['per_page'] = 10;
-        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-
         $form = new RoadmapForm();
-        $roadmap = $this->entityManager->getRepository(Roadmap::class)
-            ->findBy([], ['id' => 'ASC'], $paginator['per_page'], $offset);
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+			
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+		$paginator['per_page'] = 10;
+			
+		if($user->getUserType() == 1){
+			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Roadmap::class)->count();
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+			
+			$roadmap = $this->entityManager->getRepository(Roadmap::class)
+            ->findBy([], ['id' => 'DESC'], $paginator['per_page'], $offset);
+		}else{
+			$roadmap = $this->entityManager->getRepository(Roadmap::class)
+            ->findBy(['createdBy'=>$user->getId()]);
+			
+			$paginator['count'] = count($roadmap);
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		}		
 
         return new ViewModel(['roadmap' => $roadmap, 'form' => $form, 'paginator' => $paginator]);
     }

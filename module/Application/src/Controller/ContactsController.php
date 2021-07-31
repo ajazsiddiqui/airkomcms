@@ -36,15 +36,32 @@ class ContactsController extends AbstractActionController
 	
     public function indexAction()
     {
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-        $paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Contacts::class)->count();
-        $paginator['per_page'] = 10;
-        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		
 
         $form = new ContactForm();
-        $contacts = $this->entityManager->getRepository(Contacts::class)
+        
+			
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+		
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+		$paginator['per_page'] = 10;
+		
+		if($user->getUserType() == 1){
+				
+			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Contacts::class)->count();
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+			$contacts = $this->entityManager->getRepository(Contacts::class)
             ->findBy([], ['id' => 'ASC'], $paginator['per_page'], $offset);
-
+		}else{		
+			
+			$contacts = $this->entityManager->getRepository(Contacts::class)
+            ->findBy(['createdBy'=>$user->getId()]);
+			
+			$paginator['count'] = count($contacts);
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		}
+		
         return new ViewModel(['contacts' => $contacts, 'form' => $form, 'paginator' => $paginator]);
        
     }

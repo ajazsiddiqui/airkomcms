@@ -1,0 +1,49 @@
+[12-Jul-2021 16:59:22 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[12-Jul-2021 16:59:22 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[12-Jul-2021 16:59:22 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[12-Jul-2021 16:59:22 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[12-Jul-2021 16:59:22 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[12-Jul-2021 16:59:22 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[16-Jul-2021 12:56:55 UTC] PHP Notice:  Undefined offset: 4 in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/dashboard/sptreport.phtml on line 34
+[27-Jul-2021 09:34:14 UTC] PHP Notice:  Undefined offset: 4 in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/dashboard/sptreport.phtml on line 34
+[28-Jul-2021 12:08:41 UTC] PHP Notice:  Undefined property: Application\Controller\ContactsController::$logger in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ContactsController.php on line 103
+[28-Jul-2021 16:16:46 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:16:46 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:16:46 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:16:46 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 122
+[28-Jul-2021 16:16:46 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 122
+[28-Jul-2021 16:16:46 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 127
+[28-Jul-2021 16:16:46 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[28-Jul-2021 16:16:46 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[28-Jul-2021 16:16:46 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[28-Jul-2021 16:16:46 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[28-Jul-2021 16:16:46 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[28-Jul-2021 16:16:46 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[28-Jul-2021 16:17:43 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:17:43 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:17:43 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:17:43 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 122
+[28-Jul-2021 16:17:43 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 122
+[28-Jul-2021 16:17:43 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 127
+[28-Jul-2021 16:17:43 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[28-Jul-2021 16:17:43 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[28-Jul-2021 16:17:43 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[28-Jul-2021 16:17:43 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[28-Jul-2021 16:17:43 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[28-Jul-2021 16:17:43 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[28-Jul-2021 16:18:54 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:18:54 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:18:54 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 107
+[28-Jul-2021 16:18:54 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 122
+[28-Jul-2021 16:18:54 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 122
+[28-Jul-2021 16:18:54 UTC] PHP Warning:  Division by zero in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ReportsController.php on line 127
+[28-Jul-2021 16:18:54 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[28-Jul-2021 16:18:54 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 139
+[28-Jul-2021 16:18:54 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[28-Jul-2021 16:18:54 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 140
+[28-Jul-2021 16:18:54 UTC] PHP Notice:  Undefined index: total_sales_efficiency in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[28-Jul-2021 16:18:54 UTC] PHP Notice:  Trying to access array offset on value of type null in /home/websolite/public_html/demo/airkomcms/module/Application/view/application/reports/index.phtml on line 141
+[29-Jul-2021 09:19:10 UTC] PHP Notice:  Undefined property: Application\Controller\ContactsController::$logger in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ContactsController.php on line 103
+[30-Jul-2021 07:06:48 UTC] PHP Notice:  Undefined property: Application\Controller\ContactsController::$logger in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ContactsController.php on line 103
+[30-Jul-2021 07:06:57 UTC] PHP Notice:  Undefined property: Application\Controller\ContactsController::$logger in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ContactsController.php on line 103
+[30-Jul-2021 09:14:58 UTC] PHP Notice:  Undefined property: Application\Controller\ContactsController::$logger in /home/websolite/public_html/demo/airkomcms/module/Application/src/Controller/ContactsController.php on line 103

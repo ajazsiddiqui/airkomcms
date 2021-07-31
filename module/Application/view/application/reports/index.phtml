@@ -59,7 +59,7 @@ $this->PageActions()->setItems([
 <?php if(!empty($calls_array)){ ?>
 	<div id="printTable" class="col-12">
 		<div class="table-responsive">
-			<table class="table table-responsive-md">
+			<table class="table table-responsive-md table-striped">
 				<thead>
 					<tr>
 						<th><strong>TYPE OF SALES CALLS</strong></th>
@@ -72,13 +72,13 @@ $this->PageActions()->setItems([
 				<?php foreach ($calls_array as $key => $value){ 
 					if($key == 'uptodate_call_efficiency') continue;
 				?>
-				   <tr><td>No. of <?= $key ?></td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?></td></tr>
+				   <tr><td>No. of <?= $key ?></td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?> %</td></tr>
 				<?php } ?>
-					<tr><td><strong>Up-to-date Call Efficiency</strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['efficiency']; ?></strong></td></tr>
+					<tr><td><strong>Up-to-date Call Efficiency</strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['efficiency']; ?> %</strong></td></tr>
 				</tbody>
 			</table>
 			<br/>
-			<table class="table table-responsive-md">
+			<table class="table table-responsive-md table-striped">
 				<thead>
 					<tr>
 						<th><strong>TOTAL NO. OF CALLS</strong></th>
@@ -91,13 +91,13 @@ $this->PageActions()->setItems([
 				<?php foreach ($travels_array as $key => $value){ 
 					if($key == 'total_call_efficiency') continue;
 				?>
-				   <tr><td>No. of <?= $key ?> Calls</td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?></td></tr>
+				   <tr><td>No. of <?= $key ?> Calls</td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?> %</td></tr>
 				<?php } ?>
-					<tr><td><strong>Total Call Efficiency</strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['efficiency']; ?></strong></td></tr>
+					<tr><td><strong>Total Call Efficiency</strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['efficiency']; ?> %</strong></td></tr>
 				</tbody>
 			</table>
 			<br/>
-			<table class="table table-responsive-md">
+			<table class="table table-responsive-md table-striped">
 				<thead>
 					<tr>
 						<th><strong>DESCRIPTION</strong></th>
@@ -107,13 +107,13 @@ $this->PageActions()->setItems([
 				</thead>
 				<tbody>
 					<tr><td>Monthly Total Distance Travelled by Bike</td><td class="text-right"><?= $distance_array['travelled'] ?></td><td>KMs</td></tr>
-					<tr><td>Monthly Total Amount for the distance travelled by Bike</td><td class="text-right"><?= $distance_array['amountone'] ?></td><td>Rs.</td></tr>
-					<tr><td>Monthly Total Amount spent for Conveyance (Local)</td><td class="text-right"><?= $distance_array['amounttwo'] ?></td><td>Rs.</td></tr>
-					<tr><td><strong>Monthly Total Travel Expenses</strong></td><td class="text-right"><strong><?= $distance_array['total'] ?></strong></td><td><strong>Rs.</strong></td></tr>
+					<tr><td>Monthly Total Amount for the distance travelled by Bike</td><td class="text-right"><?= number_format($distance_array['amountone'],2) ?></td><td>Rs.</td></tr>
+					<tr><td>Monthly Total Amount spent for Conveyance (Local)</td><td class="text-right"><?= number_format($distance_array['amounttwo'],2) ?></td><td>Rs.</td></tr>
+					<tr><td><strong>Monthly Total Travel Expenses</strong></td><td class="text-right"><strong><?= number_format($distance_array['total'],2) ?></strong></td><td><strong>Rs.</strong></td></tr>
 				</tbody>
 			</table>
 			<br/>
-			<table class="table table-responsive-md">
+			<table class="table table-responsive-md  table-striped">
 				<thead>
 					<tr>
 						<th><strong>DESCRIPTION</strong></th>
@@ -123,9 +123,23 @@ $this->PageActions()->setItems([
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td>Up-to-date Sales Prospect Generated (<?= date('d-m-Y') ?>)</td><td class="text-right"><?= $sales_array['sales_prospect']['target'] ?></td><td class="text-right"><?= $sales_array['sales_prospect']['performed'] ?></td><td class="text-right"><?= $sales_array['sales_prospect']['efficiency'] ?></td></tr>
-					<tr><td>Up-to-date Target Booking vs Order Booking</td><td class="text-right"><?= $sales_array['target_booking']['target'] ?></td><td class="text-right"><?= $sales_array['target_booking']['performed'] ?></td><td class="text-right"><?= $sales_array['target_booking']['efficiency'] ?></td></tr>
-					<tr><td colspan="3"><strong>Overall Efficiency</strong></td><td class="text-right"><strong><?= $sales_array['overall_efficency']; ?></strong></td></tr>
+					<tr>
+						<td>Up-to-date Sales Prospect Generated (<?= date('d-m-Y') ?>)</td>
+						<td class="text-right"><?= number_format($sales_array['sales_prospect']['target'],0) ?></td>
+						<td class="text-right"><?= number_format($sales_array['sales_prospect']['performed'],0) ?></td>
+						<td class="text-right"><?= $sales_array['sales_prospect']['efficiency'] ?> %</td>
+					</tr>
+					<tr>
+						<td>Up-to-date Target Booking vs Order Booking</td>
+						<td class="text-right"><?= number_format($sales_array['target_booking']['target'],0) ?></td>
+						<td class="text-right"><?= number_format($sales_array['target_booking']['performed'],0) ?></td>
+						<td class="text-right"><?= $sales_array['target_booking']['efficiency'] ?> %</td>
+					</tr>
+					<tr>
+						<td><strong>Overall Efficiency</strong></td><td class="text-right"><?= number_format($sales_array['total_sales_efficiency']['target'],0); ?></td>
+						<td class="text-right"><?= number_format($sales_array['total_sales_efficiency']['performed'],0); ?></td>
+						<td class="text-right"><strong><?= $sales_array['total_sales_efficiency']['efficiency']; ?> %</strong></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -135,11 +149,3 @@ $this->PageActions()->setItems([
 </div>
 </div>
 </div>
-
-<style>
-@media print {
-    #printTable td {
-        font-family:'arial';
-    }
-}
-</style>

@@ -66,7 +66,7 @@ class PipelineController extends AbstractActionController
 	
     public function indexAction()
     {
-        // $spt = $this->entityManager->getRepository(Spt::class)
+		// $spt = $this->entityManager->getRepository(Spt::class)
             // ->findAll();
 		// $user = $this->entityManager->getRepository(User::class)
             // ->findOneBy(['email' => $this->authService->getIdentity()]);
@@ -80,16 +80,21 @@ class PipelineController extends AbstractActionController
 			// $this->entityManager->persist($pipeline);
 			// $this->entityManager->flush();
 		// }
-			//SELECT `spt_id`, max(`stage`) as 'stage' FROM `pipeline` group by `spt_id` 
+		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+			
 		$query = $this->entityManager->createQueryBuilder()->select('P, P.id, P.contact, P.sptId, MAX(P.stage) AS stage')
             ->from('Application\Entity\Pipeline', 'P')
             ->groupBy("P.sptId")
             ->addOrderBy('P.id', 'ASC');
-                
-        $pipeline = $query->getQuery()->getResult();
 			
-		$user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()], ['id' => 'ASC']);
+		if($user->getUserType() != 1){
+			$query->Where('P.createdBy >= :createdBy')
+					->setParameter('createdBy', $user->getId());
+		}
+		
+        $pipeline = $query->getQuery()->getResult();
 			
 		$stages = $this->entityManager->getRepository(LeadStage::class)
             ->findAll();

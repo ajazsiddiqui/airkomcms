@@ -38,15 +38,28 @@ class DCRController extends AbstractActionController
 	
     public function indexAction()
     {
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-        $paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(DCR::class)->count();
-        $paginator['per_page'] = 10;
-        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-
         $form = new DCRForm();
-        $dcr = $this->entityManager->getRepository(Dcr::class)
-            ->findBy([], ['id' => 'ASC'], $paginator['per_page'], $offset);
-
+		
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+			
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+		$paginator['per_page'] = 10;
+			
+		if($user->getUserType() == 1){
+			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Dcr::class)->count();
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+			
+			$dcr = $this->entityManager->getRepository(Dcr::class)
+            ->findBy([], ['id' => 'DESC'], $paginator['per_page'], $offset);
+		}else{
+			$dcr = $this->entityManager->getRepository(Dcr::class)
+            ->findBy(['createdBy'=>$user->getId()]);
+			
+			$paginator['count'] = count($dcr);
+			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		}
+		
         return new ViewModel(['dcr' => $dcr, 'form' => $form, 'paginator' => $paginator]);
     }
 	
