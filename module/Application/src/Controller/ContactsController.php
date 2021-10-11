@@ -37,30 +37,41 @@ class ContactsController extends AbstractActionController
     public function indexAction()
     {
 		
-
+		$post = $this->getRequest()->getPost()->toArray();
         $form = new ContactForm();
         
 			
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
-		
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-		$paginator['per_page'] = 10;
-		
-		if($user->getUserType() == 1){
 				
-			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Contacts::class)->count();
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-			$contacts = $this->entityManager->getRepository(Contacts::class)
-            ->findBy([], ['id' => 'ASC'], $paginator['per_page'], $offset);
+		if($user->getUserType() == 1){
+
+			$query = $this->entityManager->createQueryBuilder()->select('C')
+				->from(Contacts::class, 'C');
+		
 		}else{		
 			
-			$contacts = $this->entityManager->getRepository(Contacts::class)
-            ->findBy(['createdBy'=>$user->getId()]);
-			
-			$paginator['count'] = count($contacts);
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+			$query = $this->entityManager->createQueryBuilder()->select('C')
+				->from(Contacts::class, 'C');
+			$query->AndWhere('C.createdBy = :createdBy')
+					->setParameter('createdBy', $user->getId());
+					
 		}
+		
+		if (!empty($post['s_contact'])) {
+				$query->AndWhere('C.company like :company')
+					->setParameter('company',  '%'.$post['s_contact'].'%');
+		}
+		
+	
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+        $paginator['count'] = count($query->getQuery()->getScalarResult());
+        $paginator['per_page'] = 10;
+        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+
+        $query->setFirstResult($offset)->setMaxResults($paginator['per_page'])->add('orderBy', 'C.id DESC');
+
+        $contacts = $query->getQuery()->getResult();
 		
         return new ViewModel(['contacts' => $contacts, 'form' => $form, 'paginator' => $paginator]);
        

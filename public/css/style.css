@@ -9544,7 +9544,7 @@ a {
   top: 0;
   background-color: #F9F9F9;
   transition: all .2s ease;
-  z-index: 5; }
+  z-index: 100; }
   .nav-header .logo-abbr {
     max-width: 252px; }
     @media only screen and (max-width: 575px) {
@@ -9693,7 +9693,7 @@ a {
   position: relative;
   padding: 0rem;
   background-color: #F9F9F9;
-  z-index: 3;
+  z-index: 99;
   padding-left: 21.563rem;
   transition: all .2s ease; }
   @media only screen and (max-width: 1400px) {
@@ -23823,7 +23823,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   width: 4px; }
 
 .ps__thumb-y {
-  background-color: #DAE2F3;
+  background-color: #1eaae7;
   width: 4px; }
 
 .total-average {

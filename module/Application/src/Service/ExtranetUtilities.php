@@ -44,7 +44,7 @@ class ExtranetUtilities
     {
         $target = $this->entityManager->getRepository(Targets::class)->findOneBy(['userId' => $userid,'callType' => $callType]);
 
-        return empty($target) ? 0 : $target->getTarget();
+        return empty($target) ? 1 : $target->getTarget();
     }
 	
     public function changePassword($user, $password)

@@ -64,6 +64,7 @@ class ReportsController extends AbstractActionController
 		
 		$traveltypes = $this->entityManager->getRepository(TravelType::class)
             ->findAll();
+			
 		
 		$calls_array = [];
 		$travels_array = [];
@@ -104,7 +105,7 @@ class ReportsController extends AbstractActionController
 					$calls = array_count_values(array_column($dcr, 'callType'));
 					$calls_array[$c->getName()]['target'] = $this->ExtranetUtilities->getTargetByUser($selectedUser, $c->getId());
 					$calls_array[$c->getName()]['performed'] = isset($calls[$c->getId()])?$calls[$c->getId()]:0;
-					$calls_array[$c->getName()]['efficiency'] = ($calls_array[$c->getName()]['performed'] / $calls_array[$c->getName()]['target']) * 100;
+					$calls_array[$c->getName()]['efficiency'] = @($calls_array[$c->getName()]['performed'] / $calls_array[$c->getName()]['target']) * 100;
 				}
 				$calls_array['uptodate_call_efficiency']['target'] = array_sum(array_column($calls_array,'target'));
 				$calls_array['uptodate_call_efficiency']['performed'] = array_sum(array_column($calls_array,'performed'));
@@ -157,6 +158,10 @@ class ReportsController extends AbstractActionController
 				$sales_array['target_booking']['performed'] = $targetbooking;
 				$sales_array['target_booking']['efficiency'] = round($sales_array['target_booking']['performed'] / $sales_array['target_booking']['target'] * 100, 2);
 				
+				$sales_array['total_sales_efficiency']['target'] = 0;
+				$sales_array['total_sales_efficiency']['performed'] = 0;
+				$sales_array['total_sales_efficiency']['efficiency'] = 0;
+
 				$overall_efficency = 0;
 				if($salesprospect > 0){
 

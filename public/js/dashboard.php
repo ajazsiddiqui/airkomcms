@@ -1,24 +1,24 @@
 <?php 
 
-function thousandsCurrencyFormat($num) {
+// function thousandsCurrencyFormat($num) {
 
-  if($num>1000) {
+  // if($num>1000) {
 
-        $x = round($num);
-        $x_number_format = number_format($x);
-        $x_array = explode(',', $x_number_format);
-        $x_parts = array('k', 'm', 'b', 't');
-        $x_count_parts = count($x_array) - 1;
-        $x_display = $x;
-        $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
-        $x_display .= $x_parts[$x_count_parts - 1];
+        // $x = round($num);
+        // $x_number_format = number_format($x);
+        // $x_array = explode(',', $x_number_format);
+        // $x_parts = array('k', '0', 'b', 't');
+        // $x_count_parts = count($x_array) - 1;
+        // $x_display = $x;
+        // $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+        // $x_display .= $x_parts[$x_count_parts - 1];
 
-        return $x_display;
+        // return $x_display;
 
-  }
+  // }
 
-  return $num;
-}
+  // return $num;
+// }
 
 ?>
 
@@ -31,12 +31,16 @@ function thousandsCurrencyFormat($num) {
 	var pieChart = function(){
 		 var options = {
           series: [<?= $_GET['Early'] ?>, <?= $_GET['Active'] ?>, <?= $_GET['Close'] ?>, <?= $_GET['Offline'] ?>],
+		  labels: ['Early', 'Active', 'Close', 'Offline'],
           chart: {
           type: 'donut',
 		  
         },
 		dataLabels: {
-          enabled: false
+          enabled: true,
+		  formatter: function (val) {
+			  return val.toFixed(0) + "%"
+			},
         },
 		stroke: {
           width: 0,
@@ -105,21 +109,19 @@ function thousandsCurrencyFormat($num) {
 
  
 		
-	function nFormatter(num, digits) {
-	  var si = [
-		{ value: 1E18, symbol: "E" },
-		{ value: 1E15, symbol: "P" },
-		{ value: 1E12, symbol: "T" },
-		{ value: 1E9,  symbol: "G" },
-		{ value: 1E6,  symbol: "M" },
-		{ value: 1E3,  symbol: "k" }
-	  ], i;
-	  for (i = 0; i < si.length; i++) {
-		if (num >= si[i].value) {
-		  return (num / si[i].value).toFixed(digits).replace(/\.?0+$/, "") + si[i].symbol;
-		}
+	function abbreviateNumber(value) {
+	  let newValue = value;
+	  const suffixes = ["", "K", "M", "B","T"];
+	  let suffixNum = 0;
+	  while (newValue >= 1000) {
+		newValue /= 1000;
+		suffixNum++;
 	  }
-	  return num;
+
+	  newValue = newValue.toPrecision(3);
+
+	  newValue += suffixes[suffixNum];
+	  return newValue;
 	}
 		
  var fbvchartdraw = function(){
@@ -128,6 +130,7 @@ function thousandsCurrencyFormat($num) {
 	var fbvchart = function(){
 		var options = {
           series: [{
+			name: "FBV",
           data: [<?= isset($_GET['f_Early'])?$_GET['f_Early']:0 ?>, <?= isset($_GET['f_Active'])?$_GET['f_Active']:0 ?>, <?= isset($_GET['f_Close'])?$_GET['f_Close']:0 ?>, <?= isset($_GET['f_Offline'])?$_GET['f_Offline']:0 ?>]
         }],
           chart: {
@@ -164,7 +167,7 @@ function thousandsCurrencyFormat($num) {
 		yaxis: {
 		  labels: {
 			formatter: function (value) {
-			  return nFormatter(value);
+			  return abbreviateNumber(value);
 			}
 		  },
 		},

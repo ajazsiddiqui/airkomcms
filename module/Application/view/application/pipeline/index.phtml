@@ -13,6 +13,19 @@ $this->headScript()->appendFile($this->basePath() . '/js/dragula.js', 'text/java
 ?>
 
 <div class="row">
+<div class="col-md-12">
+	<form id="user_filter_form" method="post" action="<?= $this->url('pipeline'); ?>">
+		<div class="form-row">
+			<div class="form-group col-sm-4">
+			  <input class="form-control" id="s_pipeline" name="s_pipeline" value="<?= $_POST['s_pipeline'] ?? '' ?>" placeholder="Search Pipeline"/>
+			  </div>
+			<div class="col-sm-3 mg-t-10 mg-sm-t-0">
+			  <button type="submit" class="btn btn-primary btn-block mg-b-10">Search</button>
+			</div>
+		</div>
+	</form>
+</div>
+
   <div class="col-12">
 	<div class="drag-container">
 		<ul class="drag-list">
@@ -84,3 +97,9 @@ $this->headScript()->appendFile($this->basePath() . '/js/dragula.js', 'text/java
 	</div>
 	</div>
 	</div>
+<style>
+.drag-inner-list{
+	max-height: 500px;
+	overflow-y: scroll;
+}
+</style>

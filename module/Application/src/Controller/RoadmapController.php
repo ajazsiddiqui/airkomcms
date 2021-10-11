@@ -78,26 +78,35 @@ class RoadmapController extends AbstractActionController
 
 	public function indexAction()
     {
-        $form = new RoadmapForm();
-        $user = $this->entityManager->getRepository(User::class)
+        $post = $this->getRequest()->getPost()->toArray();
+		$form = new RoadmapForm();
+        
+		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
+		$query = $this->entityManager->createQueryBuilder()->select('R')
+				->from('Application\Entity\Roadmap', 'R')
+				->join('Application\Entity\Contacts', 'C', 'WITH', 'C.id = R.prospectName');
+		
+		if($user->getUserType() != 1){
+			$query->AndWhere('R.createdBy = :createdBy')
+				->setParameter('createdBy', $user->getId());
+		}
+		
+		if (!empty($post['s_prospect'])) {
+			
+			$query->AndWhere('C.company like :prospect')
+				->setParameter('prospect',  '%'.$post['s_prospect'].'%');
+		}
+		
 		$paginator['page'] = $this->params()->fromQuery('page', 1);
-		$paginator['per_page'] = 10;
-			
-		if($user->getUserType() == 1){
-			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Roadmap::class)->count();
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-			
-			$roadmap = $this->entityManager->getRepository(Roadmap::class)
-            ->findBy([], ['id' => 'DESC'], $paginator['per_page'], $offset);
-		}else{
-			$roadmap = $this->entityManager->getRepository(Roadmap::class)
-            ->findBy(['createdBy'=>$user->getId()]);
-			
-			$paginator['count'] = count($roadmap);
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-		}		
+        $paginator['count'] = count($query->getQuery()->getScalarResult());
+        $paginator['per_page'] = 10;
+        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+
+        $query->setFirstResult($offset)->setMaxResults($paginator['per_page'])->add('orderBy', 'R.id DESC');
+
+        $roadmap = $query->getQuery()->getResult();	
 
         return new ViewModel(['roadmap' => $roadmap, 'form' => $form, 'paginator' => $paginator]);
     }

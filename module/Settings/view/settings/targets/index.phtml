@@ -24,7 +24,7 @@ $this->mainMenu()->setActiveItemId('settings');
 						   <select class="form-control" id="s_user" name="s_user">
 							<option value="">Select User</option>
 								<?php foreach ($users as $user) { ?>
-									<option <?= empty($selectedUser)?'':($selectedUser==$user->getId()?'selected':''); ?> value="<?= $user->getId(); ?>"><?= $user->getFullName(); ?></option>
+									<option <?= empty($_POST['s_user'])?'':($_POST['s_user']==$user->getId()?'selected':''); ?> value="<?= $user->getId(); ?>"><?= $user->getFullName(); ?></option>
 								<?php } ?>
 							</select>
 						</div>
@@ -69,8 +69,8 @@ $this->mainMenu()->setActiveItemId('settings');
 							<?php foreach ($calltypes as $c){  ?>
 							   <tr><td>No. of <?= $c->getName() ?></td><td><input type="number" class="form-control" name="<?= $c->getId() ?>" value="<?= getValues($c->getId(), $targets) ?>" /></td></tr>
 							<?php } ?>
-							<tr><td><b>No. of Local Calls</b></td><td><input type="number" class="form-control" name="99" value="<?= getValues(97, $targets) ?>" /></td></tr>
-							<tr><td><b>No. of Outstation Calls</b></td><td><input type="number" class="form-control" name="100" value="<?= getValues(98, $targets) ?>" /></td></tr>
+							<tr><td><b>No. of Local Calls</b></td><td><input type="number" class="form-control" name="97" value="<?= getValues(97, $targets) ?>" /></td></tr>
+							<tr><td><b>No. of Outstation Calls</b></td><td><input type="number" class="form-control" name="98" value="<?= getValues(98, $targets) ?>" /></td></tr>
 							<tr><td><b>No. of Sales Prospects</b></td><td><input type="number" class="form-control" name="99" value="<?= getValues(99, $targets) ?>" /></td></tr>
 							<tr><td><b>No. of Target Bookings</b></td><td><input type="number" class="form-control" name="100" value="<?= getValues(100, $targets) ?>" /></td></tr>
 							<tr><td colspan="2"><button type="submit" class="btn btn-primary  mg-b-10">Save User Targets</button></td></tr>

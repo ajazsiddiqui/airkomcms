@@ -37,7 +37,7 @@ $this->PageActions()->setItems([
 			<div class="form-row">
 				<div class="form-group col-sm-4">
 				   <select class="form-control" id="s_user" name="s_user">
-					<option value="">Select User</option>
+					<!--<option value="">Select User</option>-->
 						<?php foreach ($users as $user) { ?>
 							<option <?= empty($selectedUser)?'':($selectedUser==$user->getId()?'selected':''); ?> value="<?= $user->getId(); ?>"><?= $user->getFullName(); ?></option>
 						<?php } ?>
@@ -56,6 +56,17 @@ $this->PageActions()->setItems([
 		</form>
 	</div>
 	
+<?php 
+
+function checkValue($value){
+	if(is_nan($value) || is_infinite($value)){
+		return 0;
+	}
+	return round($value,2);
+}
+
+?>
+	
 <?php if(!empty($calls_array)){ ?>
 	<div id="printTable" class="col-12">
 		<div class="table-responsive">
@@ -72,7 +83,7 @@ $this->PageActions()->setItems([
 				<?php foreach ($calls_array as $key => $value){ 
 					if($key == 'uptodate_call_efficiency') continue;
 				?>
-				   <tr><td>No. of <?= $key ?></td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?> %</td></tr>
+				   <tr><td>No. of <?= $key ?></td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= checkValue($value['efficiency']) ?> %</td></tr>
 				<?php } ?>
 					<tr><td><strong>Up-to-date Call Efficiency</strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $calls_array['uptodate_call_efficiency']['efficiency']; ?> %</strong></td></tr>
 				</tbody>
@@ -91,7 +102,7 @@ $this->PageActions()->setItems([
 				<?php foreach ($travels_array as $key => $value){ 
 					if($key == 'total_call_efficiency') continue;
 				?>
-				   <tr><td>No. of <?= $key ?> Calls</td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= $value['efficiency'] ?> %</td></tr>
+				   <tr><td>No. of <?= $key ?> Calls</td><td class="text-right"><?= $value['target'] ?></td><td class="text-right"><?= $value['performed'] ?></td><td class="text-right"><?= checkValue($value['efficiency']) ?> %</td></tr>
 				<?php } ?>
 					<tr><td><strong>Total Call Efficiency</strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['target']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['performed']; ?></strong></td><td class="text-right"><strong><?= $travels_array['total_call_efficiency']['efficiency']; ?> %</strong></td></tr>
 				</tbody>

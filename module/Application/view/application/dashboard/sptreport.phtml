@@ -4,10 +4,12 @@ $this->headTitle($title);
 $this->mainMenu()->setActiveItemId('dashboard');
 $this->pageBreadcrumbs()->setTitle('SPT Report');
 $this->headLink()->appendStylesheet($this->basePath() . '/vendor/datatables/css/jquery.dataTables.min.css'); 
+$this->headLink()->appendStylesheet($this->basePath() . '/vendor/datatables/css/fixedColumns.dataTables.min.css'); 
 $this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/jquery.dataTables.min.js', 'text/javascript'); 
 $this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/dataTables.buttons.min.js', 'text/javascript'); 
 $this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/buttons.colVis.min.js', 'text/javascript'); 
 $this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/buttons.print.min.js', 'text/javascript'); 
+$this->headScript()->appendFile($this->basePath() . '/vendor/datatables/js/dataTables.fixedColumns.min.js', 'text/javascript'); 
 $this->headScript()->appendFile($this->basePath() . '/js/plugins-init/datatables.init.js'); 
 
 $this->PageActions()->setItems([
@@ -21,7 +23,8 @@ $this->PageActions()->setItems([
 					<div class="card-header d-sm-flex d-block border-0 pb-0">
 						<div class="col-xs-12 col-sm-6">
 							<h4 id="reportuser" class="fs-20 text-black"><?= gettype($user) == 'object'?$user->getFullName():'All Users'; ?></h4>
-							<span id="reportdetails" class="fs-16"><b>Branch:</b> <?= gettype($user) == 'object'? $this->UserDetail()->getBranch($user->getBranch()):'All Branches'; ?> <b>Date:</b> <?= $daterange; ?></span>
+							<span id="reportdetails" class="fs-14"><b>Branch:</b> <?= gettype($user) == 'object'? $this->UserDetail()->getBranch($user->getBranch()):'All Branches'; ?><br/><b>Date:</b> <?= $daterange; ?><br/>
+							<b>Total FBV:</b> ₹<?= $total_fbv ?></span>
 						</div>
 						
 						<?php if (isset($fbv) && !empty($fbv)){ ?>
@@ -42,7 +45,7 @@ $this->PageActions()->setItems([
 					</div>
 					<div class="card-body pb-0">
 					 <div class="table-responsive">
-                                    <table id="datatable" class="display min-w850 dataTable" style="width:100%">
+                                    <table id="datatable" class="display min-w850 dataTable sptDataTable" style="width:100%">
                                         <thead>
                                             <tr>
 												<th>Stage</th>

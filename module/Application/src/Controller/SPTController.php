@@ -79,27 +79,35 @@ class SPTController extends AbstractActionController
 	
     public function indexAction()
     {
-        $form = new SPTForm();
+        $post = $this->getRequest()->getPost()->toArray();
+		$form = new SPTForm();
         
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-		$paginator['per_page'] = 10;
-			
-		if($user->getUserType() == 1){
-			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Spt::class)->count();
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-			
-			$spt = $this->entityManager->getRepository(Spt::class)
-            ->findBy([], ['id' => 'DESC'], $paginator['per_page'], $offset);
-		}else{
-			$spt = $this->entityManager->getRepository(Spt::class)
-            ->findBy(['createdBy'=>$user->getId()]);
-			
-			$paginator['count'] = count($spt);
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		$query = $this->entityManager->createQueryBuilder()->select('S')
+				->from('Application\Entity\Spt', 'S')
+				->join('Application\Entity\Contacts', 'C', 'WITH', 'C.id = S.propectName');
+		
+		if($user->getUserType() != 1){
+			$query->AndWhere('S.createdBy = :createdBy')
+				->setParameter('createdBy', $user->getId());
 		}
+		
+		if (!empty($post['s_prospect'])) {
+			
+			$query->AndWhere('C.company like :prospect')
+				->setParameter('prospect',  '%'.$post['s_prospect'].'%');
+		}
+		
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+        $paginator['count'] = count($query->getQuery()->getScalarResult());
+        $paginator['per_page'] = 10;
+        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+
+        $query->setFirstResult($offset)->setMaxResults($paginator['per_page'])->add('orderBy', 'S.id DESC');
+
+        $spt = $query->getQuery()->getResult();
 		
         return new ViewModel(['spt' => $spt, 'form' => $form, 'paginator' => $paginator]);
     }

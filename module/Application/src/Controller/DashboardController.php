@@ -42,28 +42,60 @@ class DashboardController extends AbstractActionController
 	
     public function indexAction()
     {
+		$post = $this->getRequest()->getPost()->toArray();
+		$user = $post['s_user'] ?? 0;
+		$month = $post['s_month'] ?? 0;
+		
+		$m = ($month != 0)?'AND MONTH(`date_created`) = '.$month:'';
+		$m2 = ($month != 0)?'WHERE MONTH(`date_created`) = '.$month:'';
+		
+		$current_user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()]);
+			
 		$stages = $this->entityManager->getRepository(LeadStage::class)
             ->findAll();
 		
 		$array = [];
 		foreach ($stages as $s){
-			$spt = $this->entityManager->getRepository(Spt::class)
-            ->findBy(['stage'=>$s->getId()]);
-			$array[$s->getName()] = count($spt);
+			if($post && $user != 0){
+				$spt = "SELECT * from spt WHERE stage = ".$s->getId()." AND created_by = ".$user." ".$m ;
+				//$spt = $this->entityManager->getRepository(Spt::class)
+				//->findBy(['stage'=>$s->getId(),'executive'=>$user]);
+			}else{
+				if($current_user->getUserType() == 1){
+					$spt = "SELECT * from spt WHERE stage = ".$s->getId()." ".$m ;
+					//$spt = $this->entityManager->getRepository(Spt::class)
+					//->findBy(['stage'=>$s->getId()]);
+				}else{
+					$spt = "SELECT * from spt WHERE stage = ".$s->getId()." AND created_by = ".$current_user->getId()." ".$m ;
+					//$spt = $this->entityManager->getRepository(Spt::class)
+					//->findBy(['stage'=>$s->getId(),'executive'=>$current_user->getId()]);
+				}
+			}
+			
+			$stmt = $this->entityManager->getConnection()->prepare($spt);
+			$stmt->execute();
+
+			$array[$s->getName()] = $stmt->rowCount();
 		}
+
 		
-		$user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()]);
-		
-		if($user->getUserType() == 1){
+		if($current_user->getUserType() == 1){
 			$users = $this->entityManager->getRepository(User::class)
 				->findAll();
+			if($post && $user != 0){
+				
+			$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt` WHERE `created_by` = ".$user." ".$m." group by `stage` " ;			
+			}else{
+				
+				$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt`  ".$m2." group by `stage`";
+			}
 		}else{
 			$users = $this->entityManager->getRepository(User::class)
-				->findBy(['id'=>$user->getId()]);
+				->findBy(['id'=>$current_user->getId()]);
+			$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt` WHERE `created_by` = ".$current_user->getId()." ".$m." group by `stage`";
 		}
 		
-		$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv` from `spt` group by `stage`";
 
 		$stmt = $this->entityManager->getConnection()->prepare($sql);
 		$stmt->execute();
@@ -73,28 +105,31 @@ class DashboardController extends AbstractActionController
 			$array['f_'.$f['stage']] = $f['fbv'];
 		}
 		
-		return new ViewModel(['data'=>$array,'users'=>$users]);
+		$totalLeads = isset($array['Early']) ?? 0 + isset($array['Active']) ?? 0 + isset($array['Close']) ?? 0 + isset($array['Offline']) ?? 0;
+		$totalFBV = isset($array['f_Early']) ?? 0 + isset($array['f_Active']) ?? 0 + isset($array['f_Close']) ?? 0;
+
+		return new ViewModel(['data'=>$array,'users'=>$users,'user'=>$user,'totalFBV'=>$totalFBV,'totalLeads'=>$totalLeads]);
     }
 	
-	public function thousandsCurrencyFormat($num) {
+	// public function thousandsCurrencyFormat($num) {
 
-	  if($num>1000) {
+	  // if($num>1000) {
 
-			$x = round($num);
-			$x_number_format = number_format($x);
-			$x_array = explode(',', $x_number_format);
-			$x_parts = array('k', 'm', 'b', 't');
-			$x_count_parts = count($x_array) - 1;
-			$x_display = $x;
-			$x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
-			$x_display .= $x_parts[$x_count_parts - 1];
+			// $x = round($num);
+			// $x_number_format = number_format($x);
+			// $x_array = explode(',', $x_number_format);
+			// $x_parts = array('k', 'm', 'b', 't');
+			// $x_count_parts = count($x_array) - 1;
+			// $x_display = $x;
+			// $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+			// $x_display .= $x_parts[$x_count_parts - 1];
 
-			return $x_display;
+			// return $x_display;
 
-	  }
+	  // }
 
-	  return $num;
-	}
+	  // return $num;
+	// }
 
 	
 	 public function sptreportAction()
@@ -126,7 +161,7 @@ class DashboardController extends AbstractActionController
 		$spreadsheet->getActiveSheet()->setTitle('SPT Report');
 
 		$spreadsheet->setActiveSheetIndex(0) 
-		->setCellValue('A1', 'Engg')
+		->setCellValue('A1', 'Engineer')
 		->setCellValue('B1', $post['s_user'] == 0?'All Users':$user->getFullName())
 		->setCellValue('A2', 'Branch')
 		->setCellValue('B2', $post['s_user'] == 0?'All Branches':$this->ExtranetUtilities->getBranchName($user->getBranch()))
@@ -137,7 +172,7 @@ class DashboardController extends AbstractActionController
 		->setCellValue('A5', 'Stage')
 		->setCellValue('B5', 'Prospect Name')
 		->setCellValue('C5', 'Lead Source Name')
-		->setCellValue('D5', 'ExecUtive')
+		->setCellValue('D5', 'Executive')
 		->setCellValue('E5', 'Offer No')
 		->setCellValue('F5', 'Sales Stage')
 		->setCellValue('G5', 'Product Series')
@@ -178,6 +213,11 @@ class DashboardController extends AbstractActionController
 				}
 			
 				$spt = $query->getQuery()->getArrayResult();
+				
+				$spreadsheet->setActiveSheetIndex(0) 
+					->setCellValue('A4', 'Total FBV')
+					->setCellValue('B4', array_sum(array_column($spt,'forecastedBookingValue')));
+		
 
 				if (!empty($spt)){
 					$n = 5;
@@ -218,7 +258,23 @@ class DashboardController extends AbstractActionController
 				}
 		}
 		
-
+		//Excel Stylings
+		$spreadsheet->getActiveSheet()->freezePane('E6');
+		$spreadsheet
+		->getActiveSheet()
+		->getStyle('A5:X5')
+		->getFill()
+		->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+		->getStartColor()
+		->setARGB('FFFF00');
+		
+		foreach (range('A','X') as $col) {
+		   $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		
+		$spreadsheet->getActiveSheet()->getStyle('A5:X5')->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->getStyle('A1:A4')->getFont()->setBold(true);
+		
 		// Redirect output to a clientâ€™s web browser (Xlsx)
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="Airkom_SPTReport.xlsx"');
@@ -308,14 +364,16 @@ class DashboardController extends AbstractActionController
 				$spt[$k]['dateCreated'] = $spt[$k]['dateCreated']->format('d-m-Y');
 			}
 		}
-		
-		$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv` from `spt` where `date_created` >= '".$startdate."' and `date_created` <= '".$enddate."' group by `stage`";
+		$u = (gettype($user) == 'object')?"and `created_by` = ".$user->getId():'';
+		$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv` from `spt` where `date_created` >= '".$startdate."' and `date_created` <= '".$enddate."' ".$u." group by `stage`";
 
 		$stmt = $this->entityManager->getConnection()->prepare($sql);
 		$stmt->execute();
 		$fbv =  $stmt->fetchAll();
 		
-		return ['fbv'=>$fbv,'data'=>$spt,'user'=>$user,'daterange'=>$daterange];
+		$total_fbv = array_sum(array_column($fbv,'fbv'));
+		
+		return ['total_fbv'=>$total_fbv,'fbv'=>$fbv,'data'=>$spt,'user'=>$user,'daterange'=>$daterange];
     }
 	
 	public function dcrreportAction()
@@ -396,6 +454,10 @@ class DashboardController extends AbstractActionController
 				}
 					
 				$dcr = $query->getQuery()->getArrayResult();
+				
+				$spreadsheet->setActiveSheetIndex(0) 
+					->setCellValue('A4', 'Total Order Value')
+					->setCellValue('B4', array_sum(array_column($dcr,'orderValue')));
 
 				if (!empty($dcr)){
 					$n = 5;
@@ -434,6 +496,22 @@ class DashboardController extends AbstractActionController
 				}
 		}
 		
+		//Excel Stylings
+		$spreadsheet->getActiveSheet()->freezePane('F6');
+		$spreadsheet
+		->getActiveSheet()
+		->getStyle('A5:V5')
+		->getFill()
+		->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+		->getStartColor()
+		->setARGB('FFFF00');
+		
+		foreach (range('A','V') as $col) {
+		   $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		
+		$spreadsheet->getActiveSheet()->getStyle('A5:V5')->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->getStyle('A1:A4')->getFont()->setBold(true);
 
 		// Redirect output to a clientâ€™s web browser (Xlsx)
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -485,6 +563,8 @@ class DashboardController extends AbstractActionController
 					$query->AndWhere('D.createdBy = :createdBy')
 						->setParameter('createdBy', $post['s_user']);
 				}
+				
+				$daterange = $post['s_daterange'];
 					
 				$dcr = $query->getQuery()->getArrayResult();
 		}
@@ -530,7 +610,9 @@ class DashboardController extends AbstractActionController
 		$stmt->execute();
 		$ov =  $stmt->fetchAll();
 		
-		return ['ov'=>$ov,'data'=>$dcr,'user'=>$user,'daterange'=>$daterange];
+		$total_ov = array_sum(array_column($ov,'ov'));
+		
+		return ['total_ov' => $total_ov, 'ov'=>$ov,'data'=>$dcr,'user'=>$user,'daterange'=>$daterange];
     }
 	
 	
@@ -601,6 +683,10 @@ class DashboardController extends AbstractActionController
 				}
 					
 				$roadmap = $query->getQuery()->getArrayResult();
+				
+				$spreadsheet->setActiveSheetIndex(0) 
+					->setCellValue('A4', 'Total Potential Value')
+					->setCellValue('B4', array_sum(array_column($roadmap,'expectedPotentialOrderValue')));
 
 				if (!empty($roadmap)){
 					$n = 5;
@@ -627,6 +713,24 @@ class DashboardController extends AbstractActionController
 					}
 				}
 		}
+		
+		
+		//Excel Stylings
+		$spreadsheet->getActiveSheet()->freezePane('D6');
+		$spreadsheet
+		->getActiveSheet()
+		->getStyle('A5:K5')
+		->getFill()
+		->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+		->getStartColor()
+		->setARGB('FFFF00');
+		
+		foreach (range('A','K') as $col) {
+		   $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		
+		$spreadsheet->getActiveSheet()->getStyle('A5:K5')->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->getStyle('A1:A4')->getFont()->setBold(true);
 		
 
 		// Redirect output to a clientâ€™s web browser (Xlsx)
@@ -710,8 +814,8 @@ class DashboardController extends AbstractActionController
 		$stmt = $this->entityManager->getConnection()->prepare($sql);
 		$stmt->execute();
 		$epov =  $stmt->fetchAll();
-		
-		return ['epov'=>$epov,'data'=>$roadmap,'user'=>$user,'daterange'=>$daterange];
+		$total_pv = array_sum(array_column($epov,'epov'));
+		return ['total_pv'=>$total_pv,'epov'=>$epov,'data'=>$roadmap,'user'=>$user,'daterange'=>$daterange];
 
     }	
 }

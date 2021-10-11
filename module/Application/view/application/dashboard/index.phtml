@@ -133,60 +133,50 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 					<div class="card-header border-0 pb-0">
 						<div>
 							<h4 class="fs-20 text-black">Forcasted Value</h4>
-							<span class="fs-12">piechart showing FV till date.</span>
+							<form method="post" action="">
+							
+							<div class="input-group mb-3">
+								<select class="form-control" name="s_user" style="height:42px">
+									<?php if(count($users) > 1){ ?>
+									<option value="0">All Users</option>
+									<?php } ?>
+									<?php foreach( $users as $u) { ?>
+									<option <?= $user == $u->getId() ? 'selected' : '' ?> value="<?= $u->getId() ?>" ><?= $u->getFullName(); ?></option>
+									<?php } ?>
+								</select>
+
+							</div>
+							<div class="input-group mb-3">
+							<?php $months = ['Select Month','January','February','March','April','May','June','July','August','September','October','November','December']; ?>
+								<select class="form-control" name="s_month" style="height:42px">
+									<?php foreach ($months as $k => $v){ ?>
+										<option <?= @$_POST['s_month'] == $k ? 'selected' : '' ?> value="<?= $k ?>"><?= $v ?></option>
+									<?php } ?>
+								</select>
+								<div class="input-group-append">
+									<button class="btn btn-primary btn-sm rounded-0" type="submit"><i class="flaticon-381-search-2"></i></button>
+								</div>
+							</div>
+							</form>
 						</div>
 					</div>
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xl-12 col-sm-6">
 								<div id="fbvchart"></div>
-							</div>
-							<div class=" col-xl-12 col-sm-6">
-								<div class="d-flex flex-wrap text-black fs-12 mt-4">
-									<span class="mr-4 mb-3">
-										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect width="19" height="19" rx="9.5" fill="#1EAAE7"></rect>
-										</svg>
-										Early
-									</span>
-									<span class="mr-4 mb-3">
-										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect width="19" height="19" rx="9.5" fill="#FF7A30"></rect>
-										</svg>
-										Active
-									</span>
-									<span class="mr-4 mb-3">
-										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect width="19" height="19" rx="9.5" fill="#2BC155"></rect>
-										</svg>
-										Close
-									</span>
-									<span class="mr-4 mb-3">
-										<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect width="19" height="19" rx="9.5" fill="#FF2E2E"></rect>
-										</svg>
-										Offline
-									</span>
-
-								</div>
+								<p class="text-center text-uppercase text-black"><small>Total <?= $totalFBV ?></small></p>
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-			<br/>
-			<div class="col-xl-12">
-				<div class="card">
-					<div class="card-header border-0 pb-0">
-						<div>
-							<h4 class="fs-20 text-black">Leads Statistic</h4>
-							<span class="fs-12">piechart showing leads till date.</span>
-						</div>
-					</div>
-					<div class="card-body">
+						
+						<hr/>
+						
 						<div class="row">
 							<div class="col-xl-12 col-sm-6">
+								<h4 class="fs-20 text-black text-center">Leads Statistic</h4>
+							</div>
+							<div class="col-xl-12 col-sm-6">
 								<div id="pieChart"></div>
+								<p class="text-center text-uppercase text-black"><small>Total <?= $totalLeads ?></small></p>
 							</div>
 							<div class=" col-xl-12 col-sm-6">
 								<div class="d-flex flex-wrap text-black fs-12 mt-4">
@@ -221,6 +211,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </div>

@@ -80,18 +80,26 @@ class PipelineController extends AbstractActionController
 			// $this->entityManager->persist($pipeline);
 			// $this->entityManager->flush();
 		// }
+		$post = $this->getRequest()->getPost()->toArray();
 		
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
 		$query = $this->entityManager->createQueryBuilder()->select('P, P.id, P.contact, P.sptId, MAX(P.stage) AS stage')
             ->from('Application\Entity\Pipeline', 'P')
+			->join('Application\Entity\Contacts', 'C', 'WITH', 'C.id = P.contact')
             ->groupBy("P.sptId")
             ->addOrderBy('P.id', 'ASC');
 			
 		if($user->getUserType() != 1){
 			$query->Where('P.createdBy >= :createdBy')
 					->setParameter('createdBy', $user->getId());
+		}
+		
+		if (!empty($post['s_pipeline'])) {
+			
+			$query->AndWhere('C.company like :pipeline')
+				->setParameter('pipeline',  '%'.$post['s_pipeline'].'%');
 		}
 		
         $pipeline = $query->getQuery()->getResult();

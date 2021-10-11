@@ -38,27 +38,36 @@ class DCRController extends AbstractActionController
 	
     public function indexAction()
     {
-        $form = new DCRForm();
+        $post = $this->getRequest()->getPost()->toArray();
+		$form = new DCRForm();
 		
         $user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
-		$paginator['page'] = $this->params()->fromQuery('page', 1);
-		$paginator['per_page'] = 10;
-			
-		if($user->getUserType() == 1){
-			$paginator['count'] = $this->entityManager->getUnitOfWork()->getEntityPersister(Dcr::class)->count();
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
-			
-			$dcr = $this->entityManager->getRepository(Dcr::class)
-            ->findBy([], ['id' => 'DESC'], $paginator['per_page'], $offset);
-		}else{
-			$dcr = $this->entityManager->getRepository(Dcr::class)
-            ->findBy(['createdBy'=>$user->getId()]);
-			
-			$paginator['count'] = count($dcr);
-			$offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+		$query = $this->entityManager->createQueryBuilder()->select('D')
+				->from('Application\Entity\Dcr', 'D')
+				->join('Application\Entity\Contacts', 'C', 'WITH', 'C.id = D.contactId');
+		
+		if($user->getUserType() != 1){
+			$query->AndWhere('D.createdBy = :createdBy')
+				->setParameter('createdBy', $user->getId());
 		}
+		
+		if (!empty($post['s_company'])) {
+			
+			$query->AndWhere('C.company like :company')
+				->setParameter('company',  '%'.$post['s_company'].'%');
+		}
+		
+		$paginator['page'] = $this->params()->fromQuery('page', 1);
+        $paginator['count'] = count($query->getQuery()->getScalarResult());
+        $paginator['per_page'] = 10;
+        $offset = $paginator['page'] * $paginator['per_page'] - $paginator['per_page'];
+
+        $query->setFirstResult($offset)->setMaxResults($paginator['per_page'])->add('orderBy', 'D.id DESC');
+
+        $dcr = $query->getQuery()->getResult();
+		
 		
         return new ViewModel(['dcr' => $dcr, 'form' => $form, 'paginator' => $paginator]);
     }

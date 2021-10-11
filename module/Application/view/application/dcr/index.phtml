@@ -20,7 +20,18 @@ $this->PageActions()->setItems([
 				<h4 class="card-title">DCR</h4>
 			</div>
 			<div class="card-body">
-
+<div class="col-md-12">
+					<form id="user_filter_form" method="post" action="<?= $this->url('dcr'); ?>">
+						<div class="form-row">
+							<div class="form-group col-sm-4">
+							  <input class="form-control" id="s_company" name="s_company" value="<?= $_POST['s_company'] ?? '' ?>" placeholder="Search Company"/>
+							  </div>
+							<div class="col-sm-3 mg-t-10 mg-sm-t-0">
+							  <button type="submit" class="btn btn-primary btn-block mg-b-10">Search</button>
+							</div>
+						</div>
+					</form>
+				</div>
 <div class="table-responsive">
 <table class="table table-responsive-md">
 <thead>
