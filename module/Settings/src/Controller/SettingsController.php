@@ -58,6 +58,20 @@ class SettingsController extends AbstractActionController
                     $settings->setDistanceTravelPercentage($data['distance_travel_percentage']);
                     $settings->setNameEmailer($data['name_emailer']);
                     $settings->setEmailEmailer($data['email_emailer']);
+					
+					
+                    $settings->setServices($data['services']);
+                    $settings->setPayment($data['payment']);
+                    $settings->setAddress($data['address']);
+                    $settings->setWebsite($data['website']);
+                    $settings->setFacebook($data['facebook']);
+                    $settings->setLinkedin($data['linkedin']);
+                    $settings->setInstagram($data['instagram']);
+                    $settings->setYoutube($data['youtube']);
+                    $settings->setCatalog($data['catalog']);
+					
+					
+					
                     $settings->setSmsEnabled($data['sms_enabled']);
                     $settings->setSmsApi($data['sms_api']);
                     $settings->setSendgridApi($data['sendgrid_api']);
@@ -89,6 +103,19 @@ class SettingsController extends AbstractActionController
                     'distance_travel_percentage' => $settings->getDistanceTravelPercentage(),
                     'name_emailer' => $settings->getNameEmailer(),
                     'email_emailer' => $settings->getEmailEmailer(),
+					
+					
+                    'services' => $settings->getServices(),
+                    'payment' => $settings->getPayment(),
+                    'address' => $settings->getAddress(),
+                    'website' => $settings->getWebsite(),
+                    'facebook' => $settings->getFacebook(),
+                    'linkedin' => $settings->getLinkedin(),
+                    'instagram' => $settings->getInstagram(),
+                    'youtube' => $settings->getYoutube(),
+                    'catalog' => $settings->getCatalog(),
+					
+					
                     'sms_enabled' => $settings->getSmsEnabled(),
                     'sms_api' => $settings->getSmsApi(),
                     'sendgrid_api' => $settings->getSendgridApi(),

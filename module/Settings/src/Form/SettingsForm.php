@@ -17,8 +17,23 @@ class SettingsForm extends Form
     {
         $this->add(['name' => 'company_name', 'options' => ['label' => 'Company'], 'type' => 'Text']);
         $this->add(['name' => 'company_brief', 'options' => ['label' => 'Company Brief'], 'type' => 'Textarea']);
+        $this->add(['name' => 'services', 'options' => ['label' => 'Services'], 'type' => 'Textarea']);
+        $this->add(['name' => 'payment', 'options' => ['label' => 'Payment Info'], 'type' => 'Textarea']);
+        $this->add(['name' => 'address', 'options' => ['label' => 'Address'], 'type' => 'Textarea']);
+		
+		
+		
+		
         $this->add(['name' => 'contact', 'options' => ['label' => 'Corporate Contact'], 'type' => 'Text']);
         $this->add(['name' => 'email', 'options' => ['label' => 'Corporate Email'], 'type' => 'Text']);
+		
+		
+        $this->add(['name' => 'website', 'options' => ['label' => 'Website'], 'type' => 'Text']);
+        $this->add(['name' => 'facebook', 'options' => ['label' => 'Facebook'], 'type' => 'Text']);
+        $this->add(['name' => 'linkedin', 'options' => ['label' => 'LinkedIn'], 'type' => 'Text']);
+        $this->add(['name' => 'instagram', 'options' => ['label' => 'Instagram'], 'type' => 'Text']);
+        $this->add(['name' => 'youtube', 'options' => ['label' => 'YouTube'], 'type' => 'Text']);
+        $this->add(['name' => 'catalog', 'options' => ['label' => 'Catalog Link'], 'type' => 'Text']);
 
         
         $this->add(['name' => 'page_title', 'options' => ['label' => 'Page Title'], 'type' => 'Text']);

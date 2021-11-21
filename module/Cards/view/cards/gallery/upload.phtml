@@ -1,0 +1,41 @@
+<?php
+$title = $this->translate('Gallery');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('masters');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Gallery')=>$this->url('gallery'),
+            $this->translate('Listings')=>$this->url('gallery'),
+            ]);
+$this->PageActions()->setItems([
+            ['label'=>'Back to Gallery','url'=>$this->url('gallery'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
+            ]);
+
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->prepare();			
+?>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="card">
+
+			<div class="card-body">
+	       <?= $this->form()->openTag($form); ?>
+        
+        <div class="form-group">
+            <?= $this->formLabel($form->get('file')); ?>
+            <?= $this->formElement($form->get('file')); ?>
+            <?= $this->formElementErrors($form->get('file')); ?> 
+            <div class="hint">(PNG and JPG formats are allowed)</div>
+        </div>
+                
+        <?= $this->formElement($form->get('submit')); ?>
+        
+        <?= $this->form()->closeTag(); ?>
+	 
+	
+</div> 
+</div>
+</div>
+</div>
+

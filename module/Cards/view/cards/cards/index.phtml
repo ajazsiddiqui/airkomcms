@@ -1,0 +1,77 @@
+<?php
+$title = $this->translate('Cards Center');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('cards');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Cards')=>$this->url('cards'),
+            $this->translate('Listings')=>$this->url('cards'),
+            ]);
+$this->PageActions()->setItems([
+            ['label'=>'Add User','url'=>$this->url('users', ['action'=>'add']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Digital Cards</h4>
+			</div>
+			<div class="card-body">
+				<form name="cards_form" method="post" action="#">
+					<div class="form-row">
+						<div class="form-group col-sm-3 d-flex">
+						 <input class="form-control" name="s_user" type="text" placeholder="User Name" value="<?= (isset($search_array['s_user']))?$search_array['s_user']:''?>">
+						  </div>
+						<div class="col-sm-4 col-md-2 mg-t-10 mg-sm-t-0">
+						  <button type="submit" class="btn btn-primary btn-block"><?= $this->translate('Filter Cards') ?></button>
+						</div>
+					</div>
+				</form>
+  
+	 
+				<?php foreach ($users as $user){ ?>
+					<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+						<div class="d-flex pb-3 align-items-center">
+							<img src="<?= $this->basePath(); ?>/uploads/profile_pics/<?= empty($user->getProfilePic())?'user.jpg':$user->getProfilePic(); ?>" class="img-fluid rounded-circle" style="width: 70px; height: 70px; margin-right: 20px;">
+							<div class="mr-3">
+								<p class="fs-14 mb-1">Full Name</p>
+								<span class="text-black font-w500"><?= $this->escapeHtml($user->getFullName()); ?></span>
+							</div>
+						</div>
+						<div class="mr-3 pb-3">
+							<p class="fs-14 mb-1">Designation</p>
+							<span class="text-black font-w500"><?= $this->escapeHtml($user->getDesignation()); ?></span>
+						</div>
+						<div class="mr-3 pb-3">
+							<p class="fs-14 mb-1">Contact Number</p>
+							<span class="text-black font-w500"><?= $this->escapeHtml($user->getContactNo()); ?></span>
+						</div>
+						<div class="mr-3 pb-3">
+							<p class="fs-14 mb-1">Email</p>
+							<span class="text-black font-w500"><?= $this->escapeHtml($user->getEmail()); ?></span>
+						</div>
+						<a target="_new" href="<?= $this->url('cards', ['action'=>'view','id' => $user->getId()]); ?>" class="fs-14 btn-link mr-3 pb-3">See Card</a>
+						<div class="dropdown pb-3">
+							<div class="btn-link" role="button" data-toggle="dropdown" aria-expanded="false">
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 11.9999C10 13.1045 10.8954 13.9999 12 13.9999C13.1046 13.9999 14 13.1045 14 11.9999C14 10.8954 13.1046 9.99994 12 9.99994C10.8954 9.99994 10 10.8954 10 11.9999Z" fill="black"></path>
+									<path d="M10 4.00006C10 5.10463 10.8954 6.00006 12 6.00006C13.1046 6.00006 14 5.10463 14 4.00006C14 2.89549 13.1046 2.00006 12 2.00006C10.8954 2.00006 10 2.89549 10 4.00006Z" fill="black"></path>
+									<path d="M10 20C10 21.1046 10.8954 22 12 22C13.1046 22 14 21.1046 14 20C14 18.8954 13.1046 18 12 18C10.8954 18 10 18.8954 10 20Z" fill="black"></path>
+								</svg>
+							</div>
+							<div class="dropdown-menu dropdown-menu-right">
+								<!-- <a class="dropdown-item" href="javascript:void()">Delete</a> -->
+								<a class="dropdown-item" href="<?= $this->url('users', ['action'=>'edit', 'id'=>$user->getId()]); ?>">Edit</a>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+										
+	<?= $this->partial('application/partial/paginator', ['paginator'=>$this->paginator,'search'=>base64_encode(serialize($search_array))]); ?>
+</div> 
+</div>
+</div>
+</div>
+

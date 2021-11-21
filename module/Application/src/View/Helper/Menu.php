@@ -82,6 +82,9 @@ class Menu extends AbstractHelper
 				
 		case 'Leads Pipeline':
                 return 'flaticon-381-shuffle-1';
+				
+		case 'Digital Cards':
+                return 'flaticon-381-id-card-1';
 
         default:
             return 'flaticon-381-networking';

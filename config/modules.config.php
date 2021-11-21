@@ -34,4 +34,5 @@ return [
 	'Masters',
 	'Settings',
 	'Logs',
+	'Cards',
 ];

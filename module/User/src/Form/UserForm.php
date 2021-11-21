@@ -98,6 +98,17 @@ class UserForm extends Form
                 ],
             ]
         );
+		
+		 // Add "designation" field
+        $this->add(
+            [
+                'type' => 'text',
+                'name' => 'designation',
+                'options' => [
+                    'label' => 'Designation',
+                ],
+            ]
+        );
 
         // Add "contact_no" field
         $this->add(

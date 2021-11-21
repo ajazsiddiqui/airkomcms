@@ -33,6 +33,11 @@ class User
      * @ORM\Column(name="full_name")
      */
     protected $fullName;
+	
+	 /**
+     * @ORM\Column(name="designation")
+     */
+    protected $designation;
 
     /**
      * @ORM\Column(name="password")
@@ -156,6 +161,27 @@ class User
     public function setFullName($fullName)
     {
         $this->fullName = $fullName;
+    }
+
+
+    /**
+     * Returns designation.
+     *
+     * @return string
+     */
+    public function getDesignation()
+    {
+        return $this->designation;
+    }
+
+    /**
+     * Sets designation.
+     *
+     * @param string $designation
+     */
+    public function setDesignation($designation)
+    {
+        $this->designation = $designation;
     }
 
     /**

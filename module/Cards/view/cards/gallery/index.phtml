@@ -1,0 +1,50 @@
+<?php
+$title = $this->translate('Gallery');
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setTitle($title);
+$this->mainMenu()->setActiveItemId('masters');
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('Gallery')=>$this->url('gallery'),
+            $this->translate('Listings')=>$this->url('gallery'),
+            ]);
+$this->PageActions()->setItems([
+            ['label'=>'Add Image','url'=>$this->url('gallery', ['action'=>'upload']),'icon'=>'fa fa-plus','class'=>'btn-primary'],
+            ]);	
+?>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="card">
+			<div class="card-body">
+				<?php if(count($files)==0): ?>
+
+				<p>
+				  <i>There are no files to display.</i>
+				</p>
+
+				<?php else: ?>
+				<div class="owl-carousel testimonial-one mb-5">
+					<?php foreach($files as $file): ?>  
+					<div class="item">
+						<div class="image-bx mb-3">
+							<img src="<?= $this->url('gallery', ['action'=>'file'], 
+							['query'=>['name'=>$file, 'thumbnail'=>true]]); ?>">
+							<i class="las la-check-circle"></i>
+						</div>
+						<h6 class="fs-16 mb-0"><a href="#" class="text-black"><?php echo $file; ?></a></h6>
+						<a href="<?= $this->url('gallery', ['action'=>'file'], 
+						   ['query'=>['name'=>$file]]); ?>" class="fs-12">zoom</a>
+					</div>
+					<?php endforeach; ?>
+					
+
+				</div>
+				<?php endif; ?>
+				
+
+<hr/>
+</div> 
+</div>
+</div>
+</div>
+

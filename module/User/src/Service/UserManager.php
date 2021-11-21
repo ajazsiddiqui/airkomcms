@@ -69,6 +69,7 @@ class UserManager
         $user->setFullName($data['full_name']);
         $user->setContactNo($data['contact_no']);
         $user->setBranch($data['branch']);
+        $user->setDesignation($data['designation']);
         $user->setUserType($data['user_type']);
         $user->setProfilePic($newFileName);
 
@@ -112,6 +113,7 @@ class UserManager
         $user->setFullName($data['full_name']);
         $user->setContactNo($data['contact_no']);
         $user->setBranch($data['branch']);
+        $user->setDesignation($data['designation']);
         $user->setUserType($data['user_type']);
         $user->setProfilePic($newFileName);
         $user->setStatus($data['status']);

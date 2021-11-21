@@ -26,6 +26,11 @@ $form->get('full_name')->setAttributes([
     'class'=>'form-control',
     'placeholder'=>'Ajaz Siddiqui'
     ]);
+	
+$form->get('designation')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Designation'
+    ]);
 
 $form->get('contact_no')->setAttributes([
     'class'=>'form-control',
@@ -72,6 +77,12 @@ $this->PageActions()->setItems([
 				<?= $this->formLabel($form->get('full_name')); ?>
 				<?= $this->formElement($form->get('full_name')); ?>
 				<?= $this->formElementErrors($form->get('full_name')); ?>
+			</div>
+			
+			<div class="form-group">
+				<?= $this->formLabel($form->get('designation')); ?>
+				<?= $this->formElement($form->get('designation')); ?>
+				<?= $this->formElementErrors($form->get('designation')); ?>
 			</div>
 
 			<div class="form-group">

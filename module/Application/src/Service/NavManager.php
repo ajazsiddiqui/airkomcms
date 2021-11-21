@@ -159,6 +159,15 @@ class NavManager
                 ];
             }
 			
+			if ($this->rbacManager->isGranted(null, 'cards.manage')) {
+				$items[] = [
+					'id' => 'cards',
+					'label' => $this->translator->translate('Digital Cards'),
+					'link'  => $url('cards')
+				];
+			}
+			
+			
 			if ($this->rbacManager->isGranted(null, 'settings.manage')) {
                 
                 $settingsMenu[] = [
@@ -251,6 +260,11 @@ class NavManager
                     'id' => 'product-series',
                     'label' => $this->translator->translate('Product Series'),
                     'link' => $url('product-series'),
+                ];
+				$masterDropdownItems[] = [
+                    'id' => 'gallery',
+                    'label' => $this->translator->translate('Product Gallery'),
+                    'link' => $url('gallery'),
                 ];
 				$masterDropdownItems[] = [
 					'id' => 'sales-stage',

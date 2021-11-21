@@ -24,6 +24,11 @@ $form->get('full_name')->setAttributes([
     'class'=>'form-control',
     'placeholder'=>'Full Name'
     ]);
+	
+$form->get('designation')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Designation'
+    ]);
 
 $form->get('contact_no')->setAttributes([
     'class'=>'form-control',
@@ -79,6 +84,12 @@ $this->PageActions()->setItems([
 				<?= $this->formElementErrors($form->get('full_name')); ?>
 			</div>
 
+			<div class="form-group">
+				<?= $this->formLabel($form->get('designation')); ?>
+				<?= $this->formElement($form->get('designation')); ?>
+				<?= $this->formElementErrors($form->get('designation')); ?>
+			</div>
+			
 			<div class="form-group">
 				<?= $this->formLabel($form->get('contact_no')); ?>
 				<?= $this->formElement($form->get('contact_no')); ?>

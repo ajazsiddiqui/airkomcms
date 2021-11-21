@@ -286,6 +286,7 @@ class UserController extends AbstractActionController
                     'full_name' => $user->getFullName(),
                     'contact_no' => $user->getContactNo(),
                     'user_type' => $user->getUserType(),
+                    'designation' => $user->getDesignation(),
                     'email' => $user->getEmail(),
                     'branch' => $user->getBranch(),
                     'status' => $user->getStatus(),

@@ -37,7 +37,8 @@
         "laminas/laminas-permissions-rbac": "^3.1",
         "laminas/laminas-serializer": "^2.10",
         "laminas/laminas-mvc-i18n": "^1.2",
-        "phpoffice/phpspreadsheet": "^1.18"
+        "phpoffice/phpspreadsheet": "^1.18",
+        "jeroendesloovere/vcard": "^1.7"
     },
     "autoload": {
         "psr-4": {
@@ -45,7 +46,8 @@
 			"User\\": "module/User/src/",
 			"Masters\\": "module/Masters/src/",
 			"Logs\\": "module/Logs/src/",
-			"Settings\\": "module/Settings/src/"
+			"Settings\\": "module/Settings/src/",
+			"Cards\\": "module/Cards/src/"
         }
     },
 
