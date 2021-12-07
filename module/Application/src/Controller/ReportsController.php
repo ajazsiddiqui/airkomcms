@@ -53,7 +53,7 @@ class ReportsController extends AbstractActionController
 			
 		if($user->getUserType() == 1){
 			$users = $this->entityManager->getRepository(User::class)
-            ->findBy([], ['fullName' => 'ASC']);
+            ->findBy(['status'=>1], ['fullName' => 'ASC']);
 		}else{
 			$users = $this->entityManager->getRepository(User::class)
             ->findBy(['id'=>$user->getId()]);

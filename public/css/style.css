@@ -12,6 +12,12 @@
 @import url(../vendor/metismenu/css/metisMenu.min.css);
 .gradient_one {
   background-image: linear-gradient(to right, rgba(186, 1, 181, 0.85) 0%, rgba(103, 25, 255, 0.85) 100%); }
+#printTable th{
+	background:#1eaae7;
+}
+#printTable th, #printTable th strong{
+	color: #fff !important;
+}
 
 .gradient-1 {
   background: #f0a907;
@@ -10140,14 +10146,7 @@ svg.pulse-svg {
       .header-right .weather-detail span i {
         padding-right: 12px;
         font-size: 25px; }
-    @media only screen and (max-width: 1400px) {
-      .header-right .weather-detail {
-        height: 40px;
-        line-height: 40px; }
-        .header-right .weather-detail span {
-          height: 40px;
-          line-height: 40px;
-          font-size: 20px; } }
+
     @media only screen and (max-width: 767px) {
       .header-right .weather-detail {
         display: none !important; } }
@@ -12561,7 +12560,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     position: relative; }
     @media only screen and (max-width: 1400px) {
       [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li > a {
-        padding: 15px 25px;
+        padding: 5px 15px;
         font-size: 16px; } }
   [data-sidebar-style="full"][data-layout="vertical"] .deznav .metismenu > li.mm-active > a {
     color: #000; }
@@ -24645,8 +24644,8 @@ button {
     outline: 0 !important; }
   @media only screen and (max-width: 1400px) {
     .btn {
-      padding: 0.625rem 1rem;
-      font-size: 0.813rem; } }
+      padding: 10px 21px;
+      font-size: 1rem; } }
   .btn-transparent {
     background-color: transparent; }
 
@@ -31134,4 +31133,11 @@ form{
 table.dataTable  thead input {
         width: 100%;
     }
-/*# sourceMappingURL=style.css.map */
+	
+.form-control.alt {
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    padding: 4px;
+}
+

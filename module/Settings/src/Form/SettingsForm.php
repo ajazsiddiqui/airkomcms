@@ -18,7 +18,8 @@ class SettingsForm extends Form
         $this->add(['name' => 'company_name', 'options' => ['label' => 'Company'], 'type' => 'Text']);
         $this->add(['name' => 'company_brief', 'options' => ['label' => 'Company Brief'], 'type' => 'Textarea']);
         $this->add(['name' => 'services', 'options' => ['label' => 'Services'], 'type' => 'Textarea']);
-        $this->add(['name' => 'payment', 'options' => ['label' => 'Payment Info'], 'type' => 'Textarea']);
+        $this->add(['name' => 'payment', 'options' => ['label' => 'Payment Information'], 'type' => 'Textarea']);
+        $this->add(['name' => 'tax_information', 'options' => ['label' => 'Tax Information'], 'type' => 'Textarea']);
         $this->add(['name' => 'address', 'options' => ['label' => 'Address'], 'type' => 'Textarea']);
 		
 		

@@ -11,6 +11,7 @@ $form->get('company_name')->setAttributes(['class'=>'form-control', 'placeholder
 $form->get('company_brief')->setAttributes(['id'=>'company_brief','class'=>'form-control', 'placeholder'=>'Company Brief']);
 $form->get('services')->setAttributes(['id'=>'services','class'=>'form-control', 'placeholder'=>'Services']);
 $form->get('payment')->setAttributes(['id'=>'payment','class'=>'form-control', 'placeholder'=>'Payment Info']);
+$form->get('tax_information')->setAttributes(['id'=>'tax_information','class'=>'form-control', 'placeholder'=>'Tax Information']);
 $form->get('address')->setAttributes(['class'=>'form-control', 'placeholder'=>'Address']);
 $form->get('contact')->setAttributes(['class'=>'form-control', 'placeholder'=>'Corporate Contact']);
 $form->get('email')->setAttributes(['class'=>'form-control', 'placeholder'=>'Corporate Email']);
@@ -88,6 +89,11 @@ $this->headScript()->appendFile('https://cdn.tiny.cloud/1/nr69d6pjqrxx14gtnoohvr
 			  <?= $this->formLabel($form->get('payment')); ?>
 			  <?= $this->formElement($form->get('payment')); ?>
 			  <?= $this->formElementErrors($form->get('payment')); ?>
+		  </div>
+		  <div class="form-group ">
+			  <?= $this->formLabel($form->get('tax_information')); ?>
+			  <?= $this->formElement($form->get('tax_information')); ?>
+			  <?= $this->formElementErrors($form->get('tax_information')); ?>
 		  </div>
 		  <div class="form-group ">
 			  <?= $this->formLabel($form->get('address')); ?>

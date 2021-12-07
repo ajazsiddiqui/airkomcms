@@ -26,7 +26,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 						<form method="post" action="<?= $this->url('dashboard',['action'=>'sptreport']); ?>">
 						
 						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
-							<div class="mr-3 pb-3">
+							<div class="mr-2 pb-3">
 								<p class="fs-14 mb-1">Date Range</p>
 								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>" /></span>
 							</div>
@@ -49,7 +49,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 									<span class="text-black font-w500">Sales Prospect Tracker</span>
 								</div>
 							</div>
-							<div class="mr-3 pb-3">
+							<div class="pb-3">
 								<button name="generate" type="submit" class="btn btn-primary btn-block mg-b-10">Generate</button>
 								<button name="view" type="submit" class="btn btn-secondary btn-block mg-b-10">View</button>
 							</div>
@@ -59,7 +59,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 						<form method="post" action="<?= $this->url('dashboard',['action'=>'dcrreport']); ?>">
 						
 						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
-							<div class="mr-3 pb-3">
+							<div class="mr-2 pb-3">
 								<p class="fs-14 mb-1">Date Range</p>
 								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>"/></span>
 							</div>
@@ -82,7 +82,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 									<span class="text-black font-w500">Daily Call Records</span>
 								</div>
 							</div>
-							<div class="mr-3 pb-3">
+							<div class="pb-3">
 								<button type="submit" class="btn btn-primary btn-block mg-b-10">Generate</button>
 								<button name="view" type="submit" class="btn btn-secondary btn-block mg-b-10">View</button>
 							</div>
@@ -92,7 +92,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 						<form method="post" action="<?= $this->url('dashboard',['action'=>'roadmapreport']); ?>">
 						
 						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
-							<div class="mr-3 pb-3">
+							<div class="mr-2 pb-3">
 								<p class="fs-14 mb-1">Date Range</p>
 								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>"/></span>
 							</div>
@@ -115,7 +115,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 									<span class="text-black font-w500">Roadmap</span>
 								</div>
 							</div>
-							<div class="mr-3 pb-3">
+							<div class="pb-3">
 								<button type="submit" class="btn btn-primary btn-block mg-b-10">Generate</button>
 								<button name="view" type="submit" class="btn btn-secondary btn-block mg-b-10">View</button>
 							</div>
@@ -135,8 +135,8 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 							<h4 class="fs-20 text-black">Forcasted Value</h4>
 							<form method="post" action="">
 							
-							<div class="input-group mb-3">
-								<select class="form-control" name="s_user" style="height:42px">
+							<div class="input-group mb-2">
+								<select class="form-control alt" name="s_user" >
 									<?php if(count($users) > 1){ ?>
 									<option value="0">All Users</option>
 									<?php } ?>
@@ -146,16 +146,20 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 								</select>
 
 							</div>
-							<div class="input-group mb-3">
-							<?php $months = ['Select Month','January','February','March','April','May','June','July','August','September','October','November','December']; ?>
-								<select class="form-control" name="s_month" style="height:42px">
+							<div class="input-group mb-2">
+							<?php //$months = ['Select Month','January','February','March','April','May','June','July','August','September','October','November','December']; ?>
+								<input value="<?= isset($_POST['s_dates'])?$_POST['s_dates']:''?>" class="form-control alt" id="s_dates" type="month" name="s_dates"  min="2021-10" max="2022-<?= date('m') ?>" required />
+								<!--<select class="form-control" name="s_month" style="height:42px">
 									<?php foreach ($months as $k => $v){ ?>
 										<option <?= @$_POST['s_month'] == $k ? 'selected' : '' ?> value="<?= $k ?>"><?= $v ?></option>
 									<?php } ?>
 								</select>
 								<div class="input-group-append">
-									<button class="btn btn-primary btn-sm rounded-0" type="submit"><i class="flaticon-381-search-2"></i></button>
-								</div>
+									
+								</div>-->
+							</div>
+							<div class="input-group mb-3">
+								<button class="btn btn-primary btn-sm rounded-0" type="submit"><i class="flaticon-381-search-2"></i> Search</button>
 							</div>
 							</form>
 						</div>
@@ -164,7 +168,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 						<div class="row">
 							<div class="col-xl-12 col-sm-6">
 								<div id="fbvchart"></div>
-								<p class="text-center text-uppercase text-black"><small>Total <?= $totalFBV ?></small></p>
+								<p class="text-center text-uppercase text-black"><small>Total <?= number_format($totalFBV,0); ?></small></p>
 							</div>
 						</div>
 						

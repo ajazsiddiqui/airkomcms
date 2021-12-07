@@ -48,6 +48,13 @@ class Settings
      * @ORM\Column(name="payment", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
      */
     private $payment;
+	
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="tax_information", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     */
+    private $taxInformation;
 
     /**
      * @var string|null
@@ -296,6 +303,30 @@ class Settings
         return $this->payment;
     }
 
+    /**
+     * Set taxInformation.
+     *
+     * @param string|null $taxInformation
+     *
+     * @return Settings
+     */
+    public function setTaxInformation($taxInformation = null)
+    {
+        $this->taxInformation = $taxInformation;
+
+        return $this;
+    }
+
+    /**
+     * Get taxInformation.
+     *
+     * @return string|null
+     */
+    public function getTaxInformation()
+    {
+        return $this->taxInformation;
+    }
+	
     /**
      * Set address.
      *

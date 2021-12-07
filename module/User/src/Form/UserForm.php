@@ -165,7 +165,7 @@ class UserForm extends Form
                     'label' => 'Status',
                     'value_options' => [
                         1 => 'Active',
-                        2 => 'Retired',
+                        2 => 'Deactivate',
                     ],
                 ],
             ]

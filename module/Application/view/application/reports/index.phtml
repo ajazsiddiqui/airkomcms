@@ -74,9 +74,9 @@ function checkValue($value){
 				<thead>
 					<tr>
 						<th><strong>TYPE OF SALES CALLS</strong></th>
-						<th><strong>TARGET</strong></th>
-						<th><strong>PERFORMED</strong></th>
-						<th><strong>EFFICIENCY</strong></th>
+						<th class="text-right"><strong>TARGET</strong></th>
+						<th class="text-right"><strong>PERFORMED</strong></th>
+						<th class="text-right"><strong>EFFICIENCY</strong></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -93,9 +93,9 @@ function checkValue($value){
 				<thead>
 					<tr>
 						<th><strong>TOTAL NO. OF CALLS</strong></th>
-						<th><strong>TARGET</strong></th>
-						<th><strong>PERFORMED</strong></th>
-						<th><strong>EFFICIENCY</strong></th>
+						<th class="text-right"><strong>TARGET</strong></th>
+						<th class="text-right"><strong>PERFORMED</strong></th>
+						<th class="text-right"><strong>EFFICIENCY</strong></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -112,7 +112,7 @@ function checkValue($value){
 				<thead>
 					<tr>
 						<th><strong>DESCRIPTION</strong></th>
-						<th><strong>VALUE</strong></th>
+						<th class="text-right"><strong>VALUE</strong></th>
 						<th><strong>UNIT</strong></th>
 					</tr>
 				</thead>
@@ -128,9 +128,9 @@ function checkValue($value){
 				<thead>
 					<tr>
 						<th><strong>DESCRIPTION</strong></th>
-						<th><strong>TARGET</strong></th>
-						<th><strong>PERFORMED</strong></th>
-						<th><strong>EFFICIENCY</strong></th>
+						<th class="text-right"><strong>TARGET</strong></th>
+						<th class="text-right"><strong>PERFORMED</strong></th>
+						<th class="text-right"><strong>EFFICIENCY</strong></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -154,6 +154,8 @@ function checkValue($value){
 				</tbody>
 			</table>
 		</div>
+		
+		<p style="display: block; width: 300px; text-align: center; float: right; border: 1px solid #ccc;"><?= !empty($selectedUser)? $this->UserDetail()->getFullName($selectedUser):'' ?> <?= getDates($selectedDate) ?></p>
 	</div>
 <?php } ?>
 </div>

@@ -62,6 +62,7 @@ class SettingsController extends AbstractActionController
 					
                     $settings->setServices($data['services']);
                     $settings->setPayment($data['payment']);
+                    $settings->setTaxInformation($data['tax_information']);
                     $settings->setAddress($data['address']);
                     $settings->setWebsite($data['website']);
                     $settings->setFacebook($data['facebook']);
@@ -107,6 +108,7 @@ class SettingsController extends AbstractActionController
 					
                     'services' => $settings->getServices(),
                     'payment' => $settings->getPayment(),
+                    'tax_information' => $settings->getTaxInformation(),
                     'address' => $settings->getAddress(),
                     'website' => $settings->getWebsite(),
                     'facebook' => $settings->getFacebook(),

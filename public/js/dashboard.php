@@ -1,24 +1,24 @@
 <?php 
 
-// function thousandsCurrencyFormat($num) {
+function thousandsCurrencyFormat($num) {
 
-  // if($num>1000) {
+  if($num>1000) {
 
-        // $x = round($num);
-        // $x_number_format = number_format($x);
-        // $x_array = explode(',', $x_number_format);
-        // $x_parts = array('k', '0', 'b', 't');
-        // $x_count_parts = count($x_array) - 1;
-        // $x_display = $x;
-        // $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
-        // $x_display .= $x_parts[$x_count_parts - 1];
+        $x = round($num);
+        $x_number_format = number_format($x);
+        $x_array = explode(',', $x_number_format);
+        $x_parts = array('k', '0', 'b', 't');
+        $x_count_parts = count($x_array) - 1;
+        $x_display = $x;
+        $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+        $x_display .= $x_parts[$x_count_parts - 1];
 
-        // return $x_display;
+        return $x_display;
 
-  // }
+  }
 
-  // return $num;
-// }
+  return $num;
+}
 
 ?>
 
@@ -109,20 +109,35 @@
 
  
 		
-	function abbreviateNumber(value) {
-	  let newValue = value;
-	  const suffixes = ["", "K", "M", "B","T"];
-	  let suffixNum = 0;
-	  while (newValue >= 1000) {
-		newValue /= 1000;
-		suffixNum++;
-	  }
+function changeNumberFormat(number, decimals, recursiveCall) {
+    const decimalPoints = decimals || 2;
+    const noOfLakhs = number / 100000;
+    let displayStr;
+    let isPlural;
 
-	  newValue = newValue.toPrecision(3);
+    // Rounds off digits to decimalPoints decimal places
+    function roundOf(integer) {
+        return +integer.toLocaleString(undefined, {
+            minimumFractionDigits: decimalPoints,
+            maximumFractionDigits: decimalPoints,
+        });
+    }
 
-	  newValue += suffixes[suffixNum];
-	  return newValue;
-	}
+    if (noOfLakhs >= 1 && noOfLakhs <= 99) {
+        const lakhs = roundOf(noOfLakhs);
+        isPlural = lakhs > 1 && !recursiveCall;
+        displayStr = `${lakhs} Lakh${isPlural ? 's' : ''}`;
+    } else if (noOfLakhs >= 100) {
+        const crores = roundOf(noOfLakhs / 100);
+        const crorePrefix = crores >= 100000 ? changeNumberFormat(crores, decimals, true) : crores;
+        isPlural = crores > 1 && !recursiveCall;
+        displayStr = `${crorePrefix} Crore${isPlural ? 's' : ''}`;
+    } else {
+        displayStr = roundOf(+number);
+    }
+
+    return displayStr;
+}
 		
  var fbvchartdraw = function(){
 	let draw = Chart.controllers.line.__super__.draw; //draw shadow
@@ -167,7 +182,7 @@
 		yaxis: {
 		  labels: {
 			formatter: function (value) {
-			  return abbreviateNumber(value);
+			  return changeNumberFormat(value);
 			}
 		  },
 		},

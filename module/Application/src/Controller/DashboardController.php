@@ -44,10 +44,17 @@ class DashboardController extends AbstractActionController
     {
 		$post = $this->getRequest()->getPost()->toArray();
 		$user = $post['s_user'] ?? 0;
-		$month = $post['s_month'] ?? 0;
 		
-		$m = ($month != 0)?'AND MONTH(`date_created`) = '.$month:'';
-		$m2 = ($month != 0)?'WHERE MONTH(`date_created`) = '.$month:'';
+		$month = 0;
+		
+		if(isset($post['s_dates'])){
+			$dates = explode("-",$post['s_dates']);
+			$month = $dates[1];
+			$year = $dates[0];
+		}
+		
+		$m = ($month != 0)?'AND MONTH(`date_created`) = '.$month.' AND YEAR(`date_created`) = '.$year:'';
+		$m2 = ($month != 0)?'WHERE MONTH(`date_created`) = '.$month.' AND YEAR(`date_created`) = '.$year:'';
 		
 		$current_user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
@@ -82,7 +89,7 @@ class DashboardController extends AbstractActionController
 		
 		if($current_user->getUserType() == 1){
 			$users = $this->entityManager->getRepository(User::class)
-				->findAll();
+				->findBy(['status'=>1]);
 			if($post && $user != 0){
 				
 			$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt` WHERE `created_by` = ".$user." ".$m." group by `stage` " ;			
@@ -105,8 +112,8 @@ class DashboardController extends AbstractActionController
 			$array['f_'.$f['stage']] = $f['fbv'];
 		}
 		
-		$totalLeads = isset($array['Early']) ?? 0 + isset($array['Active']) ?? 0 + isset($array['Close']) ?? 0 + isset($array['Offline']) ?? 0;
-		$totalFBV = isset($array['f_Early']) ?? 0 + isset($array['f_Active']) ?? 0 + isset($array['f_Close']) ?? 0;
+		$totalLeads = ($array['Early'] ?? 0) + ($array['Active'] ?? 0) + ($array['Close'] ?? 0) + ($array['Offline'] ?? 0);
+		$totalFBV = ($array['f_Early'] ?? 0) + ($array['f_Active'] ?? 0) + ($array['f_Close'] ?? 0);
 
 		return new ViewModel(['data'=>$array,'users'=>$users,'user'=>$user,'totalFBV'=>$totalFBV,'totalLeads'=>$totalLeads]);
     }
@@ -152,7 +159,7 @@ class DashboardController extends AbstractActionController
 			
 		if($post['s_user'] == 0){
 			$user = $this->entityManager->getRepository(User::class)
-            ->findAll();
+            ->findBy(['status'=>1]);
 		}
 		
 		$spreadsheet = new Spreadsheet();
@@ -304,7 +311,7 @@ class DashboardController extends AbstractActionController
 		
 		if($post['s_user'] == 0){
 			$user = $this->entityManager->getRepository(User::class)
-            ->findAll();
+            ->findBy(['status'=>1]);
 		}
 		
 		$daterange =  '';
@@ -396,7 +403,7 @@ class DashboardController extends AbstractActionController
 		
 		if($post['s_user'] == 0){
 			$user = $this->entityManager->getRepository(User::class)
-            ->findAll();
+            ->findBy(['status'=>1]);
 		}
 		
 		$spreadsheet = new Spreadsheet();
@@ -541,7 +548,7 @@ class DashboardController extends AbstractActionController
 		
 		if($post['s_user'] == 0){
 			$user = $this->entityManager->getRepository(User::class)
-            ->findAll();
+            ->findBy(['status'=>1]);
 		}
 		
 		$daterange =  '';
@@ -636,7 +643,7 @@ class DashboardController extends AbstractActionController
 		
 		if($post['s_user'] == 0){
 			$user = $this->entityManager->getRepository(User::class)
-            ->findAll();
+            ->findBy(['status'=>1]);
 		}
 		
 		$spreadsheet = new Spreadsheet();
@@ -760,7 +767,7 @@ class DashboardController extends AbstractActionController
 		
 		if($post['s_user'] == 0){
 			$user = $this->entityManager->getRepository(User::class)
-            ->findAll();
+            ->findBy(['status'=>1]);
 		}
 		
 		$daterange =  '';
