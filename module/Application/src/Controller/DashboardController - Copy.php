@@ -42,63 +42,111 @@ class DashboardController extends AbstractActionController
 	
     public function indexAction()
     {
-		$array = [];
-		
 		$post = $this->getRequest()->getPost()->toArray();
+		$user = $post['s_user'] ?? 0;
+		
+		$month = 0;
+		
+		if(isset($post['s_dates'])){
+			$dates = explode("-",$post['s_dates']);
+			$month = $dates[1];
+			$year = $dates[0];
+		}
+		
+		$m = ($month != 0)?'AND MONTH(`date_created`) = '.$month.' AND YEAR(`date_created`) = '.$year:'';
+		$m2 = ($month != 0)?'WHERE MONTH(`date_created`) = '.$month.' AND YEAR(`date_created`) = '.$year:'';
 		
 		$current_user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
+		$stages = $this->entityManager->getRepository(LeadStage::class)
+            ->findAll();
+		
+		$array = [];
+		foreach ($stages as $s){
+			if($post && $user != 0){
+				$spt = "SELECT * from spt WHERE stage = ".$s->getId()." AND created_by = ".$user." ".$m ;
+				//$spt = $this->entityManager->getRepository(Spt::class)
+				//->findBy(['stage'=>$s->getId(),'executive'=>$user]);
+			}else{
+				if($current_user->getUserType() == 1){
+					$spt = "SELECT * from spt WHERE stage = ".$s->getId()." ".$m ;
+					//$spt = $this->entityManager->getRepository(Spt::class)
+					//->findBy(['stage'=>$s->getId()]);
+				}else{
+					$spt = "SELECT * from spt WHERE stage = ".$s->getId()." AND created_by = ".$current_user->getId()." ".$m ;
+					//$spt = $this->entityManager->getRepository(Spt::class)
+					//->findBy(['stage'=>$s->getId(),'executive'=>$current_user->getId()]);
+				}
+			}
+			
+			$stmt = $this->entityManager->getConnection()->prepare($spt);
+			$stmt->execute();
+
+			$array[$s->getName()] = $stmt->rowCount();
+		}
+
+		
 		if($current_user->getUserType() == 1){
 			$users = $this->entityManager->getRepository(User::class)
 				->findBy(['status'=>1]);
+			if($post && $user != 0){
+				
+			$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt` WHERE `created_by` = ".$user." ".$m." group by `stage` " ;			
+			}else{
+				
+				$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt`  ".$m2." group by `stage`";
+			}
 		}else{
 			$users = $this->entityManager->getRepository(User::class)
 				->findBy(['id'=>$current_user->getId()]);
+			$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv`  from `spt` WHERE `created_by` = ".$current_user->getId()." ".$m." group by `stage`";
 		}
-		$user = $post['s_user'] ?? 0;
-		$dates = $post['s_dates'] ?? 0;
+		
 
-		$spts = $this->ExtranetUtilities->getSPTs($current_user,$user,$dates);
+		$stmt = $this->entityManager->getConnection()->prepare($sql);
+		$stmt->execute();
+		$fbv =  $stmt->fetchAll();
 		
-		//Early
-		$array['Early'] = count($spts['Early']);
-		$array['f_Early'] = array_sum(array_column($spts['Early'],'forecasted_booking_value'));
-		
-		//Active
-		$array['Active'] = count($spts['Active']);
-		$array['f_Active'] = array_sum(array_column($spts['Active'],'forecasted_booking_value'));
-		
-		//close
-		$array['Close'] = count($spts['Close']);
-		$array['f_Close'] = array_sum(array_column($spts['Close'],'forecasted_booking_value'));
-		
-		//offline
-		$array['Offline'] = count($spts['Offline']);
-		$array['f_Offline'] = array_sum(array_column($spts['Offline'],'forecasted_booking_value'));
-		
-		//lead
-		$array['Lead'] = count($spts['Lead']);
-		$array['f_Lead'] = array_sum(array_column($spts['Lead'],'forecasted_booking_value'));
+		foreach ($fbv as $k => $f){
+			$array['f_'.$f['stage']] = $f['fbv'];
+		}
 		
 		$totalLeads = ($array['Early'] ?? 0) + ($array['Active'] ?? 0) + ($array['Close'] ?? 0) + ($array['Offline'] ?? 0);
 		$totalFBV = ($array['f_Early'] ?? 0) + ($array['f_Active'] ?? 0) + ($array['f_Close'] ?? 0);
-		
-		return new ViewModel(['data'=>$array,'users'=>$users,'user'=>$user,'totalFBV'=>$totalFBV,'totalLeads'=>$totalLeads]);
 
- }
+		return new ViewModel(['data'=>$array,'users'=>$users,'user'=>$user,'totalFBV'=>$totalFBV,'totalLeads'=>$totalLeads]);
+    }
 	
+	// public function thousandsCurrencyFormat($num) {
+
+	  // if($num>1000) {
+
+			// $x = round($num);
+			// $x_number_format = number_format($x);
+			// $x_array = explode(',', $x_number_format);
+			// $x_parts = array('k', 'm', 'b', 't');
+			// $x_count_parts = count($x_array) - 1;
+			// $x_display = $x;
+			// $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+			// $x_display .= $x_parts[$x_count_parts - 1];
+
+			// return $x_display;
+
+	  // }
+
+	  // return $num;
+	// }
 
 	
 	 public function sptreportAction()
     {
 		
 		$post = $this->getRequest()->getPost()->toArray();
-		
 		if(!$post){
 			return;
 		}
-			
+		
 		if(isset($post['view'])){
 			$data = $this->getSptView($post);
 			return new ViewModel($data);
@@ -106,22 +154,12 @@ class DashboardController extends AbstractActionController
 		
 		$this->layout()->setTemplate('layout/blank');
 		
-		$current_user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()]);
-			
-		if($current_user->getUserType() == 1){
-			$users = $this->entityManager->getRepository(User::class)
-				->findBy(['status'=>1]);
-		}else{
-			$users = $this->entityManager->getRepository(User::class)
-				->findBy(['id'=>$current_user->getId()]);
-		}
-		$user = $post['s_user'] ?? 0;
-		$dates = $post['s_daterange'] ?? 0;
-		
-		if($user != 0){
-			$user = $this->entityManager->getRepository(User::class)
+		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
+			
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findBy(['status'=>1]);
 		}
 		
 		$spreadsheet = new Spreadsheet();
@@ -164,25 +202,28 @@ class DashboardController extends AbstractActionController
 		->setCellValue('X5', 'Date Created');
 		
 		
-		$user = $post['s_user'] ?? 0;
-		$dates = $post['s_daterange'] ?? 0;
-		
-		$spts = $this->ExtranetUtilities->getSPTs($current_user,$user,$dates, true);
-		
-		$spt = [];
-		
-		$i = 0;
-		foreach($spts as $sp){
-			foreach($sp as $s){
-				$spt[$i] = $s;
-				$i++;
-			}
-		}
-		
-		
-		$spreadsheet->setActiveSheetIndex(0) 
+		$query = $this->entityManager->createQueryBuilder()->select('S')
+				->from('Application\Entity\Spt', 'S');
+		if (!empty($post['s_daterange'])) {
+				$dates = explode(" - ", $post['s_daterange']);
+				$startdate = $this->ExtranetUtilities->makeDBDate($dates[0]);
+				$enddate = $this->ExtranetUtilities->makeDBDate($dates[1]);
+
+				$query->AndWhere('S.dateCreated >= :startdate')
+					->setParameter('startdate', $startdate);
+				$query->AndWhere('S.dateCreated <= :enddate')
+					->setParameter('enddate', $enddate);
+				
+				if($post['s_user'] != 0){
+					$query->AndWhere('S.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
+				}
+			
+				$spt = $query->getQuery()->getArrayResult();
+				
+				$spreadsheet->setActiveSheetIndex(0) 
 					->setCellValue('A4', 'Total FBV')
-					->setCellValue('B4', array_sum(array_column($spt,'forecasted_booking_value')));
+					->setCellValue('B4', array_sum(array_column($spt,'forecastedBookingValue')));
 		
 
 				if (!empty($spt)){
@@ -193,35 +234,36 @@ class DashboardController extends AbstractActionController
 					for ($i=0;$i<$count;$i++) {
 						
 						$contact = $this->entityManager->getRepository(Contacts::class)
-									->findOneBy(['id' => $spt[$i]['propect_name']]);
+									->findOneBy(['id' => $spt[$i]['propectName']]);
 						$spreadsheet->setActiveSheetIndex(0)
 						  ->setCellValue('A' . (string)($n + 1), $this->ExtranetUtilities->getStageName($spt[$i]['stage']))
-						  ->setCellValue('B' . (string)($n + 1), $this->ExtranetUtilities->getProspectName($spt[$i]['propect_name']))
-						  ->setCellValue('C' . (string)($n + 1), $this->ExtranetUtilities->getLeadSourceName($spt[$i]['lead_source']))
+						  ->setCellValue('B' . (string)($n + 1), $this->ExtranetUtilities->getProspectName($spt[$i]['propectName']))
+						  ->setCellValue('C' . (string)($n + 1), $this->ExtranetUtilities->getLeadSourceName($spt[$i]['leadSource']))
 						  ->setCellValue('D' . (string)($n + 1), $this->ExtranetUtilities->getExecutiveName($spt[$i]['executive']))
-						  ->setCellValue('E' . (string)($n + 1), $spt[$i]['offer_no'])
-						  ->setCellValue('F' . (string)($n + 1), $this->ExtranetUtilities->getSalesStageName($spt[$i]['sales_stage']))
-						  ->setCellValue('G' . (string)($n + 1), $this->ExtranetUtilities->getProductSeriesName($spt[$i]['product_series']))
-						  ->setCellValue('H' . (string)($n + 1), $this->ExtranetUtilities->getActualProductName($spt[$i]['actual_product']))
-						  ->setCellValue('I' . (string)($n + 1), $spt[$i]['forecasted_booking_value'])
+						  ->setCellValue('E' . (string)($n + 1), $spt[$i]['offerNo'])
+						  ->setCellValue('F' . (string)($n + 1), $this->ExtranetUtilities->getSalesStageName($spt[$i]['salesStage']))
+						  ->setCellValue('G' . (string)($n + 1), $this->ExtranetUtilities->getProductSeriesName($spt[$i]['productSeries']))
+						  ->setCellValue('H' . (string)($n + 1), $this->ExtranetUtilities->getActualProductName($spt[$i]['actualProduct']))
+						  ->setCellValue('I' . (string)($n + 1), $spt[$i]['forecastedBookingValue'])
 						  ->setCellValue('J' . (string)($n + 1), $spt[$i]['quanitity'])
-						  ->setCellValue('K' . (string)($n + 1), $spt[$i]['expected_close_date'])
-						  ->setCellValue('L' . (string)($n + 1), $this->ExtranetUtilities->getExpectedMonthName($spt[$i]['expected_month']))
-						  ->setCellValue('M' . (string)($n + 1), $this->ExtranetUtilities->getClosePropabilityName($spt[$i]['close_probability']))
-						  ->setCellValue('N' . (string)($n + 1), $this->ExtranetUtilities->getNextActionName($spt[$i]['next_action']))
-						  ->setCellValue('O' . (string)($n + 1), $spt[$i]['last_contacted_date'])
+						  ->setCellValue('K' . (string)($n + 1), $spt[$i]['expectedCloseDate'])
+						  ->setCellValue('L' . (string)($n + 1), $this->ExtranetUtilities->getExpectedMonthName($spt[$i]['expectedMonth']))
+						  ->setCellValue('M' . (string)($n + 1), $this->ExtranetUtilities->getClosePropabilityName($spt[$i]['closeProbability']))
+						  ->setCellValue('N' . (string)($n + 1), $this->ExtranetUtilities->getNextActionName($spt[$i]['nextAction']))
+						  ->setCellValue('O' . (string)($n + 1), $spt[$i]['lastContactedDate'])
 						  ->setCellValue('P' . (string)($n + 1), $spt[$i]['remarks'])
-						  ->setCellValue('Q' . (string)($n + 1), $this->ExtranetUtilities->getContactedTypeName($spt[$i]['contacted_type']))
+						  ->setCellValue('Q' . (string)($n + 1), $this->ExtranetUtilities->getContactedTypeName($spt[$i]['contactedType']))
 						  ->setCellValue('R' . (string)($n + 1), $spt[$i]['contact'])
 						  ->setCellValue('S' . (string)($n + 1), !empty($contact)?$contact->getDesignation():'')
 						  ->setCellValue('T' . (string)($n + 1), !empty($contact)?$contact->getCity():'')
 						  ->setCellValue('U' . (string)($n + 1), !empty($contact)?$contact->getTelephone():'')
 						  ->setCellValue('V' . (string)($n + 1), !empty($contact)?$contact->getEmail():'')
 						  ->setCellValue('W' . (string)($n + 1), !empty($contact)?$contact->getWebsite():'')
-						  ->setCellValue('X' . (string)($n + 1), $spt[$i]['date_created']);
+						  ->setCellValue('X' . (string)($n + 1), $spt[$i]['dateCreated']);
 						$n++;
 					}
 				}
+		}
 		
 		//Excel Stylings
 		$spreadsheet->getActiveSheet()->freezePane('E6');
@@ -267,68 +309,78 @@ class DashboardController extends AbstractActionController
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['id' => $post['s_user']]);
 		
-		$current_user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['email' => $this->authService->getIdentity()]);
-			
-		if($current_user->getUserType() == 1){
-			$users = $this->entityManager->getRepository(User::class)
-				->findBy(['status'=>1]);
-		}else{
-			$users = $this->entityManager->getRepository(User::class)
-				->findBy(['id'=>$current_user->getId()]);
+		if($post['s_user'] == 0){
+			$user = $this->entityManager->getRepository(User::class)
+            ->findBy(['status'=>1]);
 		}
-		$user = $post['s_user'] ?? 0;
-		$dates = $post['s_daterange'] ?? 0;
 		
-		$spts = $this->ExtranetUtilities->getSPTs($current_user,$user,$dates, true);
+		$daterange =  '';
 		
-		
+		$query = $this->entityManager->createQueryBuilder()->select('S')
+				->from('Application\Entity\Spt', 'S');
+		if (!empty($post['s_daterange'])) {
+				$dates = explode(" - ", $post['s_daterange']);
+				$startdate = $this->ExtranetUtilities->makeDBDate($dates[0]);
+				$enddate = $this->ExtranetUtilities->makeDBDate($dates[1]);
 
-		$spt = [];
-
-		if (!empty($spts)){
-			$i = 0;
-			foreach ($spts as $key => $values) {
-				foreach ($values as $k => $v) {
-					
-					$contact = $this->entityManager->getRepository(Contacts::class)
-								->findOneBy(['id' => $v['propect_name']]);
-					$spt[$i]['stage'] = $this->ExtranetUtilities->getStageName($v['stage']);
-					$spt[$i]['propect_name'] = $this->ExtranetUtilities->getProspectName($v['propect_name']);
-					$spt[$i]['lead_source'] = $this->ExtranetUtilities->getLeadSourceName($v['lead_source']);
-					$spt[$i]['executive'] = $this->ExtranetUtilities->getExecutiveName($v['executive']);
-					$spt[$i]['offer_no'] = $v['offer_no'];
-					$spt[$i]['sales_stage'] = $this->ExtranetUtilities->getSalesStageName($v['sales_stage']);
-					$spt[$i]['product_series'] = $this->ExtranetUtilities->getProductSeriesName($v['product_series']);
-					$spt[$i]['actual_product'] = $this->ExtranetUtilities->getActualProductName($v['actual_product']);
-					$spt[$i]['forecasted_booking_value'] = $v['forecasted_booking_value'];
-					$spt[$i]['quanitity'] = $v['quanitity'];
-					$spt[$i]['expected_close_date'] = $v['expected_close_date'];
-					$spt[$i]['expected_month'] = $this->ExtranetUtilities->getExpectedMonthName($v['expected_month']);
-					$spt[$i]['close_probability'] = $this->ExtranetUtilities->getClosePropabilityName($v['close_probability']);
-					$spt[$i]['next_action'] = $this->ExtranetUtilities->getNextActionName($v['next_action']);
-					$spt[$i]['last_contacted_date'] = $v['last_contacted_date'];
-					$spt[$i]['remarks'] = $v['remarks'];
-					$spt[$i]['contacted_type'] = $this->ExtranetUtilities->getContactedTypeName($v['contacted_type']);
-					$spt[$i]['contact'] = $v['contact'];
-					$spt[$i]['designation'] = !empty($contact)?$contact->getDesignation():'';
-					$spt[$i]['city'] = !empty($contact)?$contact->getCity():'';
-					$spt[$i]['telephone'] = !empty($contact)?$contact->getTelephone():'';
-					$spt[$i]['email'] = !empty($contact)?$contact->getEmail():'';
-					$spt[$i]['website'] = !empty($contact)?$contact->getWebsite():'';
-					$spt[$i]['date_created'] = $v['date_created'];
-					$i++;
+				$query->AndWhere('S.dateCreated >= :startdate')
+					->setParameter('startdate', $startdate);
+				$query->AndWhere('S.dateCreated <= :enddate')
+					->setParameter('enddate', $enddate);
+				if($post['s_user'] != 0){
+					$query->AndWhere('S.createdBy = :createdBy')
+						->setParameter('createdBy', $post['s_user']);
 				}
+			
+				$spt = $query->getQuery()->getArrayResult();
+
+				$daterange = $post['s_daterange']; 
+		}
+		
+		$data = [];
+		
+		if (!empty($spt)){
+
+			foreach ($spt as $k => $v) {
+				
+				$contact = $this->entityManager->getRepository(Contacts::class)
+							->findOneBy(['id' => $spt[$k]['propectName']]);
+				$spt[$k]['stage'] = $this->ExtranetUtilities->getStageName($spt[$k]['stage']);
+				$spt[$k]['propectName'] = $this->ExtranetUtilities->getProspectName($spt[$k]['propectName']);
+				$spt[$k]['leadSource'] = $this->ExtranetUtilities->getLeadSourceName($spt[$k]['leadSource']);
+				$spt[$k]['executive'] = $this->ExtranetUtilities->getExecutiveName($spt[$k]['executive']);
+				//$spt[$k]['offerNo'] = $spt[$k]['offerNo']);
+				$spt[$k]['salesStage'] = $this->ExtranetUtilities->getSalesStageName($spt[$k]['salesStage']);
+				$spt[$k]['productSeries'] = $this->ExtranetUtilities->getProductSeriesName($spt[$k]['productSeries']);
+				$spt[$k]['actualProduct'] = $this->ExtranetUtilities->getActualProductName($spt[$k]['actualProduct']);
+				//$spt[$k]['forecastedBookingValue'] = $spt[$k]['forecastedBookingValue']);
+				//$spt[$k]['quanitity'] = $spt[$k]['quanitity']);
+				$spt[$k]['expectedCloseDate'] = $spt[$k]['expectedCloseDate']->format('d-m-Y');
+				$spt[$k]['expectedMonth'] = $this->ExtranetUtilities->getExpectedMonthName($spt[$k]['expectedMonth']);
+				$spt[$k]['closeProbability'] = $this->ExtranetUtilities->getClosePropabilityName($spt[$k]['closeProbability']);
+				$spt[$k]['nextAction'] = $this->ExtranetUtilities->getNextActionName($spt[$k]['nextAction']);
+				$spt[$k]['lastContactedDate'] = $spt[$k]['lastContactedDate']->format('d-m-Y');
+				//$spt[$k]['remarks'] = $spt[$k]['remarks']);
+				$spt[$k]['contactedType'] = $this->ExtranetUtilities->getContactedTypeName($spt[$k]['contactedType']);
+				//$spt[$k]['contact'] = $spt[$k]['contact']);
+				$spt[$k]['designation'] = !empty($contact)?$contact->getDesignation():'';
+				$spt[$k]['city'] = !empty($contact)?$contact->getCity():'';
+				$spt[$k]['telephone'] = !empty($contact)?$contact->getTelephone():'';
+				$spt[$k]['email'] = !empty($contact)?$contact->getEmail():'';
+				$spt[$k]['website'] = !empty($contact)?$contact->getWebsite():'';
+				$spt[$k]['dateCreated'] = $spt[$k]['dateCreated']->format('d-m-Y');
 			}
 		}
-		
-		$fbv = [];
-		foreach($spts as $k => $v){
-			$fbv[] = ['stage' => $k, 'fbv' => array_sum(array_column($spts[$k],'forecasted_booking_value'))];
-		}
-		$total_fbv = array_sum(array_column($fbv,'fbv'));
+		$u = (gettype($user) == 'object')?"and `created_by` = ".$user->getId():'';
+		$sql = "SELECT (SELECT `name` FROM `lead_stage` WHERE `id` = `stage`) as `stage`, sum(`forecasted_booking_value`) as `fbv` from `spt` where `date_created` >= '".$startdate."' and `date_created` <= '".$enddate."' ".$u." group by `stage`";
 
-		return ['total_fbv'=>$total_fbv,'fbv'=>$fbv,'data'=>$spt,'user'=>$user,'daterange'=>$dates];
+		$stmt = $this->entityManager->getConnection()->prepare($sql);
+		$stmt->execute();
+		$fbv =  $stmt->fetchAll();
+		
+		$total_fbv = array_sum(array_column($fbv,'fbv'));
+		
+		return ['total_fbv'=>$total_fbv,'fbv'=>$fbv,'data'=>$spt,'user'=>$user,'daterange'=>$daterange];
     }
 	
 	public function dcrreportAction()

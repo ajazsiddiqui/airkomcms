@@ -25,7 +25,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 					<div class="card-body pb-0">
 						<form method="post" action="<?= $this->url('dashboard',['action'=>'sptreport']); ?>">
 						
-						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+						<div class="d-block d-md-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
 							<div class="mr-2 pb-3">
 								<p class="fs-14 mb-1">Date Range</p>
 								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>" /></span>
@@ -58,7 +58,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 						
 						<form method="post" action="<?= $this->url('dashboard',['action'=>'dcrreport']); ?>">
 						
-						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+						<div class="d-block d-md-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
 							<div class="mr-2 pb-3">
 								<p class="fs-14 mb-1">Date Range</p>
 								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>"/></span>
@@ -91,7 +91,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 						
 						<form method="post" action="<?= $this->url('dashboard',['action'=>'roadmapreport']); ?>">
 						
-						<div class="d-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
+						<div class="d-block d-md-flex mb-3 border-bottom justify-content-between flex-wrap align-items-center">
 							<div class="mr-2 pb-3">
 								<p class="fs-14 mb-1">Date Range</p>
 								<span class="text-black font-w500"><input class="form-control input-daterange-datepicker" id="s_daterange" name="s_daterange" value="<?= date('d/m/Y', strtotime('-30 day')).' - '.date('d/m/Y') ?>"/></span>
@@ -131,7 +131,7 @@ $this->headScript()->appendFile($this->basePath() . '/js/dashboard.php?'.$params
 			<div class="col-xl-12">
 				<div class="card">
 					<div class="card-header border-0 pb-0">
-						<div>
+						<div style="width:100%">
 							<h4 class="fs-20 text-black">Forcasted Value</h4>
 							<form method="post" action="">
 							

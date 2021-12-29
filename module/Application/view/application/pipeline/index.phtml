@@ -76,12 +76,12 @@ $this->headScript()->appendFile($this->basePath() . '/js/dragula.js', 'text/java
 					<div class="timeline-panel">
 						<div class="media mr-2">
 						
-							<span class="media-info"><?= getAbbr($cname); ?></span>
+							<span class="media-info"><?= $p['id']; ?></span>
 						</div>
 						<div class="media-body">
 							<h5 class="mb-1"><?= $cname; ?></h5>
 							<small class="d-block"><?= $name; ?></small>
-							<small class="d-block"> ID:<?= $p['id']; ?> |SPT ID:<?= $p['sptId']; ?> | Contact:<?= $p['contact']; ?></small>
+							<!--<small class="d-block"> ID:<?= $p['id']; ?> |SPT ID:<?= $p['sptId']; ?> | Contact:<?= $p['contact']; ?></small>-->
 						</div>
 					</div>
 					</li>

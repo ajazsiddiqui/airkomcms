@@ -30,7 +30,7 @@ $this->PageActions()->setItems([
 						<?php if (isset($fbv) && !empty($fbv)){ ?>
 							<div class="col-xs-12 col-sm-6">
 								<div class="d-flex flex-wrap text-black fs-12 mt-4">
-									<?php $colors = ['#1EAAE7','#FF7A30','#2BC155','#FF2E2E']; ?>
+									<?php $colors = ['#1EAAE7','#FF7A30','#2BC155','#FF2E2E','#DDDDDD']; ?>
 									<?php foreach ($fbv as $k => $f) { ?>
 										<div class="col-6 mb-3">
 											<svg class="mr-2" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,33 +76,34 @@ $this->PageActions()->setItems([
                                         </thead>
                                         <tbody>
 										<?php foreach ($data as $s) { ?>
-                                            <tr>
-                                                <td><?= $s['stage'] ;?></td>
-                                                <td><?= $s['propectName'] ;?></td>
-                                                <td><?= $s['leadSource'] ;?></td>
-                                                <td><?= $s['executive'] ;?></td>
-                                                <td><?= $s['offerNo'] ;?></td>
-                                                <td><?= $s['salesStage'] ;?></td>
-                                                <td><?= $s['productSeries'] ;?></td>
-                                                <td><?= $s['actualProduct'] ;?></td>
-                                                <td>₹ <?= number_format($s['forecastedBookingValue'], 0);?></td>
-                                                <td><?= $s['quanitity'] ;?></td>
-                                                <td><?= $s['expectedCloseDate'] ;?></td>
-                                                <td><?= $s['expectedMonth'] ;?></td>
-                                                <td><?= $s['closeProbability'] ;?></td>
-                                                <td><?= $s['nextAction'] ;?></td>
-                                                <td><?= $s['lastContactedDate'] ;?></td>
-                                                <td><?= $s['remarks'] ;?></td>
-                                                <td><?= $s['contactedType'] ;?></td>
-                                                <td><?= $s['contact'] ;?></td>
-                                                <td><?= $s['designation'] ;?></td>
-                                                <td><?= $s['city'] ;?></td>
-                                                <td><?= $s['telephone'] ;?></td>
-                                                <td><?= $s['email'] ;?></td>
-                                                <td><?= $s['website'] ;?></td>
-                                                <td><?= $s['dateCreated'] ;?></td>
-                                            </tr>
-										<?php } ?>
+
+												<tr>
+													<td><?= $s['stage'] ;?></td>
+													<td><?= $s['propect_name'] ;?></td>
+													<td><?= $s['lead_source'] ;?></td>
+													<td><?= $s['executive'] ;?></td>
+													<td><?= $s['offer_no'] ;?></td>
+													<td><?= $s['sales_stage'] ;?></td>
+													<td><?= $s['product_series'] ;?></td>
+													<td><?= $s['actual_product'] ;?></td>
+													<td>₹ <?= number_format($s['forecasted_booking_value'], 0);?></td>
+													<td><?= $s['quanitity'] ;?></td>
+													<td><?= $s['expected_close_date'] ;?></td>
+													<td><?= $s['expected_month'] ;?></td>
+													<td><?= $s['close_probability'] ;?></td>
+													<td><?= $s['next_action'] ;?></td>
+													<td><?= $s['last_contacted_date'] ;?></td>
+													<td><?= $s['remarks'] ;?></td>
+													<td><?= $s['contacted_type'] ;?></td>
+													<td><?= $s['contact'] ;?></td>
+													<td><?= $s['designation'] ;?></td>
+													<td><?= $s['city'] ;?></td>
+													<td><?= $s['telephone'] ;?></td>
+													<td><?= $s['email'] ;?></td>
+													<td><?= $s['website'] ;?></td>
+													<td><?= $s['date_created'] ;?></td>
+												</tr>
+											<?php } ?>
                                         </tbody>
                                     </table>
                                 </div>

@@ -40,6 +40,72 @@ class ExtranetUtilities
         return false;
     }
 	
+	public function getSPTs($current_user, $user = 0,$dates = 0, $daterange = false){
+
+		$month = 0;
+		
+		if($daterange){
+			$date = explode(" - ", $dates);
+			
+
+			$startdate = $this->makeDBDate($date[0]);
+			$enddate = $this->makeDBDate($date[1]);
+			
+			$dateprefix = 'AND date_created <= "'.$enddate.'"';
+			$dateprefix2 = 'WHERE date_created <= "'.$enddate.'"';
+			$dateprefix3 = 'AND date_modified >= "'.$startdate.'" AND date_modified <=  "'.$enddate.'"';
+		}else{
+			if(isset($dates) && $dates != 0){
+				$dates = explode("-",$dates);
+				$month = $dates[1];
+				$year = $dates[0];
+			}
+			
+			$dateprefix = ($month != 0)?'AND MONTH(`date_created`) <= '.$month.' AND YEAR(`date_created`) <= '.$year:'';
+			$dateprefix2 = ($month != 0)?'WHERE MONTH(`date_created`) <= '.$month.' AND YEAR(`date_created`) <= '.$year:'';
+			$dateprefix3 = ($month != 0)?'AND MONTH(`date_modified`) = '.$month.' AND YEAR(`date_modified`) = '.$year:'';
+		}
+		$userprefix = $user !=0 ? "AND created_by = ".$user :($current_user->getUserType() == 1 ? '' : "AND created_by = ".$current_user->getId());
+		
+		//Early
+		$early = "SELECT * from spt WHERE stage = 1 ".$dateprefix." ".$userprefix;
+		$e = $this->entityManager->getConnection()->prepare($early);
+		$e->execute();
+		$earlyLeads =  $e->fetchAll();
+		$array['Early'] = $earlyLeads;
+		
+		//Active
+		$active = "select * from spt where id in (select spt_id from pipeline ".$dateprefix2." ".$userprefix." group by spt_id having max(stage) = 2)";
+		$a = $this->entityManager->getConnection()->prepare($active);
+		$a->execute();
+		$activeLeads =  $a->fetchAll();
+		$array['Active'] = $activeLeads;
+		
+		//close
+		$close = "select * from spt where stage = 3 ".$dateprefix3." ".$userprefix;
+		$c = $this->entityManager->getConnection()->prepare($close);
+		$c->execute();
+		$closeLeads =  $c->fetchAll();
+		$array['Close'] = $closeLeads;
+		
+		//offline
+		$offline = "select * from spt where stage = 4 ".$dateprefix3." ".$userprefix;		
+		$o = $this->entityManager->getConnection()->prepare($offline);
+		$o->execute();
+		$offlineLeads =  $o->fetchAll();
+		$array['Offline'] = $offlineLeads;
+		
+		//lead
+		$lead = "select * from spt where stage = 5 ".$dateprefix3." ".$userprefix;
+		$l = $this->entityManager->getConnection()->prepare($lead);
+		$l->execute();
+		$lead =  $l->fetchAll();
+		$array['Lead'] = $lead;
+		
+		return $array;
+		
+	}
+	
 	 public function getTargetByUser($userid, $callType)
     {
         $target = $this->entityManager->getRepository(Targets::class)->findOneBy(['userId' => $userid,'callType' => $callType]);

@@ -155,21 +155,21 @@ class LeadStageController extends AbstractActionController
         return $this->redirect()->toRoute('lead-stage');
     }
 	
-		public function deleteAction()
-    {
-		$id = (int) $this->params()->fromRoute('id', -1);
-        $LeadStage = $this->entityManager->getRepository(LeadStage::class)
-            ->find($id);
-        $name = $LeadStage->getName();
-        $this->entityManager->remove($LeadStage);
-        $this->entityManager->flush();
+		// public function deleteAction()
+    // {
+		// $id = (int) $this->params()->fromRoute('id', -1);
+        // $LeadStage = $this->entityManager->getRepository(LeadStage::class)
+            // ->find($id);
+        // $name = $LeadStage->getName();
+        // $this->entityManager->remove($LeadStage);
+        // $this->entityManager->flush();
 
-        $log = $this->logManager;
-        $log->setlog('LeadStage Deleted', $name, $this->authService->getIdentity());
+        // $log = $this->logManager;
+        // $log->setlog('LeadStage Deleted', $name, $this->authService->getIdentity());
 
-        $this->flashMessenger()->addSuccessMessage('LeadStage deleted '.$name);
+        // $this->flashMessenger()->addSuccessMessage('LeadStage deleted '.$name);
 
-        return $this->redirect()->toRoute('lead-stage');
+        // return $this->redirect()->toRoute('lead-stage');
        
-    }
+    // }
 }

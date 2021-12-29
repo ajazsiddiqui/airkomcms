@@ -46,11 +46,6 @@ class ReportsController extends AbstractActionController
 		$user = $this->entityManager->getRepository(User::class)
             ->findOneBy(['email' => $this->authService->getIdentity()]);
 			
-		$query = $this->entityManager->createQueryBuilder()->select('P, P.id, P.contact, P.sptId, MAX(P.stage) AS stage')
-            ->from('Application\Entity\Pipeline', 'P')
-            ->groupBy("P.sptId")
-            ->addOrderBy('P.id', 'ASC');
-			
 		if($user->getUserType() == 1){
 			$users = $this->entityManager->getRepository(User::class)
             ->findBy(['status'=>1], ['fullName' => 'ASC']);
@@ -90,16 +85,6 @@ class ReportsController extends AbstractActionController
 			
 				$dcr = $query->getQuery()->getArrayResult();
 				
-				$sptquery = $this->entityManager->createQueryBuilder()->select('S')
-						->from('Application\Entity\Spt', 'S');
-				$sptquery->AndWhere('S.dateCreated >= :startdate')
-					->setParameter('startdate', $startdate);
-				$sptquery->AndWhere('S.dateCreated <= :enddate')
-					->setParameter('enddate', $enddate);
-				$sptquery->AndWhere('S.createdBy = :createdBy')
-					->setParameter('createdBy', $selectedUser);
-			
-				$spt = $sptquery->getQuery()->getArrayResult();
 		
 				foreach ($calltypes as $c){
 					$calls = array_count_values(array_column($dcr, 'callType'));
@@ -135,19 +120,31 @@ class ReportsController extends AbstractActionController
 				$distance_array['amounttwo'] = array_sum(array_column($dcr,'amountTwo'));
 				$distance_array['total'] = $distance_array['amountone'] + $distance_array['amounttwo'];
 				
-				
-				
+
 				$salesprospect = 0;
 				$targetbooking = 0;
 				
+				
+				$spts = $this->ExtranetUtilities->getSPTs($user,$selectedUser,$post['s_daterange'], true);
+				
+				$spt = [];
+				
+				$i = 0;
+				foreach($spts as $sp){
+					foreach($sp as $s){
+						$spt[$i] = $s;
+						$i++;
+					}
+				}
+				
 				foreach ($spt as $s){
-					//all but offline leads from lead stage table
-					if($s['stage'] != 4){
-						$salesprospect += $s['forecastedBookingValue'];
+					//all but offline and close leads from lead stage table
+					if($s['stage'] != 4 && $s['stage'] != 3){
+						$salesprospect += $s['forecasted_booking_value'];
 					}
 					//only closed leads from lead stage table
 					if($s['stage'] == 3){
-						$targetbooking += $s['forecastedBookingValue'];
+						$targetbooking += $s['forecasted_booking_value'];
 					}
 				}
 				

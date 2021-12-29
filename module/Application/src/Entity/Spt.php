@@ -175,10 +175,18 @@ class Spt
      * @ORM\Column(name="date_created", type="datetime", precision=0, scale=0, nullable=false, options={"default"="CURRENT_TIMESTAMP"}, unique=false)
      */
     private $dateCreated = 'CURRENT_TIMESTAMP';
+	
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_modified", type="datetime", precision=0, scale=0, nullable=true,  unique=false)
+     */
+    private $dateModified;
 
     public function __construct()
     {
         $this->dateCreated = new \DateTime();
+        $this->dateModified = new \DateTime();
     }
 	
     /**
@@ -718,5 +726,29 @@ class Spt
     public function getDateCreated()
     {
         return $this->dateCreated->format('Y-m-d');
+    }
+	
+    /**
+     * Set dateModified.
+     *
+     * @param \DateTime $dateModified
+     *
+     * @return Spt
+     */
+    public function setDateModified($dateModified)
+    {
+        $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    /**
+     * Get dateModified.
+     *
+     * @return \DateTime
+     */
+    public function getDateModified()
+    {
+        return $this->dateModified->format('Y-m-d');
     }
 }

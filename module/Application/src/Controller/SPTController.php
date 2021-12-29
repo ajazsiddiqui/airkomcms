@@ -318,7 +318,7 @@ class SPTController extends AbstractActionController
         $this->entityManager->flush();
 		
         $pipeline = $this->entityManager->getRepository(Pipeline::class)
-            ->findOneBy(['sptId'=>$id]);
+            ->findBy(['sptId'=>$id]);
         $this->entityManager->remove($pipeline);
         $this->entityManager->flush();
 

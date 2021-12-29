@@ -80,6 +80,8 @@ class PipelineController extends AbstractActionController
 			// $this->entityManager->persist($pipeline);
 			// $this->entityManager->flush();
 		// }
+		
+		
 		$post = $this->getRequest()->getPost()->toArray();
 		
 		$user = $this->entityManager->getRepository(User::class)
@@ -155,6 +157,8 @@ class PipelineController extends AbstractActionController
 		$spts = $this->entityManager->getRepository(Spt::class)
             ->findOneBy(['id'=>$spt]);
 		$spts->setStage($stage);
+		$spts->setDateModified(new \DateTime());
+		
 		$this->entityManager->persist($spts);
 		$this->entityManager->flush();
 		

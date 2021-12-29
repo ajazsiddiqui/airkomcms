@@ -29,7 +29,7 @@ $this->PageActions()->setItems([
 	<th><strong><?= $this->translate('Name') ?></strong></th>
 	<th><strong><?= $this->translate('Status') ?></strong></th>
 	<th><strong><?= $this->translate('Date Created') ?></strong></th>
-	<th class="fit-width" colspan="2"><strong><?= $this->translate('Actions') ?></strong></th>
+	<th class="fit-width" ><strong><?= $this->translate('Actions') ?></strong></th>
 </tr>
 </thead>
 <tbody>
@@ -42,9 +42,9 @@ $this->PageActions()->setItems([
 	<td>
 	<a href="<?= $this->url('lead-stage',[ 'action'=>'edit','id' => $stage->getId()]); ?>" class="btn btn-light round-btn"><i class="fa fa-pencil"></i></a>
     </td>
-		<td>
+		<!--<td>
 		<a href="<?= $this->url('lead-stage',[ 'action'=>'delete','id' => $stage->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
-    </td>
+    </td>-->
 </tr>
 <?php endforeach; ?>
 </tbody>
