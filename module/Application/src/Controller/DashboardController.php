@@ -293,6 +293,7 @@ class DashboardController extends AbstractActionController
 					
 					$contact = $this->entityManager->getRepository(Contacts::class)
 								->findOneBy(['id' => $v['propect_name']]);
+					$spt[$i]['id'] = $v['id'];
 					$spt[$i]['stage'] = $this->ExtranetUtilities->getStageName($v['stage']);
 					$spt[$i]['propect_name'] = $this->ExtranetUtilities->getProspectName($v['propect_name']);
 					$spt[$i]['lead_source'] = $this->ExtranetUtilities->getLeadSourceName($v['lead_source']);
@@ -317,6 +318,7 @@ class DashboardController extends AbstractActionController
 					$spt[$i]['email'] = !empty($contact)?$contact->getEmail():'';
 					$spt[$i]['website'] = !empty($contact)?$contact->getWebsite():'';
 					$spt[$i]['date_created'] = $v['date_created'];
+					$spt[$i]['date_modified'] = $v['date_modified'];
 					$i++;
 				}
 			}

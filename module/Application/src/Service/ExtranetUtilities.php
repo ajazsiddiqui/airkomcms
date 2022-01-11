@@ -53,7 +53,7 @@ class ExtranetUtilities
 			
 			$dateprefix = 'AND date_created <= "'.$enddate.'"';
 			$dateprefix2 = 'WHERE date_created <= "'.$enddate.'"';
-			$dateprefix3 = 'AND date_modified >= "'.$startdate.'" AND date_modified <=  "'.$enddate.'"';
+			$dateprefix3 = 'AND date_modified >= "'.$startdate.'" AND date_modified <=  "'.$enddate.'  23:59:00"';
 		}else{
 			if(isset($dates) && $dates != 0){
 				$dates = explode("-",$dates);
@@ -65,7 +65,10 @@ class ExtranetUtilities
 			$dateprefix2 = ($month != 0)?'WHERE MONTH(`date_created`) <= '.$month.' AND YEAR(`date_created`) <= '.$year:'';
 			$dateprefix3 = ($month != 0)?'AND MONTH(`date_modified`) = '.$month.' AND YEAR(`date_modified`) = '.$year:'';
 		}
+		
+		
 		$userprefix = $user !=0 ? "AND created_by = ".$user :($current_user->getUserType() == 1 ? '' : "AND created_by = ".$current_user->getId());
+		$userprefix2 = $user !=0 ? "AND created_by = ".$user :($current_user->getUserType() == 1 ? '' : "AND created_by = ".$current_user->getId());
 		
 		//Early
 		$early = "SELECT * from spt WHERE stage = 1 ".$dateprefix." ".$userprefix;
@@ -75,7 +78,7 @@ class ExtranetUtilities
 		$array['Early'] = $earlyLeads;
 		
 		//Active
-		$active = "select * from spt where id in (select spt_id from pipeline ".$dateprefix2." ".$userprefix." group by spt_id having max(stage) = 2)";
+		$active = "select * from spt where id in (select spt_id from pipeline ".$dateprefix2." group by spt_id having max(stage) = 2) ".$userprefix2;
 		$a = $this->entityManager->getConnection()->prepare($active);
 		$a->execute();
 		$activeLeads =  $a->fetchAll();
@@ -87,6 +90,8 @@ class ExtranetUtilities
 		$c->execute();
 		$closeLeads =  $c->fetchAll();
 		$array['Close'] = $closeLeads;
+		
+
 		
 		//offline
 		$offline = "select * from spt where stage = 4 ".$dateprefix3." ".$userprefix;		

@@ -48,6 +48,7 @@ $this->PageActions()->setItems([
                                     <table id="datatable" class="display min-w850 dataTable sptDataTable" style="width:100%">
                                         <thead>
                                             <tr>
+												<th>ID</th>
 												<th>Stage</th>
 												<th>Prospect</th>
 												<th>Lead Source</th>
@@ -72,12 +73,14 @@ $this->PageActions()->setItems([
 												<th>Email</th>
 												<th>Website</th>
 												<th>Date Created</th>
+												<th>Date Modified</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 										<?php foreach ($data as $s) { ?>
 
 												<tr>
+													<td><?= $s['id'] ;?></td>
 													<td><?= $s['stage'] ;?></td>
 													<td><?= $s['propect_name'] ;?></td>
 													<td><?= $s['lead_source'] ;?></td>
@@ -102,6 +105,7 @@ $this->PageActions()->setItems([
 													<td><?= $s['email'] ;?></td>
 													<td><?= $s['website'] ;?></td>
 													<td><?= $s['date_created'] ;?></td>
+													<td><?= $s['date_modified'] ;?></td>
 												</tr>
 											<?php } ?>
                                         </tbody>
