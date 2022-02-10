@@ -161,7 +161,8 @@ class DashboardController extends AbstractActionController
 		->setCellValue('U5', 'Telephone')
 		->setCellValue('V5', 'Email')
 		->setCellValue('W5', 'Website')
-		->setCellValue('X5', 'Date Created');
+		->setCellValue('X5', 'Date Created')
+		->setCellValue('Y5', 'Date Modified');
 		
 		
 		$user = $post['s_user'] ?? 0;
@@ -218,7 +219,8 @@ class DashboardController extends AbstractActionController
 						  ->setCellValue('U' . (string)($n + 1), !empty($contact)?$contact->getTelephone():'')
 						  ->setCellValue('V' . (string)($n + 1), !empty($contact)?$contact->getEmail():'')
 						  ->setCellValue('W' . (string)($n + 1), !empty($contact)?$contact->getWebsite():'')
-						  ->setCellValue('X' . (string)($n + 1), $spt[$i]['date_created']);
+						  ->setCellValue('X' . (string)($n + 1), $spt[$i]['date_created'])
+						  ->setCellValue('Y' . (string)($n + 1), $spt[$i]['date_modified']);
 						$n++;
 					}
 				}
@@ -227,17 +229,17 @@ class DashboardController extends AbstractActionController
 		$spreadsheet->getActiveSheet()->freezePane('E6');
 		$spreadsheet
 		->getActiveSheet()
-		->getStyle('A5:X5')
+		->getStyle('A5:Y5')
 		->getFill()
 		->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
 		->getStartColor()
 		->setARGB('FFFF00');
 		
-		foreach (range('A','X') as $col) {
+		foreach (range('A','Y') as $col) {
 		   $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		
-		$spreadsheet->getActiveSheet()->getStyle('A5:X5')->getFont()->setBold(true);
+		$spreadsheet->getActiveSheet()->getStyle('A5:Y5')->getFont()->setBold(true);
 		$spreadsheet->getActiveSheet()->getStyle('A1:A4')->getFont()->setBold(true);
 		
 		// Redirect output to a clientâ€™s web browser (Xlsx)
