@@ -1,0 +1,61 @@
+<?php
+$title = $this->translate('Close SPT');
+$this->pageBreadcrumbs()->setTitle($title);
+$this->headTitle($title);
+$this->pageBreadcrumbs()->setItems([
+            $this->translate('SPT')=>$this->url('spt'),
+            $this->translate('Close')=>$this->url('spt', ['action'=>'close']),
+            ]);
+$this->mainMenu()->setActiveItemId('spt');
+$form->get('stage')->setAttributes(['class'=>'form-control','placeholder'=>'Stage','disabled'=>true]);
+$form->get('propect_name')->setAttributes(['id'=>'propect_name','class'=>'form-control','placeholder'=>'Propect Name','disabled'=>true]);
+$form->get('closed_date')->setAttributes(['class'=>'form-control input-datepicker','placeholder'=>'Closed Date','required'=>true]);
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary'])->setValue($this->translate('Close SPT'));
+$form->prepare();
+$this->PageActions()->setItems([
+            ['label'=>'Back to SPT','url'=>$this->url('spt'),'icon'=>'fa fa-arrow-left','class'=>'btn-primary'],
+            ]);
+?>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+		<div class="card-header">
+			<h4 class="card-title">Close SPT</h4>
+		</div>
+		<?= $this->form()->openTag($form); ?>
+		<div class="card-body row">
+			<div class="col-md-6">
+				
+				<div class="form-group">
+					<?= $this->formLabel($form->get('stage')); ?>
+					<?= $this->formElement($form->get('stage')); ?>
+					<?= $this->formElementErrors($form->get('stage')); ?>
+				</div>
+				<div class="form-group">
+					<?= $this->formLabel($form->get('propect_name')); ?>
+					<?= $this->formElement($form->get('propect_name')); ?>
+					<?= $this->formElementErrors($form->get('propect_name')); ?>
+				</div>
+				
+				<div class="form-group input-group">
+					<?= $this->formLabel($form->get('closed_date')); ?>
+					<div class="input-group">
+						<div class="input-group-prepend">
+						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					</div>
+						<?= $this->formElement($form->get('closed_date')); ?>
+						<?= $this->formElementErrors($form->get('closed_date')); ?>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12">
+			   <div class="form-group">
+				<?= $this->formElement($form->get('submit')); ?>
+				</div>
+			</div>
+		</div>
+		<?= $this->form()->closeTag(); ?>
+	</div>
+	</div>
+</div>

@@ -105,7 +105,7 @@ class ReportsController extends AbstractActionController
 					
 					$travels_array[$t->getName()]['target'] = $this->ExtranetUtilities->getTargetByUser($selectedUser, $id);
 					$travels_array[$t->getName()]['performed'] = isset($travels[$t->getId()])?$travels[$t->getId()]:0;
-					$travels_array[$t->getName()]['efficiency'] = round($travels_array[$t->getName()]['performed'] / $travels_array[$t->getName()]['target'] * 100, 2);
+					$travels_array[$t->getName()]['efficiency'] = @round($travels_array[$t->getName()]['performed'] / $travels_array[$t->getName()]['target'] * 100, 2);
 				}
 				$travels_array['total_call_efficiency']['target'] = array_sum(array_column($travels_array,'target'));
 				$travels_array['total_call_efficiency']['performed'] = array_sum(array_column($travels_array,'performed'));

@@ -131,7 +131,7 @@ return [
                 ['actions' => ['index','add','edit','delete'], 'allow' => '+dashboard.manage'],
             ],
             Controller\SPTController::class => [
-                ['actions' => ['getContact','index','add','edit','delete'], 'allow' => '+spt.manage'],
+                ['actions' => ['getContact','index','add','edit','delete','close'], 'allow' => '+spt.manage'],
             ],
 		
             Controller\DCRController::class => [

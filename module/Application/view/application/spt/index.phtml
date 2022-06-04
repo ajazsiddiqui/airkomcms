@@ -93,6 +93,7 @@ $this->PageActions()->setItems([
     </td>
 	<td>
 		<a onclick="return confirm('Are you sure?')" href="<?= $this->url('spt',[ 'action'=>'delete','id' => $s->getId()]); ?>" class="btn btn-danger round-btn"><i class="fa fa-trash"></i></a>
+		<a href="<?= $this->url('spt',[ 'action'=>'close','id' => $s->getId()]); ?>" class="btn btn-primary round-btn"><i class="fa fa-check-square-o"></i></a>
     </td>
 </tr>
 <?php endforeach; ?>

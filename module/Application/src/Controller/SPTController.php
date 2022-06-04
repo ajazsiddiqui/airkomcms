@@ -13,6 +13,7 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Application\Form\SPTForm;
+use Application\Form\SPTCloseForm;
 use Application\Entity\Spt;
 use Application\Entity\Contacts;
 use User\Entity\User;
@@ -307,6 +308,82 @@ class SPTController extends AbstractActionController
         return new ViewModel(['form' => $form,'stage'=>$spt->getStage()]);
 
     }
+	
+	public function closeAction(){
+		
+		$user = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $this->authService->getIdentity()], ['id' => 'ASC']);
+
+        $id = (int) $this->params()->fromRoute('id', -1);
+        if ($id < 1) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $spt = $this->entityManager->getRepository(Spt::class)
+            ->find($id);
+
+        if (null == $spt) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+		
+		$form = new SPTCloseForm();
+		$form->get('stage')->setValueOptions($this->ExtranetUtilities->getLeadStageList());
+		$form->get('propect_name')->setValueOptions($this->ExtranetUtilities->getContactsList());
+		
+		if ($this->getRequest()->isPost()) {
+            $data = $this->params()->fromPost();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+				$pipeline = $this->entityManager->getRepository(Pipeline::class)
+					->findOneBy(['sptId'=>$spt->getId(),'stage'=>3]);
+					
+				if(empty($pipeline)){					
+					$pipeline = new Pipeline();
+					$pipeline->setContact($spt->getPropectName());
+					$pipeline->setSptId($spt->getId());
+					$pipeline->setStage(3);
+					$pipeline->setDateCreated($this->ExtranetUtilities->makeDate($data['closed_date']));
+					$pipeline->setCreatedBy($user->getId());
+				}else{
+					$pipeline->setDateCreated($this->ExtranetUtilities->makeDate($data['closed_date']));
+				}
+				
+				$this->entityManager->persist($pipeline);
+				$this->entityManager->flush();
+				
+				$spt->setStage(3);
+				$spt->setDateModified($this->ExtranetUtilities->makeDate($data['closed_date']));
+				$this->entityManager->persist($spt);
+				$this->entityManager->flush();
+
+                $log = $this->logManager;
+                $log->setlog('SPT Closed', $spt->getId(), $this->authService->getIdentity());
+
+                $this->flashMessenger()->addSuccessMessage('SPT Closed '.$spt->getId());
+
+                return $this->redirect()->toRoute('spt');
+            }
+            print_r($form->getMessages());
+        } else {
+			$pipeline = $this->entityManager->getRepository(Pipeline::class)
+					->findOneBy(['sptId'=>$spt->getId(),'stage'=>3]);
+					
+            $form->setData(
+                [
+			'stage' => 3,
+			'propect_name' => $spt->getPropectName(),
+			'closed_date' => empty($pipeline)?'':$pipeline->getDateCreated(),
+                ]
+            );
+        }
+
+		return new ViewModel(['form' => $form,'stage'=>$spt->getStage()]);
+	}
 	
 	public function deleteAction()
     {
