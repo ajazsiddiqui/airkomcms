@@ -50,7 +50,7 @@ class UserDetail extends AbstractHelper
     {
         $branch = $this->entityManager->getRepository(Branch::class)->findOneBy(['id' => $id]);
 
-        return $branch->getName();
+        return empty($branch)?'':$branch->getName();
     }
 
     public function getUserPic($id)

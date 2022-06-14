@@ -94,11 +94,12 @@ class CardsController extends AbstractActionController
 		// add personal data
 		$vcard->addName($lastname, $firstname, $additional, $prefix, $suffix);
 
+		$email = !empty($user->getAlternateEmail()) ? $user->getAlternateEmail() : $user->getEmail();
 		// add work data
 		$vcard->addCompany($settings->getCompanyName());
 		$vcard->addJobtitle($user->getDesignation());
 		$vcard->addRole('');
-		$vcard->addEmail($user->getEmail());
+		$vcard->addEmail($email);
 		$vcard->addPhoneNumber($user->getContactNo(), 'PREF;WORK');
 		$vcard->addAddress(null, $settings->getAddress(), 'street', 'worktown', null, 'workpostcode', 'India');
 		$vcard->addLabel('street, worktown, workpostcode India');

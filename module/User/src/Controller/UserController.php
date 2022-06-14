@@ -288,6 +288,7 @@ class UserController extends AbstractActionController
                     'user_type' => $user->getUserType(),
                     'designation' => $user->getDesignation(),
                     'email' => $user->getEmail(),
+                    'alternate_email' => $user->getAlternateEmail(),
                     'branch' => $user->getBranch(),
                     'status' => $user->getStatus(),
                     'roles' => $userRoleIds,

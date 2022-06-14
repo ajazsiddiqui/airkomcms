@@ -87,6 +87,17 @@ class UserForm extends Form
                 ],
             ]
         );
+		
+        // Add "email" field
+        $this->add(
+            [
+                'type' => 'text',
+                'name' => 'alternate_email',
+                'options' => [
+                    'label' => 'Alternate E-mail',
+                ],
+            ]
+        );
 
         // Add "full_name" field
         $this->add(

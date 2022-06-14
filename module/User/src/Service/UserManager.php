@@ -66,6 +66,7 @@ class UserManager
         // Create new User entity.
         $user = new User();
         $user->setEmail($data['email']);
+        $user->setAlternateEmail($data['alternate_email']);
         $user->setFullName($data['full_name']);
         $user->setContactNo($data['contact_no']);
         $user->setBranch($data['branch']);
@@ -110,6 +111,7 @@ class UserManager
         }
 
         $user->setEmail($data['email']);
+		$user->setAlternateEmail($data['alternate_email']);
         $user->setFullName($data['full_name']);
         $user->setContactNo($data['contact_no']);
         $user->setBranch($data['branch']);

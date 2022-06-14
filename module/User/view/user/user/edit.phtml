@@ -17,6 +17,11 @@ $form->get('email')->setAttributes([
     'class'=>'form-control',
     'placeholder'=>'name@example.com'
     ]);
+	
+$form->get('alternate_email')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Alternate Email'
+    ]);
 
 $form->get('profile_pic')->setAttributes([
     'class'=>'custom-file-input',
@@ -103,7 +108,16 @@ $this->PageActions()->setItems([
 					<?= $this->formElementErrors($form->get('email')); ?>
 				</div>
 			</div>
-					
+				<div class="form-group">
+				<label class="text-label"><?= $this->formLabel($form->get('alternate_email')); ?></label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-envelope"></i> </span>
+					</div>
+					<?= $this->formElement($form->get('alternate_email')); ?>
+					<?= $this->formElementErrors($form->get('alternate_email')); ?>
+				</div>
+			</div>				
 			<div class="form-group">
 				<?= $this->formLabel($form->get('branch')); ?>
 				<?= $this->formElement($form->get('branch')); ?>

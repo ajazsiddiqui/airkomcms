@@ -101,7 +101,7 @@
                                  <div class="contact-btn-group rounded-pill ms-1 px-1 pb-1">
                                     <a href="https://api.whatsapp.com/send?phone=<?= $user->getContactNo(); ?>" target="_blank" class="mx-1"><i class="fab fa-whatsapp align-middle" style="font-size:1.2rem;"></i></a>
                                     <a href="tel:+<?= $user->getContactNo(); ?>" target="_blank" class="ms-2 me-1"><i class="fas fa-phone align-middle"></i></a>
-                                    <a href="mailto:<?= $user->getEmail(); ?>" target="_blank" class="mx-1 ms-2"><i class="fas fa-at align-middle"></i></a>
+                                    <a href="mailto:<?= !empty($user->getAlternateEmail()) ? $user->getAlternateEmail() : $user->getEmail(); ?>" target="_blank" class="mx-1 ms-2"><i class="fas fa-at align-middle"></i></a>
                                  </div>
                               </div>
                            </div>
@@ -143,7 +143,7 @@
                               <div class="mb-3 mt-sm-2 no-iconbg">                               
                                  <a href="tel:+91<?= $user->getContactNo(); ?>" class="btn p-1 px-2 text-decoration-none" target="_blank"><i class="fas fa-phone-alt thm-color-bg-i rounded-circle me-2 align-middle" style="padding:0.3rem;"></i><span class="text-muted">+91 <?= $user->getContactNo(); ?></span></a>
                                  <a href="https://api.whatsapp.com/send?phone=<?= $user->getContactNo(); ?>" class="btn p-1 px-2 text-decoration-none" target="_blank"><i class="fab fa-whatsapp thm-color-bg-i rounded-circle me-2 align-middle" style="font-size:1.29rem;padding: 0.2rem 0.30rem;"></i><span class="text-muted">+91 <?= $user->getContactNo(); ?></span></a>
-                                 <a href="mailto:<?= $user->getEmail(); ?>" class="btn p-1  text-decoration-none" target="_blank"><i class="fas fa-at thm-color-bg-i rounded-circle me-2 align-middle" style="padding:0.3rem;"></i><span class="text-muted"><?= $user->getEmail(); ?></span></a>
+                                 <a href="mailto:<?= !empty($user->getAlternateEmail()) ? $user->getAlternateEmail() : $user->getEmail(); ?>" class="btn p-1  text-decoration-none" target="_blank"><i class="fas fa-at thm-color-bg-i rounded-circle me-2 align-middle" style="padding:0.3rem;"></i><span class="text-muted"><?= !empty($user->getAlternateEmail()) ? $user->getAlternateEmail() : $user->getEmail(); ?></span></a>
                               </div>
                               <div class="card position-relative bg-white my-2 p-1 rounded">
                                  <div class="row g-0 align-items-center">

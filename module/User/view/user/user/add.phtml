@@ -15,7 +15,10 @@ $form->get('email')->setAttributes([
     'class'=>'form-control',
     'placeholder'=>'Email'
     ]);
-
+$form->get('alternate_email')->setAttributes([
+    'class'=>'form-control',
+    'placeholder'=>'Alternate Email'
+    ]);
 $form->get('profile_pic')->setAttributes([
     'class'=>'custom-file-input',
     ])->setLabelAttributes(['class'=>'custom-file-label']);
@@ -104,6 +107,19 @@ $this->PageActions()->setItems([
 					</div>
 					<?= $this->formElement($form->get('email')); ?>
 					<?= $this->formElementErrors($form->get('email')); ?>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="text-label"><?= $this->formLabel($form->get('alternate_email')); ?>
+				<small> (If provided, it will change your email on virtual card)</small>
+				</label>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fa fa-envelope"></i> </span>
+					</div>
+					<?= $this->formElement($form->get('alternate_email')); ?>
+					<?= $this->formElementErrors($form->get('alternate_email')); ?>
 				</div>
 			</div>
 			

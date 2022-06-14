@@ -28,11 +28,17 @@ class User
      * @ORM\Column(name="email")
      */
     protected $email;
+	
+	/**
+     * @ORM\Column(name="alternate_email")
+     */
+    protected $alternateEmail;
 
     /**
      * @ORM\Column(name="full_name")
      */
     protected $fullName;
+	
 	
 	 /**
      * @ORM\Column(name="designation")
@@ -141,6 +147,26 @@ class User
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * Returns alternateEmail.
+     *
+     * @return string
+     */
+    public function getAlternateEmail()
+    {
+        return $this->alternateEmail;
+    }
+
+    /**
+     * Sets alternateEmail.
+     *
+     * @param string $alternateEmail
+     */
+    public function setAlternateEmail($alternateEmail)
+    {
+        $this->alternateEmail = $alternateEmail;
     }
 
     /**
